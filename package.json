@@ -1,19 +1,20 @@
 {
-  "name": "getting-started",
+  "name": "dnd5e-discord-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "author": "Shay DeWael",
+  "author": "Julian Ranieri",
   "license": "MIT",
   "dependencies": {
     "discord-interactions": "^3.2.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "json-to-plain-text": "^1.0.4",
     "node-fetch": "^3.2.3"
   },
   "devDependencies": {
