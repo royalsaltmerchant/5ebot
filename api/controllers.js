@@ -34,11 +34,11 @@ async function deleteSlashCommand(req, res, next) {
 
 async function createSlashCommands(req, res, next) {
   const slashCommandsList = [
-    'skills',
+    // 'skills',
     // 'ability-scores',
     // 'alignments',
     // 'languages',
-    // 'races',
+    'races',
     // 'classes'
   ]
 
