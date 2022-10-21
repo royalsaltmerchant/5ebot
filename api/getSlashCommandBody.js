@@ -312,6 +312,34 @@ async function getSlashCommandBody(slashCommandName) {
           },
         ],
       };
+    case "spells":
+      return {
+        name: "spells",
+        description: "Returns info about 5e spells",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description: "Type a search term to get a list of matching spells",
+            type: 3,
+            required: true
+          }
+        ]
+      }
+    case "proficiencies":
+      return {
+        name: "proficiencies",
+        description: "Returns info about 5e proficiencies",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description: "Type a search term to get a list of matching proficiencies",
+            type: 3,
+            required: true
+          }
+        ]
+      }
     case "classes":
       return {
         name: "classes",
