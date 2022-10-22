@@ -322,10 +322,10 @@ async function getSlashCommandBody(slashCommandName) {
             name: "search",
             description: "Type a search term to get a list of matching spells",
             type: 3,
-            required: true
-          }
-        ]
-      }
+            required: true,
+          },
+        ],
+      };
     case "proficiencies":
       return {
         name: "proficiencies",
@@ -334,12 +334,160 @@ async function getSlashCommandBody(slashCommandName) {
         options: [
           {
             name: "search",
-            description: "Type a search term to get a list of matching proficiencies",
+            description:
+              "Type a search term to get a list of matching proficiencies",
+            type: 3,
+            required: true,
+          },
+        ],
+      };
+    case "features":
+      return {
+        name: "features",
+        description: "Returns info about 5e features",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description:
+              "Type a search term to get a list of matching features",
+            type: 3,
+            required: true,
+          },
+        ],
+      };
+    case "traits":
+      return {
+        name: "traits",
+        description: "Returns info about 5e traits",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description: "Type a search term to get a list of matching traits",
+            type: 3,
+            required: true,
+          },
+        ],
+      };
+    case "equipment":
+      return {
+        name: "equipment",
+        description: "Returns info about 5e equipment",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description: "Type a search term to get a list of matching equipment",
+            type: 3,
+            required: true,
+          },
+        ],
+      };
+    case "magicitems":
+      return {
+        name: "magicitems",
+        description: "Returns info about 5e magic items",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description: "Type a search term to get a list of matching magic items",
+            type: 3,
+            required: true,
+          },
+        ],
+      };
+    case "roll":
+      return {
+        name: "roll",
+        description: "Rolls dice",
+        type: 1,
+        options: [
+          {
+            name: "input",
+            description: "Example: 3 d8 + 5",
             type: 3,
             required: true
           }
         ]
       }
+    case "conditions":
+      return {
+        name: "conditions",
+        description: "Returns info about 5e conditions",
+        type: 1,
+        options: [
+          {
+            name: "choices",
+            description: "Returns info about 5e conditions",
+            type: 3,
+            required: true,
+            choices: [
+              {
+                name: "Blinded",
+                value: "blinded",
+              },
+              {
+                name: "Charmed",
+                value: "charmed",
+              },
+              {
+                name: "Deafened",
+                value: "deafened",
+              },
+              {
+                name: "Exhaustion",
+                value: "exhaustion",
+              },
+              {
+                name: "Frightened",
+                value: "frightened",
+              },
+              {
+                name: "Grappled",
+                value: "grappled",
+              },
+              {
+                name: "Incapacitated",
+                value: "incapacitated",
+              },
+              {
+                name: "Invisible",
+                value: "invisible",
+              },
+              {
+                name: "Paralyzed",
+                value: "paralyzed",
+              },
+              {
+                name: "Petrified",
+                value: "petrified",
+              },
+              {
+                name: "Poisoned",
+                value: "poisoned",
+              },
+              {
+                name: "Prone",
+                value: "prone",
+              },
+              {
+                name: "Restrained",
+                value: "restrained",
+              },
+              {
+                name: "Stunned",
+                value: "stunned",
+              },
+              {
+                name: "Unconscious",
+                value: "unconscious",
+              },
+            ],
+          },
+        ],
+      };
     case "classes":
       return {
         name: "classes",

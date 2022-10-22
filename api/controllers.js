@@ -41,7 +41,13 @@ async function createSlashCommands(req, res, next) {
     // 'races',
     // 'classes',
     // "spells",
-    "proficiencies"
+    // "proficiencies",
+    // "features",
+    // "traits",
+    // "conditions",
+    // "equipment"
+    // "magicitems",
+    "roll"
   ]
 
   const responseList = []
