@@ -42,12 +42,15 @@ async function interactionsController(req, res, next) {
         let resultCalculated = 0;
   
         for(var i=0;i<amountOfDice;i++) {
-          resultCalculated += Math.floor(Math.random() * diceSides)
+          let newValue = Math.floor(Math.random() * diceSides)
+          if(newValue === 0) newValue++
+          console.log(newValue, 'new value')
+          resultCalculated += newValue
+          console.log(resultCalculated, 'total')
         }
   
         if(modifier) resultCalculated += modifier
         resultCalculated = resultCalculated + ''
-        
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
