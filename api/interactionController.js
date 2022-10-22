@@ -50,6 +50,7 @@ async function interactionsController(req, res, next) {
         }
   
         if(modifier) resultCalculated += modifier
+        console.log('after modifier: ', resultCalculated)
         resultCalculated = resultCalculated + ''
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
