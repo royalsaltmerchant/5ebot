@@ -14,9 +14,9 @@ router.get('/', function (req, res) {
 
 router.get('/get', getSlashCommands)
 
-router.get('/create', createSlashCommands)
+// router.get('/create', createSlashCommands)
 
-router.get('/delete/:id', deleteSlashCommand)
+// router.get('/delete/:id', deleteSlashCommand)
 
 router.post('/interactions', interactionsController)
 
