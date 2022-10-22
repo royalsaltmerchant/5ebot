@@ -28,30 +28,43 @@ async function interactionsController(req, res, next) {
     // ******************************** ROLL **********************************************
     // Roll
     if (data.name === "roll") {
-      const input = data.options[0].value.trim().split(' ')
-      console.log(input);
+      try {
 
-      const amountOfDice = parseInt(input[0])
-      const diceType = input[1]
-      const diceSides = parseInt(diceType.split('d')[1])
-      // const mathOperator = input[2]
-      const modifier = parseInt(input[3])
-      
-      let resultCalculated = 0;
+        const input = data.options[0].value.trim().split(' ')
+        console.log(input);
+  
+        const amountOfDice = parseInt(input[0])
+        const diceType = input[1]
+        const diceSides = parseInt(diceType.split('d')[1])
+        // const mathOperator = input[2]
+        const modifier = parseInt(input[3])
+        
+        let resultCalculated = 0;
+  
+        for(var i=0;i<amountOfDice;i++) {
+          resultCalculated += Math.floor(Math.random() * diceSides)
+        }
+  
+        if(modifier) resultCalculated += modifier
+        resultCalculated = resultCalculated + ''
+        
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: resultCalculated,
+          },
+        });
+      } catch(err) {
+        console.log(err)
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `Failed`,
+          },
+        });
 
-      for(var i=0;i<amountOfDice;i++) {
-        resultCalculated += Math.floor(Math.random() * diceSides)
       }
 
-      if(modifier) resultCalculated += modifier
-      resultCalculated = resultCalculated + ''
-
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: resultCalculated,
-        },
-      });
     }
 
     // ******************************** CHARACTER *****************************************
