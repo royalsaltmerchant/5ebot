@@ -91,7 +91,7 @@ async function interactionsController(req, res, next) {
         `https://www.dnd5eapi.co/api/ability-scores/${data.options[0].value}`
       );
       console.log(scoreData);
-      let returnInfo = `**${scoreData.name}**\n\n${scoreData.desc}`;
+      let returnInfo = `**${scoreData.name}**\n\n${scoreData.desc.map(item => item)}`;
       if(scoreData.skills && scoreData.skills.length) returnInfo += `\n**Skills:** ${scoreData.skills.map(skill => skill.name)}`
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -121,7 +121,7 @@ async function interactionsController(req, res, next) {
       );
       console.log(languageData);
       const returnInfo = `**${languageData.name}**\n\n${
-        languageData.desc ? languageData.desc : "Description is missing"
+        languageData.desc ? languageData.desc.map(item => item) : "Description is missing"
       }\n\n**Typical Speakers:** ${JSON.stringify(languageData.typical_speakers)}`;
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -137,7 +137,7 @@ async function interactionsController(req, res, next) {
       );
       console.log(conditionData);
       const returnInfo = `**${conditionData.name}**\n\n${
-        conditionData.desc ? conditionData.desc : "Description is missing"
+        conditionData.desc ? conditionData.desc.map(item => item) : "Description is missing"
       }`
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -424,7 +424,7 @@ async function interactionsController(req, res, next) {
       if(spellData.concentration) formattedData += "\n**Concentration:** true"
       if(spellData.damage && spellData.damage.damage_type.name) formattedData += `\n**Damage Type:** ${spellData.damage.damage_type.name}`
       if(spellData.area_of_effect) formattedData += `\n**Area of Effect:** **Type:** ${spellData.area_of_effect.type}, **Size:** ${spellData.area_of_effect.size}`
-      if(spellData.desc) formattedData += `\n**Description:** ${spellData.desc} `
+      if(spellData.desc) formattedData += `\n**Description:** ${spellData.desc.map(item => item)} `
       if(spellData.higher_level.length && spellData.higher_level.length !== 0) formattedData += spellData.higher_level.map((item) => item)
 
       return res.send({
@@ -462,7 +462,7 @@ async function interactionsController(req, res, next) {
 
       let formattedData = `**${featureData.name}**`
       if(featureData.level) formattedData += `\n**Level:** ${featureData.level}`
-      if(featureData.desc) formattedData += `\n**Description:** ${featureData.desc}`
+      if(featureData.desc) formattedData += `\n**Description:** ${featureData.desc.map(item => item)}`
       if(featureData.class) formattedData += `\n**Class:** ${featureData.class.name}`
       if(featureData.subclass) formattedData += `\n**Subclass:** ${featureData.subclass.name}`
       if(featureData.prerequisites && featureData.prerequisites.length) formattedData += `\n**Prerequisites:** ${featureData.prerequisites.map(item => item.name)}`
@@ -499,7 +499,7 @@ async function interactionsController(req, res, next) {
       console.log(magicItemData);
 
       let formattedData = `**${magicItemData.name}**`
-      if(magicItemData.desc) formattedData += `\n**Description:** ${magicItemData.desc}`
+      if(magicItemData.desc) formattedData += `\n**Description:** ${magicItemData.desc.map(item => item)}`
       if(magicItemData.equipment_category) formattedData += `\n**Equipment Category:** ${magicItemData.equipment_category.name}`
       if(magicItemData.rarity) formattedData += `\n**Rarity:** ${magicItemData.rarity.name}`
       if(magicItemData.variants && magicItemData.variants.length) formattedData += `\n**Variants:** ${magicItemData.variants.map(variant => variant.name)}`
@@ -534,7 +534,7 @@ async function interactionsController(req, res, next) {
       if(equipmentData.gear_category) formattedData += `\n**Gear Category:** ${equipmentData.gear_category.name}`
       if(equipmentData.contents && equipmentData.contents.length) formattedData += `\n**Contents:** ${equipmentData.contents.map(item => ` ${item.item.name}: ${item.quantity}`)}`
       if(equipmentData.properties && equipmentData.properties.length) formattedData += `\n**Properties:** ${equipmentData.properties.map(property => property.name)}`
-      if(equipmentData.desc && equipmentData.desc.length) formattedData += `\n**Description:** ${equipmentData.desc[0]}`
+      if(equipmentData.desc && equipmentData.desc.length) formattedData += `\n**Description:** ${equipmentData.desc.map(item => item)}`
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
