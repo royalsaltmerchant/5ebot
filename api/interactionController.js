@@ -29,33 +29,63 @@ async function interactionsController(req, res, next) {
     // Roll
     if (data.name === "roll") {
       try {
-
-        const input = data.options[0].value.trim().split(' ')
-        console.log(input);
-  
-        const amountOfDice = parseInt(input[0])
-        const diceType = input[1]
-        const diceSides = parseInt(diceType.split('d')[1])
-        // const mathOperator = input[2]
-        const modifier = parseInt(input[3])
-        
-        let resultCalculated = 0;
-  
-        for(var i=0;i<amountOfDice;i++) {
-          let newValue = Math.floor(Math.random() * diceSides)
-          if(newValue === 0) newValue++
-          console.log(newValue, 'new value')
-          resultCalculated += newValue
-          console.log(resultCalculated, 'total')
+        // INIT Input
+        const input = data.options[0].value.trim().toLowerCase()
+        console.log(input, '**** INPUT ****');
+        // get amount of dice
+        const amountOfDice = parseInt(input.split('d', 2)[0].trim()); console.log(amountOfDice, 'Amount of Dice');
+        // get dice sides
+        let diceSides = input.split('d', 2)[1];
+        if(diceSides.includes('+')) {
+          diceSides = diceSides.split('+', 2)[0].trim()
         }
-  
-        if(modifier) resultCalculated += modifier
-        console.log('after modifier: ', resultCalculated)
-        resultCalculated = resultCalculated + ''
+        diceSides = parseInt(diceSides)
+        console.log(diceSides, 'Dice Sides')
+        // get modifiers
+        let modifiers;
+        if(input.includes('+')) {
+          modifiers = input.split('+')
+          modifiers.shift()
+          for(var i=0;i<modifiers.length;i++) {
+            modifiers[i] = parseInt(modifiers[i])
+          }
+          console.log(modifiers, 'Modifiers')
+        }
+        // get dice rolls
+        let diceRolls = [];
+        for(var i=0;i<amountOfDice;i++) {
+          const newValue = Math.floor( (Math.random() * diceSides) + 1)
+          diceRolls.push(newValue)
+        }
+        console.log(diceRolls, 'Dice Rolls Array')
+
+        // CALCULATE TOTAL
+        // Add modifiers
+        let total = 0; // ******************** TOTAL ******************************
+        for(var i=0;i<diceRolls.length;i++) {
+          total += diceRolls[i]
+        }
+        if(modifiers) {
+          for(var i=0;i<modifiers.length;i++) {
+            total += modifiers[i]
+          }
+        }
+        console.log(total, '***** TOTAL *****')
+        // Display Information 
+        let responseInfo = ''
+        responseInfo += `**Input:** ${input}\n`
+        diceRolls.forEach((roll, index) => {
+          let diceInfoString = `\n**Roll ${index + 1}:** ${roll}`
+          if(roll === diceSides) diceInfoString += ' - **CRITICAL**'
+          responseInfo += diceInfoString
+        })
+        responseInfo += `\n\n**TOTAL = ${total}**`
+
+        // send
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: resultCalculated,
+            content: responseInfo,
           },
         });
       } catch(err) {
@@ -63,7 +93,7 @@ async function interactionsController(req, res, next) {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `Failed`,
+            content: `Failed to calculate, try again.`,
           },
         });
 
