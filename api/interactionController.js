@@ -12,13 +12,19 @@ import traits from '../data/traits.js'
 import equipment from '../data/equipment.js'
 import magicItems from '../data/magicItems.js'
 
-function returnArrayDataAsString(array) {
+function returnArrayDataAsString(array, key) {
   if(typeof array === 'string') return array
   if(!Array.isArray(array)) return 'Unknown'
   var string = ''
-  array.forEach(item => {
-    string += `${item}\n`
-  })
+  if(key) {
+    array.forEach(item => {
+      string += `${item[key]}\n`
+    })
+  } else {
+    array.forEach(item => {
+      string += `${item}\n`
+    })
+  }
   return string
 }
 
@@ -132,7 +138,7 @@ async function interactionsController(req, res, next) {
       );
       console.log(scoreData);
       let returnInfo = `**${scoreData.name}**\n\n${returnArrayDataAsString(scoreData.desc)}`;
-      if(scoreData.skills && scoreData.skills.length) returnInfo += `\n**Skills:** ${scoreData.skills.map(skill => skill.name)}`
+      if(scoreData.skills && scoreData.skills.length) returnInfo += `\n**Skills:** ${returnArrayDataAsString(scoreData.skills, "name")}`
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -457,7 +463,7 @@ async function interactionsController(req, res, next) {
       let formattedData = `**${spellData.name}** - `
       if(spellData.school && spellData.school.name) formattedData += spellData.school.name
       if(spellData.level) formattedData += `\n**Level:** ${spellData.level}`
-      if(spellData.classes && spellData.classes.length !== 0) formattedData += `\n**Classes:** ${spellData.classes.map(item => item.name)}`
+      if(spellData.classes && spellData.classes.length !== 0) formattedData += `\n**Classes:** ${returnArrayDataAsString(spellData.classes, "name")}`
       if(spellData.casting_time) formattedData += `\n**Casting Time:** ${spellData.casting_time}`
       if(spellData.range) formattedData += `\n**Range:** ${spellData.range}` 
       if(spellData.duration) formattedData += `\n**Duration:** ${spellData.duration}`
@@ -465,7 +471,7 @@ async function interactionsController(req, res, next) {
       if(spellData.damage && spellData.damage.damage_type.name) formattedData += `\n**Damage Type:** ${spellData.damage.damage_type.name}`
       if(spellData.area_of_effect) formattedData += `\n**Area of Effect:** **Type:** ${spellData.area_of_effect.type}, **Size:** ${spellData.area_of_effect.size}`
       if(spellData.desc) formattedData += `\n**Description:** ${returnArrayDataAsString(spellData.desc)} `
-      if(spellData.higher_level.length && spellData.higher_level.length !== 0) formattedData += spellData.higher_level.map((item) => item)
+      if(spellData.higher_level.length && spellData.higher_level.length !== 0) formattedData += returnArrayDataAsString(spellData.higher_level)
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -483,8 +489,8 @@ async function interactionsController(req, res, next) {
 
       let formattedData = `**${proficiencyData.name}** - `
       if(proficiencyData.type) formattedData += `\n**Type:** ${proficiencyData.type}`
-      if(proficiencyData.classes && proficiencyData.classes.length) formattedData += `\n**Classes:** ${proficiencyData.classes.map(item => item.name)}`
-      if(proficiencyData.data && proficiencyData.races.length) formattedData += `\n**Races:** ${proficiencyData.races.map(item => item.name)}`
+      if(proficiencyData.classes && proficiencyData.classes.length) formattedData += `\n**Classes:** ${returnArrayDataAsString(proficiencyData.classes, "name")}`
+      if(proficiencyData.data && proficiencyData.races.length) formattedData += `\n**Races:** ${returnArrayDataAsString(proficiencies.races, "name")}`
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -505,7 +511,7 @@ async function interactionsController(req, res, next) {
       if(featureData.desc) formattedData += `\n**Description:** ${returnArrayDataAsString(featureData.desc)}`
       if(featureData.class) formattedData += `\n**Class:** ${featureData.class.name}`
       if(featureData.subclass) formattedData += `\n**Subclass:** ${featureData.subclass.name}`
-      if(featureData.prerequisites && featureData.prerequisites.length) formattedData += `\n**Prerequisites:** ${featureData.prerequisites.map(item => item.name)}`
+      if(featureData.prerequisites && featureData.prerequisites.length) formattedData += `\n**Prerequisites:** ${returnArrayDataAsString(featureData.prerequisites, "name")}`
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -542,7 +548,7 @@ async function interactionsController(req, res, next) {
       if(magicItemData.desc) formattedData += `\n**Description:** ${returnArrayDataAsString(magicItemData.desc)}`
       if(magicItemData.equipment_category) formattedData += `\n**Equipment Category:** ${magicItemData.equipment_category.name}`
       if(magicItemData.rarity) formattedData += `\n**Rarity:** ${magicItemData.rarity.name}`
-      if(magicItemData.variants && magicItemData.variants.length) formattedData += `\n**Variants:** ${magicItemData.variants.map(variant => variant.name)}`
+      if(magicItemData.variants && magicItemData.variants.length) formattedData += `\n**Variants:** ${returnArrayDataAsString(magicItemData.variants, "name")}`
       if(magicItemData.variant) formattedData += `\n**Is a variant:** ${magicItemData.variant}`
 
       return res.send({
@@ -567,6 +573,14 @@ async function interactionsController(req, res, next) {
         return string
       }
 
+      function getContentsInfo() {
+        let string = ""
+        for( const item of equipmentData.contents) {
+          string += `${item.item.name}: ${item.quantity}\n`
+        }
+        return string
+      }
+
       let formattedData = `**${equipmentData.name}**`
       if(equipmentData.weight) formattedData += `\n**Weight:** ${equipmentData.weight}`
       if(equipmentData.equipment_category) formattedData += `\n**Equipment Category:** ${equipmentData.equipment_category.name}`
@@ -580,8 +594,8 @@ async function interactionsController(req, res, next) {
       if(equipmentData.str_minimum) formattedData += `\n**STR Minimum:** ${equipmentData.str_minimum}`
       if(equipmentData.stealth_disadvantage) formattedData += `\n**Stealth Disadvantage:** ${equipmentData.stealth_disadvantage}`
       if(equipmentData.gear_category) formattedData += `\n**Gear Category:** ${equipmentData.gear_category.name}`
-      if(equipmentData.contents && equipmentData.contents.length) formattedData += `\n**Contents:** ${equipmentData.contents.map(item => ` ${item.item.name}: ${item.quantity}`)}`
-      if(equipmentData.properties && equipmentData.properties.length) formattedData += `\n**Properties:** ${equipmentData.properties.map(property => property.name)}`
+      if(equipmentData.contents && equipmentData.contents.length) formattedData += `\n**Contents:** ${getContentsInfo()}`
+      if(equipmentData.properties && equipmentData.properties.length) formattedData += `\n**Properties:** ${returnArrayDataAsString(equipmentData.properties, "name")}`
       if(equipmentData.desc && equipmentData.desc.length) formattedData += `\n**Description:** ${returnArrayDataAsString(equipmentData.desc)}`
 
       return res.send({
