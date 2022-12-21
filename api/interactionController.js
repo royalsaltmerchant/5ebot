@@ -528,6 +528,8 @@ async function interactionsController(req, res, next) {
       console.log(traitData);
 
       let formattedData = `**${traitData.name}**`
+      if(traitData.races && traitData.races.length !== 0) formattedData += `\n**Races:** ${returnArrayDataAsString(traitData.races, "name")}`
+      if(traitData.subraces && traitData.subraces.length !== 0) formattedData += `\n**Sub-Races:** ${returnArrayDataAsString(traitData.subraces, "name")}`
       if(traitData.desc) formattedData += `\n**Description:** ${traitData.desc}`
 
       return res.send({
