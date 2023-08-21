@@ -1,7 +1,7 @@
 # 5e-Bot
 This is a discord bot which allows slash commands for searching through the D&D 5e SRD to fetch information on specific resources. It also has a dice rolling feature. 
 
-The data is sourced from this resource: https://github.com/5e-bits/5e-database/blob/main/src/5e-SRD-Equipment.json and stored locally in the data folder. Special thanks to the folks at https://www.dnd5eapi.co/ for inspiring this project and making it possible.
+The data is sourced from this resource: https://github.com/5e-bits/5e-database/ and stored locally in the data folder. Special thanks to the folks at https://www.dnd5eapi.co/ for inspiring this project and making it possible.
 
 The resouce access is not currently exhausted but provides the essential in-game resources such as: Spells, Equipment, Feats etc. More soon!
 
