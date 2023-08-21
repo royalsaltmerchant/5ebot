@@ -1,0 +1,33 @@
+export function returnArrayDataAsString(array: any, key: string | null) {
+  if (typeof array === "string") return array;
+  if (!Array.isArray(array)) return "Unknown";
+  var string = "";
+  if (key) {
+    array.forEach((item) => {
+      string += `${item[key]}\n`;
+    });
+  } else {
+    array.forEach((item) => {
+      string += `${item}\n`;
+    });
+  }
+  return string;
+}
+
+export function getArmorClassInfo(equipmentData: {armor_class: string}) {
+  let string = "";
+  for (const [key, value] of Object.entries(
+    equipmentData.armor_class
+  )) {
+    string += `${key}: ${value}, `;
+  }
+  return string;
+}
+
+export function getContentsInfo(equipmentData: {contents: [item: {item: {name: string}, quantity: string}]}) {
+  let string = "";
+  for (const item of equipmentData.contents) {
+    string += `${item.item.name}: ${item.quantity}\n`;
+  }
+  return string;
+}

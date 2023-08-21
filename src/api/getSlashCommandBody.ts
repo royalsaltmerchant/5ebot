@@ -1,4 +1,4 @@
-async function getSlashCommandBody(slashCommandName) {
+async function getSlashCommandBody(slashCommandName: string) {
   switch (slashCommandName) {
     case "skills":
       return {

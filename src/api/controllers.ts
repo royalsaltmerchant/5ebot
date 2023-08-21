@@ -1,30 +1,29 @@
 import { DiscordRequest } from './discordUtils.js'
 import getSlashCommandBody from './getSlashCommandBody.js'
+import { Request, Response, NextFunction } from "express";
 
 const appId = process.env.APP_ID;
 const globalEndpoint = `applications/${appId}/commands`;
 
-async function getSlashCommands(req, res, next) {
+async function getCommands(req: Request, res: Response, _next: NextFunction) {
   try {
     const discordRes = await DiscordRequest(globalEndpoint, {
       method: 'GET',
     });
     const result = await discordRes.json()
-    console.log(result);
     return res.send(result)
   } catch (err) {
     return res.send({message: "Failed to get slash commands", error: err})
   }
 }
 
-async function deleteSlashCommand(req, res, next) {
+async function deleteCommand(req: Request, res: Response, _next: NextFunction) {
   try {
     const discordRes = await DiscordRequest(`${globalEndpoint}/${req.params.id}`, {
       method: 'DELETE',
     });
 
     const resJson = await discordRes.json()
-    console.log(resJson);
 
     return res.send({message: 'deleted', details: resJson})
   } catch (err) {
@@ -32,7 +31,14 @@ async function deleteSlashCommand(req, res, next) {
   }
 }
 
-async function createSlashCommands(req, res, next) {
+interface CreateCommandsResponseObject {
+  slashCommandName: string;
+  resJson?: Response;
+  message: string;
+  error?: any;
+}
+
+async function createCommands(req: Response, res: Response, _next: NextFunction) {
   const slashCommandsList = [
     // 'skills',
     // 'ability-scores',
@@ -50,14 +56,14 @@ async function createSlashCommands(req, res, next) {
     "roll"
   ]
 
-  const responseList = []
+  const responseList: CreateCommandsResponseObject[] = []
 
   await Promise.all(
-    slashCommandsList.map( async (slashCommandName) => {
+    slashCommandsList.map( async (slashCommandName: string) => {
       const commandBody = await getSlashCommandBody(slashCommandName)
 
       try {
-        if(!commandBody) throw new Error({message: "missing command body"})
+        if(!commandBody) throw {message: "missing command body"}
         // Send HTTP request with bot token
         const res = await DiscordRequest(globalEndpoint, {
           method: 'POST',
@@ -65,11 +71,10 @@ async function createSlashCommands(req, res, next) {
         });
 
         const resJson = await res.json()
-        console.log(resJson);
-        responseList.push({slashCommandName, resJson, status: 'success'})
+        responseList.push({slashCommandName, resJson, message: 'success'})
       } catch (err) {
         console.log(err);
-        responseList.push({slashCommandName, error: err.message, status: "Failed"})
+        responseList.push({slashCommandName, error: err, message: "Failed"})
       }
     })
   )
@@ -77,7 +82,7 @@ async function createSlashCommands(req, res, next) {
 }
 
 export {
-  getSlashCommands,
-  deleteSlashCommand,
-  createSlashCommands
+  getCommands,
+  deleteCommand,
+  createCommands
 }
