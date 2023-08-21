@@ -45,7 +45,7 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
     // 'alignments',
     // 'languages',
     // 'races',
-    // 'classes',
+    'classes',
     // "spells",
     // "proficiencies",
     // "features",
@@ -53,7 +53,7 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
     // "conditions",
     // "equipment"
     // "magicitems",
-    "roll"
+    // "roll"
   ]
 
   const responseList: CreateCommandsResponseObject[] = []

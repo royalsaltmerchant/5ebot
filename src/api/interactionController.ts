@@ -3,6 +3,7 @@ import { rollResponse } from "../lib/dice.js";
 import {
   abilityScoresResponse,
   alignmentsResponse,
+  classesResponse,
   conditionsResponse,
   equipmentResponse,
   featuresResponse,
@@ -50,6 +51,9 @@ async function interactionsController(
           return;
         case "skills":
           skillsResponse(data, res);
+          return;
+        case "classes":
+          classesResponse(data, res);
           return;
         case "ability-scores":
           abilityScoresResponse(data, res);

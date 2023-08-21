@@ -27,9 +27,12 @@ import features from "../data/features.js";
 import traits from "../data/traits.js";
 import magicItems from "../data/magicItems.js";
 import equipment from "../data/equipment.js";
+import classes from "../data/classes.js";
 
 function skillsResponse(data: DataObject, res: Response) {
-  const skillData = skills.filter(skill => skill.index === data.options[0].value)[0];
+  const skillData = skills.filter(
+    (skill) => skill.index === data.options[0].value
+  )[0];
   const returnInfo = `**${skillData.name}**\n\n${skillData.desc}\n\n**Ability Score:** ${skillData.ability_score.name}`;
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -40,7 +43,9 @@ function skillsResponse(data: DataObject, res: Response) {
 }
 
 function abilityScoresResponse(data: DataObject, res: Response) {
-  const scoreData = abilityScores.filter(score => score.index === data.options[0].value)[0];
+  const scoreData = abilityScores.filter(
+    (score) => score.index === data.options[0].value
+  )[0];
   let returnInfo = `**${scoreData.name}**\n\n${returnArrayDataAsString(
     scoreData.desc,
     null
@@ -59,7 +64,9 @@ function abilityScoresResponse(data: DataObject, res: Response) {
 }
 
 function alignmentsResponse(data: DataObject, res: Response) {
-  const alignmentData = alignments.filter(alignment => alignment.index === data.options[0].value)[0];
+  const alignmentData = alignments.filter(
+    (alignment) => alignment.index === data.options[0].value
+  )[0];
 
   const returnInfo = `**${alignmentData.name}**\n\n${alignmentData.desc}`;
   return res.send({
@@ -70,8 +77,38 @@ function alignmentsResponse(data: DataObject, res: Response) {
   });
 }
 
+function classesResponse(data: DataObject, res: Response) {
+  const classData = classes.filter((c) => c.index === data.options[0].value)[0];
+
+  let returnInfo = `**${classData.name}**`;
+  returnInfo += `\n**Hit Dice:** ${classData.hit_die}`;
+  if (classData.spellcasting && classData.spellcasting.spellcasting_ability)
+    returnInfo += `\n**Spell Casting Ability:** ${classData.spellcasting?.spellcasting_ability.name}`;
+  returnInfo += `\n**Proficiencies:** ${returnArrayDataAsString(
+    classData.proficiencies,
+    "name"
+  )}`;
+  returnInfo += `\n**Saving Throws:** ${returnArrayDataAsString(
+    classData.saving_throws,
+    "name"
+  )}`;
+  returnInfo += `\n**Sub-Classes:** ${returnArrayDataAsString(
+    classData.subclasses,
+    "name"
+  )}`;
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: returnInfo,
+    },
+  });
+}
+
 function languagesResponse(data: DataObject, res: Response) {
-  const languageData = languages.filter(language => language.index === data.options[0].value)[0];
+  const languageData = languages.filter(
+    (language) => language.index === data.options[0].value
+  )[0];
   const returnInfo = `**${languageData.name}**\n\n${
     languageData.desc
       ? returnArrayDataAsString(languageData.desc, null)
@@ -86,7 +123,9 @@ function languagesResponse(data: DataObject, res: Response) {
 }
 
 function conditionsResponse(data: DataObject, res: Response) {
-  const conditionData = conditions.filter(condition => condition.index === data.options[0].value)[0];
+  const conditionData = conditions.filter(
+    (condition) => condition.index === data.options[0].value
+  )[0];
   const returnInfo = `**${conditionData.name}**\n\n${
     conditionData.desc
       ? returnArrayDataAsString(conditionData.desc, null)
@@ -166,7 +205,10 @@ function proficienciesResponse(data: DataObject, res: Response) {
 }
 
 function featuresResponse(data: DataObject, res: Response) {
-  const filteredFeaturesList = getDataByQuery(featOptions, data.options[0].value);
+  const filteredFeaturesList = getDataByQuery(
+    featOptions,
+    data.options[0].value
+  );
   if (filteredFeaturesList.length === 0) {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -197,7 +239,10 @@ function featuresResponse(data: DataObject, res: Response) {
 }
 
 function traitsResponse(data: DataObject, res: Response) {
-  const filteredEquipmentList = getDataByQuery(traitOptions, data.options[0].value);
+  const filteredEquipmentList = getDataByQuery(
+    traitOptions,
+    data.options[0].value
+  );
   if (filteredEquipmentList.length === 0) {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -228,7 +273,10 @@ function traitsResponse(data: DataObject, res: Response) {
 }
 
 function equipmentResponse(data: DataObject, res: Response) {
-  const filteredTraitsList = getDataByQuery(equipmentOptions, data.options[0].value);
+  const filteredTraitsList = getDataByQuery(
+    equipmentOptions,
+    data.options[0].value
+  );
   if (filteredTraitsList.length === 0) {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -295,7 +343,7 @@ function magicItemsResponse(data: DataObject, res: Response) {
 // ###################################
 
 async function selectSpellResponse(data: DataObject, res: Response) {
-  const spellData = spells.filter(spell => spell.index === data.values[0])[0];
+  const spellData = spells.filter((spell) => spell.index === data.values[0])[0];
 
   let formattedData = `**${spellData.name}** - `;
   if (spellData.school && spellData.school.name)
@@ -312,7 +360,11 @@ async function selectSpellResponse(data: DataObject, res: Response) {
   if (spellData.duration)
     formattedData += `\n**Duration:** ${spellData.duration}`;
   if (spellData.concentration) formattedData += "\n**Concentration:** true";
-  if (spellData.damage && spellData.damage.damage_type && spellData.damage.damage_type.name)
+  if (
+    spellData.damage &&
+    spellData.damage.damage_type &&
+    spellData.damage.damage_type.name
+  )
     formattedData += `\n**Damage Type:** ${spellData.damage.damage_type.name}`;
   if (spellData.area_of_effect)
     formattedData += `\n**Area of Effect:** **Type:** ${spellData.area_of_effect.type}, **Size:** ${spellData.area_of_effect.size}`;
@@ -321,7 +373,11 @@ async function selectSpellResponse(data: DataObject, res: Response) {
       spellData.desc,
       null
     )} `;
-  if (spellData.higher_level && spellData.higher_level.length && spellData.higher_level.length !== 0)
+  if (
+    spellData.higher_level &&
+    spellData.higher_level.length &&
+    spellData.higher_level.length !== 0
+  )
     formattedData += returnArrayDataAsString(spellData.higher_level, null);
 
   return res.send({
@@ -333,7 +389,9 @@ async function selectSpellResponse(data: DataObject, res: Response) {
 }
 
 async function selectProficiencyResponse(data: DataObject, res: Response) {
-  const proficiencyData = proficiencies.filter(proficiency => proficiency.index === data.values[0])[0];
+  const proficiencyData = proficiencies.filter(
+    (proficiency) => proficiency.index === data.values[0]
+  )[0];
 
   let formattedData = `**${proficiencyData.name}** - `;
   if (proficiencyData.type)
@@ -358,7 +416,9 @@ async function selectProficiencyResponse(data: DataObject, res: Response) {
 }
 
 async function selectFeatureResponse(data: DataObject, res: Response) {
-  const featureData = features.filter(feature => feature.index === data.values[0])[0];
+  const featureData = features.filter(
+    (feature) => feature.index === data.values[0]
+  )[0];
 
   let formattedData = `**${featureData.name}**`;
   if (featureData.level) formattedData += `\n**Level:** ${featureData.level}`;
@@ -386,7 +446,7 @@ async function selectFeatureResponse(data: DataObject, res: Response) {
 }
 
 async function selectTrait(data: DataObject, res: Response) {
-  const traitData = traits.filter(trait => trait.index === data.values[0])[0];
+  const traitData = traits.filter((trait) => trait.index === data.values[0])[0];
 
   let formattedData = `**${traitData.name}**`;
   if (traitData.races && traitData.races.length !== 0)
@@ -410,7 +470,9 @@ async function selectTrait(data: DataObject, res: Response) {
 }
 
 async function selectMagicItemResponse(data: DataObject, res: Response) {
-  const magicItemData = magicItems.filter(item => item.index === data.values[0])[0];
+  const magicItemData = magicItems.filter(
+    (item) => item.index === data.values[0]
+  )[0];
 
   let formattedData = `**${magicItemData.name}**`;
   if (magicItemData.desc)
@@ -439,7 +501,9 @@ async function selectMagicItemResponse(data: DataObject, res: Response) {
 }
 
 async function selectEquipmentResponse(data: DataObject, res: Response) {
-  const equipmentData = equipment.filter(equipment => equipment.index === data.values[0])[0];
+  const equipmentData = equipment.filter(
+    (equipment) => equipment.index === data.values[0]
+  )[0];
 
   let formattedData = `**${equipmentData.name}**`;
   if (equipmentData.weight)
@@ -505,4 +569,5 @@ export {
   selectTrait,
   selectMagicItemResponse,
   selectEquipmentResponse,
+  classesResponse,
 };

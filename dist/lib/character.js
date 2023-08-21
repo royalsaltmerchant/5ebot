@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.selectEquipmentResponse = exports.selectMagicItemResponse = exports.selectTrait = exports.selectFeatureResponse = exports.selectProficiencyResponse = exports.selectSpellResponse = exports.magicItemsResponse = exports.equipmentResponse = exports.traitsResponse = exports.featuresResponse = exports.proficienciesResponse = exports.spellsResponse = exports.conditionsResponse = exports.languagesResponse = exports.alignmentsResponse = exports.abilityScoresResponse = exports.skillsResponse = void 0;
+exports.classesResponse = exports.selectEquipmentResponse = exports.selectMagicItemResponse = exports.selectTrait = exports.selectFeatureResponse = exports.selectProficiencyResponse = exports.selectSpellResponse = exports.magicItemsResponse = exports.equipmentResponse = exports.traitsResponse = exports.featuresResponse = exports.proficienciesResponse = exports.spellsResponse = exports.conditionsResponse = exports.languagesResponse = exports.alignmentsResponse = exports.abilityScoresResponse = exports.skillsResponse = void 0;
 var discord_interactions_1 = require("discord-interactions");
 var spellOptions_js_1 = __importDefault(require("../data/spellOptions.js"));
 var proficiencyOptions_js_1 = __importDefault(require("../data/proficiencyOptions.js"));
@@ -60,6 +60,7 @@ var features_js_1 = __importDefault(require("../data/features.js"));
 var traits_js_1 = __importDefault(require("../data/traits.js"));
 var magicItems_js_1 = __importDefault(require("../data/magicItems.js"));
 var equipment_js_1 = __importDefault(require("../data/equipment.js"));
+var classes_js_1 = __importDefault(require("../data/classes.js"));
 function skillsResponse(data, res) {
     var skillData = skills_js_1.default.filter(function (skill) { return skill.index === data.options[0].value; })[0];
     var returnInfo = "**".concat(skillData.name, "**\n\n").concat(skillData.desc, "\n\n**Ability Score:** ").concat(skillData.ability_score.name);
@@ -95,6 +96,24 @@ function alignmentsResponse(data, res) {
     });
 }
 exports.alignmentsResponse = alignmentsResponse;
+function classesResponse(data, res) {
+    var _a;
+    var classData = classes_js_1.default.filter(function (c) { return c.index === data.options[0].value; })[0];
+    var returnInfo = "**".concat(classData.name, "**");
+    returnInfo += "\n**Hit Dice:** ".concat(classData.hit_die);
+    if (classData.spellcasting && classData.spellcasting.spellcasting_ability)
+        returnInfo += "\n**Spell Casting Ability:** ".concat((_a = classData.spellcasting) === null || _a === void 0 ? void 0 : _a.spellcasting_ability.name);
+    returnInfo += "\n**Proficiencies:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(classData.proficiencies, "name"));
+    returnInfo += "\n**Saving Throws:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(classData.saving_throws, "name"));
+    returnInfo += "\n**Sub-Classes:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(classData.subclasses, "name"));
+    return res.send({
+        type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: returnInfo,
+        },
+    });
+}
+exports.classesResponse = classesResponse;
 function languagesResponse(data, res) {
     var languageData = languages_js_1.default.filter(function (language) { return language.index === data.options[0].value; })[0];
     var returnInfo = "**".concat(languageData.name, "**\n\n").concat(languageData.desc
@@ -333,13 +352,17 @@ function selectSpellResponse(data, res) {
                 formattedData += "\n**Duration:** ".concat(spellData.duration);
             if (spellData.concentration)
                 formattedData += "\n**Concentration:** true";
-            if (spellData.damage && spellData.damage.damage_type && spellData.damage.damage_type.name)
+            if (spellData.damage &&
+                spellData.damage.damage_type &&
+                spellData.damage.damage_type.name)
                 formattedData += "\n**Damage Type:** ".concat(spellData.damage.damage_type.name);
             if (spellData.area_of_effect)
                 formattedData += "\n**Area of Effect:** **Type:** ".concat(spellData.area_of_effect.type, ", **Size:** ").concat(spellData.area_of_effect.size);
             if (spellData.desc)
                 formattedData += "\n**Description:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(spellData.desc, null), " ");
-            if (spellData.higher_level && spellData.higher_level.length && spellData.higher_level.length !== 0)
+            if (spellData.higher_level &&
+                spellData.higher_level.length &&
+                spellData.higher_level.length !== 0)
                 formattedData += (0, dataUtils_js_1.returnArrayDataAsString)(spellData.higher_level, null);
             return [2, res.send({
                     type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

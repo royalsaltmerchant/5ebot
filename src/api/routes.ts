@@ -18,9 +18,9 @@ router.get('/index', function (_req, res) {
 
 router.get('/get_all_commands', getCommands)
 
-// router.get('/create_command', verifyKeyMiddleware(process.env.PUBLIC_KEY), createCommands)
+// router.get('/create_command', createCommands)
 
-// router.get('/delete_command/:id', verifyKeyMiddleware(process.env.PUBLIC_KEY), deleteCommand)
+// router.get('/delete_command/:id', deleteCommand)
 
 router.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY as string), interactionsController)
 

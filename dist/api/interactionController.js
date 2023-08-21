@@ -56,6 +56,9 @@ function interactionsController(req, res, _next) {
                         case "skills":
                             (0, character_js_1.skillsResponse)(data, res);
                             return [2];
+                        case "classes":
+                            (0, character_js_1.classesResponse)(data, res);
+                            return [2];
                         case "ability-scores":
                             (0, character_js_1.abilityScoresResponse)(data, res);
                             return [2];
