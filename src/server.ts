@@ -8,6 +8,9 @@ import routes from './api/routes.js'
 // Create and configure express app
 const app = express();
 
+// Static
+app.use(express.static("public"));
+
 // add routes
 app.use('/', routes)
 

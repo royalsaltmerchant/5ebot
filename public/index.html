@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>5e-Bot</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./index.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img
+          src="./assets/token_dragon_green.png"
+          alt=""
+          width="100px"
+          height="100px"
+        />
+        <h1>5e-Bot</h1>
+      </header>
+      <main>
+        <h3 class="tagline">
+          Roll Dice and Find Resources for Dungeons & Dragons 5e
+        </h3>
+        <br />
+        <article>
+          <p class="indented">
+            This bot is designed to search for resources within the
+            Dungeons&Dragons official 5th edition SRD. Such resources include:
+            spells, items and class-features. This bot also has a dice rolling
+            command which takes in inputs for type of dice, number of dice and a
+            numerical modifier.
+          </p>
+        </article>
+        <br />
+        <div class="invite-btn-container">
+          <div class="invite-btn" onclick="handleInvite()">
+            <h3>Invite</h3>
+          </div>
+        </div>
+        <article>
+          <h2><u>Commands</u></h2>
+          <h3>
+            <code
+              ><div class="command" id="command-roll">
+                /roll &lt;input&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>The command expects a text input in the format:</div>
+            <code>[number of dice]</code>
+            <p class="special-char">d</p>
+            <code>[dice sides]</code>
+            <p class="special-char">+</p>
+            <code>[modifier]</code>.
+            <br />
+            <ul>
+              <li>
+                <code>[number of dice]</code>: Specifies how many dice to roll.
+              </li>
+              <li>
+                <code>[dice sides]</code>: Represents the number of sides on the
+                dice.
+              </li>
+              <li>
+                <code>[modifier]</code>: (Optional) A number that's added to the
+                total result of the dice rolls. If multiple modifiers are given,
+                they are all added.
+              </li>
+            </ul>
+            <br />
+            <h3>Example</h3>
+            <p class="ml-p">
+              If a user inputs <code>2d6+3</code>, the command will simulate
+              rolling two 6-sided dice and then add a modifier of 3 to the
+              total.
+            </p>
+
+            <h3>Command Output</h3>
+            <p class="ml-p">
+              The bot will display each individual dice roll and highlight any
+              critical rolls (when the dice rolls its highest number). It will
+              then provide the combined total of all the dice rolls plus any
+              modifiers.
+            </p>
+            <p class="ml-p">For our example (<code>2d6+3</code>):</p>
+            <blockquote class="ml-p">
+              The bot might respond with:<br />
+              <code>
+                Input: 2d6+3<br />
+                Roll 1: 4<br />
+                Roll 2: 6 - CRITICAL<br />
+                TOTAL = 13<br />
+              </code>
+            </blockquote>
+            <p class="gray-text">
+              // In case of any errors or incorrect inputs, the bot will notify
+              the user with a "Failed to calculate, try again." message.
+            </p>
+          </div>
+          <br />
+          <!-- /skills -->
+          <h3>
+            <code
+              ><div class="command" id="command-skills">
+                /skills &lt;choice&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Returns information about various 5e character skills.</div>
+            <code>[choice]</code>
+            <ul>
+              <li>
+                <code>[choice]</code>: Specifies the skill to retrieve
+                information about.
+              </li>
+            </ul>
+            <h3>Choices</h3>
+            <p class="ml-p">
+              Acrobatics, Animal Handling, Arcana, Athletics, Deception,
+              History, Insight, Intimidation, Investigation, Medicine, Nature,
+              Perception, Performance, Persuasion, Religion, Sleight of Hand,
+              Stealth, Survival.
+            </p>
+          </div>
+          <br>
+          <!-- /ability-scores -->
+          <h3>
+            <code
+              ><div class="command" id="command-ability-scores">
+                /ability-scores &lt;choice&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Returns information about 5e ability scores.</div>
+            <code>[choice]</code>
+            <ul>
+              <li>
+                <code>[choice]</code>: Specifies the ability score to retrieve
+                information about.
+              </li>
+            </ul>
+            <h3>Choices</h3>
+            <p class="ml-p">
+              Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma.
+            </p>
+          </div>
+          <br>
+          <!-- /alignments -->
+          <h3>
+            <code
+              ><div class="command" id="command-alignments">
+                /alignments &lt;choice&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Returns information about 5e alignments.</div>
+            <code>[choice]</code>
+            <ul>
+              <li>
+                <code>[choice]</code>: Specifies the alignment to retrieve
+                information about.
+              </li>
+            </ul>
+            <h3>Choices</h3>
+            <p class="ml-p">
+              Lawful Good, Neutral Good, Chaotic Good, Lawful Neutral, True
+              Neutral, Chaotic Neutral, Lawful Evil, Neutral Evil, Chaotic Evil.
+            </p>
+          </div>
+          <br>
+          <!-- /languages -->
+          <h3>
+            <code
+              ><div class="command" id="command-languages">
+                /languages &lt;choice&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Returns information about 5e languages.</div>
+            <code>[choice]</code>
+            <ul>
+              <li>
+                <code>[choice]</code>: Specifies the language to retrieve
+                information about.
+              </li>
+            </ul>
+            <h3>Choices</h3>
+            <p class="ml-p">
+              Common, Dwarvish, Elvish, Giant, Gnomish, Goblin, Halfling, Orc,
+              Abyssal, Celestial, Draconic, Deep Speech, Infernal, Primordial,
+              Sylvan, Undercommon.
+            </p>
+          </div>
+          <br>
+          <!-- /races -->
+          <h3>
+            <code
+              ><div class="command" id="command-races">
+                /races &lt;choice&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Returns information about 5e races.</div>
+            <code>[choice]</code>
+            <ul>
+              <li>
+                <code>[choice]</code>: Specifies the race to retrieve
+                information about.
+              </li>
+            </ul>
+            <h3>Choices</h3>
+            <p class="ml-p">
+              Dwarf, Elf, Halfling, Human, Dragonborn, Gnome, Half-Elf,
+              Half-Orc, Tiefling.
+            </p>
+          </div>
+          <br>
+          <!-- /conditions -->
+          <h3>
+            <code
+              ><div class="command" id="command-conditions">
+                /conditions &lt;choice&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Returns information about 5e conditions.</div>
+            <code>[choice]</code>
+            <ul>
+              <li>
+                <code>[choice]</code>: Specifies the condition to retrieve
+                information about.
+              </li>
+            </ul>
+            <h3>Choices</h3>
+            <p class="ml-p">
+              Blinded, Charmed, Deafened, Fatigued, Frightened, Grappled,
+              Incapacitated, Invisible, Paralyzed, Petrified, Poisoned, Prone,
+              Restrained, Stunned, Unconscious.
+            </p>
+          </div>
+          <br>
+          <!-- /spells -->
+          <h3>
+            <code
+              ><div class="command" id="command-spells">
+                /spells &lt;search term&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Searches for 5e spells matching the provided term.</div>
+            <code>[search term]</code>
+            <ul>
+              <li><code>[search term]</code>: The term to search for.</li>
+            </ul>
+          </div>
+          <br>
+          <!-- /proficiencies -->
+          <h3>
+            <code
+              ><div class="command" id="command-proficiencies">
+                /proficiencies &lt;search term&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Searches for 5e proficiencies matching the provided term.</div>
+            <code>[search term]</code>
+            <ul>
+              <li><code>[search term]</code>: The term to search for.</li>
+            </ul>
+          </div>
+          <br>
+          <!-- /features -->
+          <h3>
+            <code
+              ><div class="command" id="command-features">
+                /features &lt;search term&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Searches for 5e features matching the provided term.</div>
+            <code>[search term]</code>
+            <ul>
+              <li><code>[search term]</code>: The term to search for.</li>
+            </ul>
+          </div>
+          <br>
+          <!-- /traits -->
+          <h3>
+            <code
+              ><div class="command" id="command-traits">
+                /traits &lt;search term&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Searches for 5e traits matching the provided term.</div>
+            <code>[search term]</code>
+            <ul>
+              <li><code>[search term]</code>: The term to search for.</li>
+            </ul>
+          </div>
+          <br>
+          <!-- /equipment -->
+          <h3>
+            <code
+              ><div class="command" id="command-equipment">
+                /equipment &lt;search term&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Searches for 5e equipment matching the provided term.</div>
+            <code>[search term]</code>
+            <ul>
+              <li><code>[search term]</code>: The term to search for.</li>
+            </ul>
+          </div>
+          <br>
+          <!-- /magicitems -->
+          <h3>
+            <code
+              ><div class="command" id="command-magicitems">
+                /magicitems &lt;search term&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>Searches for 5e magic items matching the provided term.</div>
+            <code>[search term]</code>
+            <ul>
+              <li><code>[search term]</code>: The term to search for.</li>
+            </ul>
+          </div>
+        </article>
+      </main>
+      <footer>
+        <div class="support-link-container">
+          <img
+            src="./assets/clyde_discord.png"
+            alt=""
+            height="30px"
+            width="30px"
+          />
+          <a href="https://discord.gg/rUqQbvV9">Support Server</a>
+        </div>
+        <br>
+        <div class="support-link-container">
+          <img
+            src="./assets/github-mark.png"
+            alt=""
+            height="30px"
+            width="30px"
+          />
+          <a href="https://github.com/royalsaltmerchant/5ebot">Github Repo</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script>
+    function handleInvite() {
+      window
+        .open(
+          "https://discord.com/oauth2/authorize?client_id=1029113452763037767&scope=bot",
+          "_blank"
+        )
+        .focus();
+    }
+  </script>
+</html>

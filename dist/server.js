@@ -9,6 +9,7 @@ var path_1 = require("path");
 var express_1 = __importDefault(require("express"));
 var routes_js_1 = __importDefault(require("./api/routes.js"));
 var app = (0, express_1.default)();
+app.use(express_1.default.static("public"));
 app.use('/', routes_js_1.default);
 app.use(express_1.default.json());
 app.listen(3000, function () {

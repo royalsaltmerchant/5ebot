@@ -10,7 +10,10 @@ import interactionsController from "./interactionController.js"
 var router = express.Router()
 
 router.get('/', function (_req, res) {
-  return res.send({message: 'healthy'})
+  return res.sendFile("../public/index.html")
+})
+router.get('/index', function (_req, res) {
+  return res.sendFile("../public/index.html")
 })
 
 router.get('/get_all_commands', getCommands)
