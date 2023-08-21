@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.magicItemsResponse = exports.equipmentResponse = exports.traitsResponse = exports.featuresResponse = exports.proficienciesResponse = exports.spellsResponse = exports.conditionsResponse = exports.languagesResponse = exports.alignmentsResponse = exports.abilityScoresResponse = exports.skillsResponse = void 0;
+exports.selectEquipmentResponse = exports.selectMagicItemResponse = exports.selectTrait = exports.selectFeatureResponse = exports.selectProficiencyResponse = exports.selectSpellResponse = exports.magicItemsResponse = exports.equipmentResponse = exports.traitsResponse = exports.featuresResponse = exports.proficienciesResponse = exports.spellsResponse = exports.conditionsResponse = exports.languagesResponse = exports.alignmentsResponse = exports.abilityScoresResponse = exports.skillsResponse = void 0;
 var discord_interactions_1 = require("discord-interactions");
 var spells_js_1 = __importDefault(require("../data/spells.js"));
 var proficiencies_js_1 = __importDefault(require("../data/proficiencies.js"));
@@ -48,8 +48,8 @@ var traits_js_1 = __importDefault(require("../data/traits.js"));
 var equipment_js_1 = __importDefault(require("../data/equipment.js"));
 var magicItems_js_1 = __importDefault(require("../data/magicItems.js"));
 var search_js_1 = require("../lib/search.js");
-var fetchWrapper_js_1 = __importDefault(require("./fetchWrapper.js"));
-var dataUtils_js_1 = require("./dataUtils.js");
+var fetchWrapper_js_1 = __importDefault(require("../lib/fetchWrapper.js"));
+var dataUtils_js_1 = require("../lib/dataUtils.js");
 function skillsResponse(data, res) {
     return __awaiter(this, void 0, void 0, function () {
         var skillData, returnInfo;
@@ -384,3 +384,207 @@ function magicItemsResponse(data, res) {
     });
 }
 exports.magicItemsResponse = magicItemsResponse;
+function selectSpellResponse(data, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var spellData, formattedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, (0, fetchWrapper_js_1.default)("https://www.dnd5eapi.co/api/spells/".concat(data.values[0]))];
+                case 1:
+                    spellData = _a.sent();
+                    formattedData = "**".concat(spellData.name, "** - ");
+                    if (spellData.school && spellData.school.name)
+                        formattedData += spellData.school.name;
+                    if (spellData.level)
+                        formattedData += "\n**Level:** ".concat(spellData.level);
+                    if (spellData.classes && spellData.classes.length !== 0)
+                        formattedData += "\n**Classes:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(spellData.classes, "name"));
+                    if (spellData.casting_time)
+                        formattedData += "\n**Casting Time:** ".concat(spellData.casting_time);
+                    if (spellData.range)
+                        formattedData += "\n**Range:** ".concat(spellData.range);
+                    if (spellData.duration)
+                        formattedData += "\n**Duration:** ".concat(spellData.duration);
+                    if (spellData.concentration)
+                        formattedData += "\n**Concentration:** true";
+                    if (spellData.damage && spellData.damage.damage_type.name)
+                        formattedData += "\n**Damage Type:** ".concat(spellData.damage.damage_type.name);
+                    if (spellData.area_of_effect)
+                        formattedData += "\n**Area of Effect:** **Type:** ".concat(spellData.area_of_effect.type, ", **Size:** ").concat(spellData.area_of_effect.size);
+                    if (spellData.desc)
+                        formattedData += "\n**Description:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(spellData.desc, null), " ");
+                    if (spellData.higher_level.length && spellData.higher_level.length !== 0)
+                        formattedData += (0, dataUtils_js_1.returnArrayDataAsString)(spellData.higher_level, null);
+                    return [2, res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: formattedData,
+                            },
+                        })];
+            }
+        });
+    });
+}
+exports.selectSpellResponse = selectSpellResponse;
+function selectProficiencyResponse(data, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var proficiencyData, formattedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, (0, fetchWrapper_js_1.default)("https://www.dnd5eapi.co/api/proficiencies/".concat(data.values[0]))];
+                case 1:
+                    proficiencyData = _a.sent();
+                    formattedData = "**".concat(proficiencyData.name, "** - ");
+                    if (proficiencyData.type)
+                        formattedData += "\n**Type:** ".concat(proficiencyData.type);
+                    if (proficiencyData.classes && proficiencyData.classes.length)
+                        formattedData += "\n**Classes:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(proficiencyData.classes, "name"));
+                    if (proficiencyData.data && proficiencyData.races.length)
+                        formattedData += "\n**Races:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(proficiencyData.races, "name"));
+                    return [2, res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: formattedData,
+                            },
+                        })];
+            }
+        });
+    });
+}
+exports.selectProficiencyResponse = selectProficiencyResponse;
+function selectFeatureResponse(data, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var featureData, formattedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, (0, fetchWrapper_js_1.default)("https://www.dnd5eapi.co/api/features/".concat(data.values[0]))];
+                case 1:
+                    featureData = _a.sent();
+                    formattedData = "**".concat(featureData.name, "**");
+                    if (featureData.level)
+                        formattedData += "\n**Level:** ".concat(featureData.level);
+                    if (featureData.desc)
+                        formattedData += "\n**Description:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(featureData.desc, null));
+                    if (featureData.class)
+                        formattedData += "\n**Class:** ".concat(featureData.class.name);
+                    if (featureData.subclass)
+                        formattedData += "\n**Subclass:** ".concat(featureData.subclass.name);
+                    if (featureData.prerequisites && featureData.prerequisites.length)
+                        formattedData += "\n**Prerequisites:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(featureData.prerequisites, "name"));
+                    return [2, res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: formattedData,
+                            },
+                        })];
+            }
+        });
+    });
+}
+exports.selectFeatureResponse = selectFeatureResponse;
+function selectTrait(data, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var traitData, formattedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, (0, fetchWrapper_js_1.default)("https://www.dnd5eapi.co/api/traits/".concat(data.values[0]))];
+                case 1:
+                    traitData = _a.sent();
+                    formattedData = "**".concat(traitData.name, "**");
+                    if (traitData.races && traitData.races.length !== 0)
+                        formattedData += "\n**Races:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(traitData.races, "name"));
+                    if (traitData.subraces && traitData.subraces.length !== 0)
+                        formattedData += "\n**Sub-Races:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(traitData.subraces, "name"));
+                    if (traitData.desc)
+                        formattedData += "\n**Description:** ".concat(traitData.desc);
+                    return [2, res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: formattedData,
+                            },
+                        })];
+            }
+        });
+    });
+}
+exports.selectTrait = selectTrait;
+function selectMagicItemResponse(data, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var magicItemData, formattedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, (0, fetchWrapper_js_1.default)("https://www.dnd5eapi.co/api/magic-items/".concat(data.values[0]))];
+                case 1:
+                    magicItemData = _a.sent();
+                    formattedData = "**".concat(magicItemData.name, "**");
+                    if (magicItemData.desc)
+                        formattedData += "\n**Description:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(magicItemData.desc, null));
+                    if (magicItemData.equipment_category)
+                        formattedData += "\n**Equipment Category:** ".concat(magicItemData.equipment_category.name);
+                    if (magicItemData.rarity)
+                        formattedData += "\n**Rarity:** ".concat(magicItemData.rarity.name);
+                    if (magicItemData.variants && magicItemData.variants.length)
+                        formattedData += "\n**Variants:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(magicItemData.variants, "name"));
+                    if (magicItemData.variant)
+                        formattedData += "\n**Is a variant:** ".concat(magicItemData.variant);
+                    return [2, res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: formattedData,
+                            },
+                        })];
+            }
+        });
+    });
+}
+exports.selectMagicItemResponse = selectMagicItemResponse;
+function selectEquipmentResponse(data, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var equipmentData, formattedData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4, (0, fetchWrapper_js_1.default)("https://www.dnd5eapi.co/api/equipment/".concat(data.values[0]))];
+                case 1:
+                    equipmentData = _a.sent();
+                    formattedData = "**".concat(equipmentData.name, "**");
+                    if (equipmentData.weight)
+                        formattedData += "\n**Weight:** ".concat(equipmentData.weight);
+                    if (equipmentData.equipment_category)
+                        formattedData += "\n**Equipment Category:** ".concat(equipmentData.equipment_category.name);
+                    if (equipmentData.weapon_category)
+                        formattedData += "\n**Weapon Category:** ".concat(equipmentData.weapon_category);
+                    if (equipmentData.weapon_range)
+                        formattedData += "\n**Weapon Range:** ".concat(equipmentData.weapon_range);
+                    if (equipmentData.range)
+                        formattedData += "\n**Weapon Range:** Normal:".concat(equipmentData.range.normal, ", Long: ").concat(equipmentData.range.long);
+                    if (equipmentData.damage)
+                        formattedData += "\n**Damage:** Dice: ".concat(equipmentData.damage.damage_dice, ", Type: ").concat(equipmentData.damage.damage_type.name);
+                    if (equipmentData.two_handed_damage)
+                        formattedData += "\n**Two Handed Damage:** Dice: ".concat(equipmentData.two_handed_damage.damage_dice, ", Type: ").concat(equipmentData.two_handed_damage.damage_type.name);
+                    if (equipmentData.armor_category)
+                        formattedData += "\n**Armor Category:** ".concat(equipmentData.armor_category);
+                    if (equipmentData.armor_class)
+                        formattedData += "\n**Armor Class:** ".concat((0, dataUtils_js_1.getArmorClassInfo)(equipmentData));
+                    if (equipmentData.str_minimum)
+                        formattedData += "\n**STR Minimum:** ".concat(equipmentData.str_minimum);
+                    if (equipmentData.stealth_disadvantage)
+                        formattedData += "\n**Stealth Disadvantage:** ".concat(equipmentData.stealth_disadvantage);
+                    if (equipmentData.gear_category)
+                        formattedData += "\n**Gear Category:** ".concat(equipmentData.gear_category.name);
+                    if (equipmentData.contents && equipmentData.contents.length)
+                        formattedData += "\n**Contents:** ".concat((0, dataUtils_js_1.getContentsInfo)(equipmentData));
+                    if (equipmentData.properties && equipmentData.properties.length)
+                        formattedData += "\n**Properties:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(equipmentData.properties, "name"));
+                    if (equipmentData.desc && equipmentData.desc.length)
+                        formattedData += "\n**Description:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(equipmentData.desc, null));
+                    return [2, res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: formattedData,
+                            },
+                        })];
+            }
+        });
+    });
+}
+exports.selectEquipmentResponse = selectEquipmentResponse;
