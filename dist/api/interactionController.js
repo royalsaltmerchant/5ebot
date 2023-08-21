@@ -89,6 +89,7 @@ function interactionsController(req, res, _next) {
                     }
                 }
                 if (type === discord_interactions_1.InteractionType.MESSAGE_COMPONENT) {
+                    console.log(data);
                     switch (data.custom_id) {
                         case "select_spell":
                             (0, character_js_1.selectSpellResponse)(data, res);

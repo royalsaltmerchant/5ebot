@@ -1,3 +1,5 @@
+
+
 export function returnArrayDataAsString(array: any, key: string | null) {
   if (typeof array === "string") return array;
   if (!Array.isArray(array)) return "Unknown";
@@ -14,7 +16,7 @@ export function returnArrayDataAsString(array: any, key: string | null) {
   return string;
 }
 
-export function getArmorClassInfo(equipmentData: {armor_class: string}) {
+export function getArmorClassInfo(equipmentData: any) { // there is some issue recognizing typeof equipment
   let string = "";
   for (const [key, value] of Object.entries(
     equipmentData.armor_class
@@ -24,7 +26,7 @@ export function getArmorClassInfo(equipmentData: {armor_class: string}) {
   return string;
 }
 
-export function getContentsInfo(equipmentData: {contents: [item: {item: {name: string}, quantity: string}]}) {
+export function getContentsInfo(equipmentData: any) { // there is some issue recognizing typeof equipment
   let string = "";
   for (const item of equipmentData.contents) {
     string += `${item.item.name}: ${item.quantity}\n`;

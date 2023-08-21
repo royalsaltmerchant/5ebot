@@ -85,6 +85,7 @@ async function interactionsController(
     }
     // Handle interactions
     if (type === InteractionType.MESSAGE_COMPONENT) {
+      console.log(data)
       switch (data.custom_id) {
         case "select_spell":
           selectSpellResponse(data, res);

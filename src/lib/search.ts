@@ -1,19 +1,17 @@
 function getDataByQuery(data: {name: string, index: string, url: string}[], query: string) {
-  const dataFiltered = data.filter(item => {
-    const lowercaseQuery = query.toLowerCase()
-    const lowerCaseItemName = item.name.toLowerCase()
-    if(lowerCaseItemName.includes(lowercaseQuery)) return item
-    else return;
-  })
-  const dataMapped = dataFiltered.map(item => (
-    {
+  const lowercaseQueryTokens = query.toLowerCase().split(/\s+/).filter(Boolean);  // Split by whitespace and filter out empty tokens
+
+  return data
+    .filter(item => {
+      const lowerCaseItemName = item.name.toLowerCase();
+      return lowercaseQueryTokens.every(token => lowerCaseItemName.includes(token));  // Check if every token is included in the name
+    })
+    .map(item => ({
       label: item.name,
       value: item.index,
       description: item.url
-    }
-  ))
-  if(dataMapped.length > 25) dataMapped.length = 25
-  return dataMapped
+    }))
+    .slice(0, 25);
 }
 
 export {
