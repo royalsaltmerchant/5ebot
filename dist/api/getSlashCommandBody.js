@@ -446,9 +446,9 @@ function getSlashCommandBody(slashCommandName) {
                                     name: "input",
                                     description: "Example: 3 d8 + 5",
                                     type: 3,
-                                    required: true
-                                }
-                            ]
+                                    required: true,
+                                },
+                            ],
                         }];
                 case "conditions":
                     return [2, {
@@ -585,26 +585,6 @@ function getSlashCommandBody(slashCommandName) {
                                         {
                                             name: "Wizard",
                                             value: "wizard",
-                                        },
-                                    ],
-                                },
-                                {
-                                    name: "item",
-                                    description: "Select an item",
-                                    type: 3,
-                                    required: true,
-                                    choices: [
-                                        {
-                                            name: "Spells",
-                                            value: "spells",
-                                        },
-                                        {
-                                            name: "Features",
-                                            value: "features",
-                                        },
-                                        {
-                                            name: "Proficiencies",
-                                            value: "proficiencies",
                                         },
                                     ],
                                 },

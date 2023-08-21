@@ -378,7 +378,8 @@ async function getSlashCommandBody(slashCommandName: string) {
         options: [
           {
             name: "search",
-            description: "Type a search term to get a list of matching equipment",
+            description:
+              "Type a search term to get a list of matching equipment",
             type: 3,
             required: true,
           },
@@ -392,7 +393,8 @@ async function getSlashCommandBody(slashCommandName: string) {
         options: [
           {
             name: "search",
-            description: "Type a search term to get a list of matching magic items",
+            description:
+              "Type a search term to get a list of matching magic items",
             type: 3,
             required: true,
           },
@@ -408,10 +410,10 @@ async function getSlashCommandBody(slashCommandName: string) {
             name: "input",
             description: "Example: 3 d8 + 5",
             type: 3,
-            required: true
-          }
-        ]
-      }
+            required: true,
+          },
+        ],
+      };
     case "conditions":
       return {
         name: "conditions",
@@ -547,26 +549,6 @@ async function getSlashCommandBody(slashCommandName: string) {
               {
                 name: "Wizard",
                 value: "wizard",
-              },
-            ],
-          },
-          {
-            name: "item",
-            description: "Select an item",
-            type: 3,
-            required: true,
-            choices: [
-              {
-                name: "Spells",
-                value: "spells",
-              },
-              {
-                name: "Features",
-                value: "features",
-              },
-              {
-                name: "Proficiencies",
-                value: "proficiencies",
               },
             ],
           },
