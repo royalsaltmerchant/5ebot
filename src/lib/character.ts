@@ -12,7 +12,6 @@ import skills from "../data/skills.js";
 import { getDataByQuery } from "../lib/search.js";
 import { Response } from "express";
 import { DataObject } from "../api/interactionController.js";
-import fetchGet from "../lib/fetchWrapper.js";
 import {
   returnArrayDataAsString,
   getArmorClassInfo,
