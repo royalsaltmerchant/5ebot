@@ -3,8 +3,6 @@ This is a discord bot which allows slash commands for searching through the D&D 
 
 The data is sourced from this resource: https://github.com/5e-bits/5e-database/ and stored locally in the data folder. Special thanks to the folks at https://www.dnd5eapi.co/ for inspiring this project and making it possible.
 
-The resouce access is not currently exhausted but provides the essential in-game resources such as: Spells, Equipment, Feats etc. More soon!
-
 ## Dev
 The service is using express.js written in Typescript utilizing a light-weight discord wrapper lib: "discord-interactions" (https://github.com/discord/discord-interactions-js). 
 
