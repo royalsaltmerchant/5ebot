@@ -47,7 +47,6 @@ export function getRaceProficiencyOptions(raceData: any) {
   const fromData = raceData.starting_proficiency_options.from.options.map((option: any) => option.item.name);
 
   string += `Choose ${raceData.starting_proficiency_options.choose} from: ${fromData.join(", ")}`;
-  console.log(string);
 
   return string;
 }
