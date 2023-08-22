@@ -33,3 +33,11 @@ export function getContentsInfo(equipmentData: any) { // there is some issue rec
   }
   return string;
 }
+
+export function getAbilityBonuses(raceData: any) { // there is some issue recognizing typeof equipment
+  let string = "";
+  for (const item of raceData.ability_bonuses) {
+    string += `${item.ability_score.name}: ${item.bonus}\n`;
+  }
+  return string;
+}

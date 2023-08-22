@@ -10,6 +10,7 @@ import {
   languagesResponse,
   magicItemsResponse,
   proficienciesResponse,
+  racesResponse,
   selectEquipmentResponse,
   selectFeatureResponse,
   selectMagicItemResponse,
@@ -61,6 +62,9 @@ async function interactionsController(
           return;
         case "classes":
           classesResponse(data, res);
+          return;
+        case "races":
+          racesResponse(data, res);
           return;
         case "ability-scores":
           abilityScoresResponse(data, res);

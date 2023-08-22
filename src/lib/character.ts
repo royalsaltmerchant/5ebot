@@ -16,6 +16,7 @@ import {
   returnArrayDataAsString,
   getArmorClassInfo,
   getContentsInfo,
+  getAbilityBonuses,
 } from "../lib/dataUtils.js";
 import abilityScores from "../data/abilityScores.js";
 import alignments from "../data/alignments.js";
@@ -28,6 +29,7 @@ import traits from "../data/traits.js";
 import magicItems from "../data/magicItems.js";
 import equipment from "../data/equipment.js";
 import classes from "../data/classes.js";
+import races from "../data/races.js";
 
 function skillsResponse(data: DataObject, res: Response) {
   const skillData = skills.filter(
@@ -96,6 +98,40 @@ function classesResponse(data: DataObject, res: Response) {
     classData.subclasses,
     "name"
   )}`;
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: returnInfo,
+    },
+  });
+}
+
+function racesResponse(data: DataObject, res: Response) {
+  const raceData = races.filter((race) => race.index === data.options[0].value)[0];
+
+  let returnInfo = `**${raceData.name}**`;
+  returnInfo += `\n**Speed:** ${raceData.speed}`;
+  returnInfo += `\n**Age:** ${raceData.age}`;
+  returnInfo += `\n**Size:** ${raceData.size} - ${raceData.size_description}`;
+  returnInfo += `\n**Alignment:** ${raceData.alignment}`;
+  returnInfo += `\n**Ability Bonuses:** ${getAbilityBonuses(raceData)}`;
+  returnInfo += `\n**Starting Proficiencies:** ${returnArrayDataAsString(
+    raceData.starting_proficiencies,
+    "name"
+  )}`
+  returnInfo += `\n**Languages:** ${returnArrayDataAsString(
+    raceData.languages,
+    "name"
+  )}`
+  returnInfo += `\n**Traits:** ${returnArrayDataAsString(
+    raceData.traits,
+    "name"
+  )}`
+  returnInfo += `\n**Sub-Races:** ${returnArrayDataAsString(
+    raceData.subraces,
+    "name"
+  )}`
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -570,4 +606,5 @@ export {
   selectMagicItemResponse,
   selectEquipmentResponse,
   classesResponse,
+  racesResponse
 };

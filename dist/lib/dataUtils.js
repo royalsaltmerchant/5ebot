@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getContentsInfo = exports.getArmorClassInfo = exports.returnArrayDataAsString = void 0;
+exports.getAbilityBonuses = exports.getContentsInfo = exports.getArmorClassInfo = exports.returnArrayDataAsString = void 0;
 function returnArrayDataAsString(array, key) {
     if (typeof array === "string")
         return array;
@@ -38,3 +38,12 @@ function getContentsInfo(equipmentData) {
     return string;
 }
 exports.getContentsInfo = getContentsInfo;
+function getAbilityBonuses(raceData) {
+    var string = "";
+    for (var _i = 0, _a = raceData.ability_bonuses; _i < _a.length; _i++) {
+        var item = _a[_i];
+        string += "".concat(item.ability_score.name, ": ").concat(item.bonus, "\n");
+    }
+    return string;
+}
+exports.getAbilityBonuses = getAbilityBonuses;
