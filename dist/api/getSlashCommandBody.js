@@ -40,6 +40,12 @@ function getSlashCommandBody(slashCommandName) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (slashCommandName) {
+                case "help":
+                    return [2, {
+                            name: "skills",
+                            description: "Returns help info",
+                            type: 1,
+                        }];
                 case "skills":
                     return [2, {
                             name: "skills",

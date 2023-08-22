@@ -40,12 +40,13 @@ interface CreateCommandsResponseObject {
 
 async function createCommands(req: Response, res: Response, _next: NextFunction) {
   const slashCommandsList = [
+    'help'
     // 'skills',
     // 'ability-scores',
     // 'alignments',
     // 'languages',
     // 'races',
-    'classes',
+    // 'classes',
     // "spells",
     // "proficiencies",
     // "features",

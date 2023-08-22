@@ -50,6 +50,13 @@ function interactionsController(req, res, _next) {
                 }
                 if (type === discord_interactions_1.InteractionType.APPLICATION_COMMAND) {
                     switch (data.name) {
+                        case "":
+                            return [2, res.send({
+                                    type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                                    data: {
+                                        content: "Please visit this documentation site to better understand the usage of the commands: https://5ebot.com/",
+                                    },
+                                })];
                         case "roll":
                             (0, dice_js_1.rollResponse)(data, res);
                             return [2];

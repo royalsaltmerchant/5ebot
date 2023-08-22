@@ -46,6 +46,13 @@ async function interactionsController(
     // Handle slash command requests
     if (type === InteractionType.APPLICATION_COMMAND) {
       switch (data.name) {
+        case "":
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "Please visit this documentation site to better understand the usage of the commands: https://5ebot.com/",
+            },
+          });
         case "roll":
           rollResponse(data, res);
           return;
