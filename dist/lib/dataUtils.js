@@ -51,7 +51,6 @@ function getRaceProficiencyOptions(raceData) {
     var string = "";
     var fromData = raceData.starting_proficiency_options.from.options.map(function (option) { return option.item.name; });
     string += "Choose ".concat(raceData.starting_proficiency_options.choose, " from: ").concat(fromData.join(", "));
-    console.log(string);
     return string;
 }
 exports.getRaceProficiencyOptions = getRaceProficiencyOptions;

@@ -109,7 +109,9 @@ function classesResponse(data: DataObject, res: Response) {
 }
 
 function racesResponse(data: DataObject, res: Response) {
-  const raceData = races.filter((race) => race.index === data.options[0].value)[0];
+  const raceData = races.filter(
+    (race) => race.index === data.options[0].value
+  )[0];
 
   let returnInfo = `**${raceData.name}**`;
   returnInfo += `\n**Speed:** ${raceData.speed}`;
@@ -120,20 +122,27 @@ function racesResponse(data: DataObject, res: Response) {
   returnInfo += `\n**Starting Proficiencies:** ${returnArrayDataAsString(
     raceData.starting_proficiencies,
     "name"
-  )}`
-  returnInfo += `\n**Starting Proficiency Options:** ${getRaceProficiencyOptions(raceData)}`
+  )}`;
+  if (
+    raceData.starting_proficiency_options &&
+    raceData.starting_proficiency_options.from &&
+    raceData.starting_proficiency_options.from.options
+  )
+    returnInfo += `\n**Starting Proficiency Options:** ${getRaceProficiencyOptions(
+      raceData
+    )}`;
   returnInfo += `\n**Languages:** ${returnArrayDataAsString(
     raceData.languages,
     "name"
-  )}`
+  )}`;
   returnInfo += `\n**Traits:** ${returnArrayDataAsString(
     raceData.traits,
     "name"
-  )}`
+  )}`;
   returnInfo += `\n**Sub-Races:** ${returnArrayDataAsString(
     raceData.subraces,
     "name"
-  )}`
+  )}`;
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -608,5 +617,5 @@ export {
   selectMagicItemResponse,
   selectEquipmentResponse,
   classesResponse,
-  racesResponse
+  racesResponse,
 };
