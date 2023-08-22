@@ -46,7 +46,7 @@ async function interactionsController(
     // Handle slash command requests
     if (type === InteractionType.APPLICATION_COMMAND) {
       switch (data.name) {
-        case "":
+        case "help":
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {

@@ -50,7 +50,7 @@ function interactionsController(req, res, _next) {
                 }
                 if (type === discord_interactions_1.InteractionType.APPLICATION_COMMAND) {
                     switch (data.name) {
-                        case "":
+                        case "help":
                             return [2, res.send({
                                     type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                                     data: {
