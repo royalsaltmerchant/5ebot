@@ -409,6 +409,20 @@ function getSlashCommandBody(slashCommandName) {
                                 },
                             ],
                         }];
+                case "monsters":
+                    return [2, {
+                            name: "monsters",
+                            description: "Returns info about 5e monsters",
+                            type: 1,
+                            options: [
+                                {
+                                    name: "search",
+                                    description: "Type a search term to get a list of matching monsters",
+                                    type: 3,
+                                    required: true,
+                                },
+                            ],
+                        }];
                 case "proficiencies":
                     return [2, {
                             name: "proficiencies",

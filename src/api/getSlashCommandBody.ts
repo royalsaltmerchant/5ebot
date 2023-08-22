@@ -369,6 +369,20 @@ async function getSlashCommandBody(slashCommandName: string) {
           },
         ],
       };
+    case "monsters":
+      return {
+        name: "monsters",
+        description: "Returns info about 5e monsters",
+        type: 1,
+        options: [
+          {
+            name: "search",
+            description: "Type a search term to get a list of matching monsters",
+            type: 3,
+            required: true,
+          },
+        ],
+      };
     case "proficiencies":
       return {
         name: "proficiencies",

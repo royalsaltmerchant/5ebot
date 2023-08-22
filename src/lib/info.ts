@@ -9,7 +9,7 @@ import traitOptions from "../data/traitOptions.js";
 import equipmentOptions from "../data/equipmentOptions.js";
 import magicItemOptions from "../data/magicItemOptions.js";
 import skills from "../data/skills.js";
-import { getDataByQuery } from "../lib/search.js";
+import { getDataByQuery } from "./search.js";
 import { Response } from "express";
 import { DataObject } from "../api/interactionController.js";
 import {
@@ -18,7 +18,9 @@ import {
   getContentsInfo,
   getAbilityBonuses,
   getChooseFromOptions,
-} from "../lib/dataUtils.js";
+  getMonsterArmorClassInfo,
+  getSensesInfo,
+} from "./dataUtils.js";
 import abilityScores from "../data/abilityScores.js";
 import alignments from "../data/alignments.js";
 import languages from "../data/languages.js";
@@ -33,6 +35,8 @@ import classes from "../data/classes.js";
 import races from "../data/races.js";
 import subclasses from "../data/subclasses.js";
 import subraces from "../data/subraces.js";
+import monsterOptions from "../data/monsterOptions.js";
+import monsters from "../data/monsters.js";
 
 function skillsResponse(data: DataObject, res: Response) {
   const skillData = skills.filter(
@@ -448,6 +452,40 @@ function magicItemsResponse(data: DataObject, res: Response) {
   }
 }
 
+function monstersResponse(data: DataObject, res: Response) {
+  const filteredMonsterList = getDataByQuery(
+    monsterOptions,
+    data.options[0].value
+  );
+  if (filteredMonsterList.length === 0) {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: "Can't find anything",
+      },
+    });
+  } else {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: "Select a monster from the list",
+        components: [
+          {
+            type: MessageComponentTypes.ACTION_ROW,
+            components: [
+              {
+                type: MessageComponentTypes.STRING_SELECT,
+                custom_id: "select_monster",
+                options: filteredMonsterList,
+              },
+            ],
+          },
+        ],
+      },
+    });
+  }
+}
+
 // ###################################
 
 async function selectSpellResponse(data: DataObject, res: Response) {
@@ -616,8 +654,12 @@ async function selectEquipmentResponse(data: DataObject, res: Response) {
   let formattedData = `**${equipmentData.name}**`;
   if (equipmentData.weight)
     formattedData += `\n**Weight:** ${equipmentData.weight}`;
+  if (equipmentData.cost)
+    formattedData += `\n**Cost:** ${equipmentData.cost.quantity} ${equipmentData.cost.unit}`;
   if (equipmentData.equipment_category)
     formattedData += `\n**Equipment Category:** ${equipmentData.equipment_category.name}`;
+  if (equipmentData.tool_category)
+    formattedData += `\n**Equipment Category:** ${equipmentData.tool_category}`;
   if (equipmentData.weapon_category)
     formattedData += `\n**Weapon Category:** ${equipmentData.weapon_category}`;
   if (equipmentData.weapon_range)
@@ -659,6 +701,95 @@ async function selectEquipmentResponse(data: DataObject, res: Response) {
   });
 }
 
+async function selectMonster(data: DataObject, res: Response) {
+  const monsterData = monsters.filter(
+    (monster) => monster.index === data.values[0]
+  )[0];
+
+  let formattedData = `**${monsterData.name}**`;
+  if (monsterData.desc)
+    formattedData += `\n**Description:** ${monsterData.desc}`;
+  formattedData += `\n**Type:** ${monsterData.type}`;
+  if (monsterData.subtype)
+    formattedData += `\n**Sub Type:** ${monsterData.subtype}`;
+  formattedData += `\n**Size:** ${monsterData.size}`;
+  formattedData += `\n**CR:** ${monsterData.challenge_rating}`;
+  formattedData += `\n**XP:** ${monsterData.xp}`;
+  formattedData += `\n**Hit Points:** ${monsterData.hit_points} or ${monsterData.hit_points_roll}`;
+  formattedData += `\n**Hit Dice:** ${monsterData.hit_dice}`;
+  formattedData += `\n**Alignment:** ${monsterData.alignment}`;
+  formattedData += `\n**AC:** ${getMonsterArmorClassInfo(monsterData)}`;
+  formattedData += `\n**Speed:** Walk - ${
+    monsterData.speed.walk ? monsterData.speed.walk : "None"
+  }, Swim - ${
+    monsterData.speed.swim ? monsterData.speed.swim : "None"
+  }, Climb - ${
+    monsterData.speed.climb ? monsterData.speed.climb : "None"
+  }, Burrow - ${
+    monsterData.speed.burrow ? monsterData.speed.burrow : "None"
+  }, Hover - ${monsterData.speed.hover ? monsterData.speed.hover : "None"}`;
+  if (monsterData.languages)
+    formattedData += `\n**Languages:** ${monsterData.languages}`;
+  formattedData += `\n**CHA:** ${monsterData.charisma}`;
+  formattedData += `, **CON:** ${monsterData.constitution}`;
+  formattedData += `, **DEX:** ${monsterData.dexterity}`;
+  formattedData += `, **INT:** ${monsterData.intelligence}`;
+  formattedData += `, **STR:** ${monsterData.strength}`;
+  formattedData += `, **WIS:** ${monsterData.wisdom}`;
+  if (monsterData.proficiencies.length)
+    formattedData += `\n**Proficiencies:** ${monsterData.proficiencies
+      .map((item) => item.proficiency.name)
+      .join(", ")}`;
+  if (monsterData.senses)
+    formattedData += `\n**Senses:** ${getSensesInfo(monsterData)}`;
+  if (monsterData.condition_immunities.length)
+    formattedData += `\n**Condition Immunities:** ${returnArrayDataAsString(
+      monsterData.condition_immunities,
+      "name"
+    )}`;
+  if (monsterData.damage_immunities.length)
+    formattedData += `\n**Damage Immunities:** ${returnArrayDataAsString(
+      monsterData.damage_immunities,
+      null
+    )}`;
+  if (monsterData.damage_resistances.length)
+    formattedData += `\n**Damage Resistances:** ${returnArrayDataAsString(
+      monsterData.damage_resistances,
+      null
+    )}`;
+  if (monsterData.damage_vulnerabilities.length)
+    formattedData += `\n**Damage Vulnerabilities:** ${returnArrayDataAsString(
+      monsterData.damage_vulnerabilities,
+      null
+    )}`;
+  if (monsterData.forms)
+    formattedData += `\n**Forms:** ${returnArrayDataAsString(
+      monsterData.forms,
+      "name"
+    )}`;
+
+  let embeds: any = [];
+  if (monsterData.image) {
+    embeds = [
+      {
+        image: {
+          url: "https://dnd5eapi.co" + monsterData.image,
+        },
+      },
+    ];
+  }
+
+  console.log(embeds)
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: formattedData,
+      embeds,
+    },
+  });
+}
+
 export {
   skillsResponse,
   abilityScoresResponse,
@@ -681,4 +812,6 @@ export {
   racesResponse,
   subClassesResponse,
   subRacesResponse,
+  monstersResponse,
+  selectMonster,
 };

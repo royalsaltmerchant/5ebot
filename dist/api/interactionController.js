@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var discord_interactions_1 = require("discord-interactions");
 var dice_js_1 = require("../lib/dice.js");
-var character_js_1 = require("../lib/character.js");
+var info_js_1 = require("../lib/info.js");
 function interactionsController(req, res, _next) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, type, data;
@@ -61,49 +61,52 @@ function interactionsController(req, res, _next) {
                             (0, dice_js_1.rollResponse)(data, res);
                             return [2];
                         case "skills":
-                            (0, character_js_1.skillsResponse)(data, res);
+                            (0, info_js_1.skillsResponse)(data, res);
                             return [2];
                         case "classes":
-                            (0, character_js_1.classesResponse)(data, res);
+                            (0, info_js_1.classesResponse)(data, res);
                             return [2];
                         case "subclasses":
-                            (0, character_js_1.subClassesResponse)(data, res);
+                            (0, info_js_1.subClassesResponse)(data, res);
                             return [2];
                         case "races":
-                            (0, character_js_1.racesResponse)(data, res);
+                            (0, info_js_1.racesResponse)(data, res);
                             return [2];
                         case "subraces":
-                            (0, character_js_1.subRacesResponse)(data, res);
+                            (0, info_js_1.subRacesResponse)(data, res);
                             return [2];
                         case "ability-scores":
-                            (0, character_js_1.abilityScoresResponse)(data, res);
+                            (0, info_js_1.abilityScoresResponse)(data, res);
                             return [2];
                         case "alignments":
-                            (0, character_js_1.alignmentsResponse)(data, res);
+                            (0, info_js_1.alignmentsResponse)(data, res);
                             return [2];
                         case "languages":
-                            (0, character_js_1.languagesResponse)(data, res);
+                            (0, info_js_1.languagesResponse)(data, res);
                             return [2];
                         case "conditions":
-                            (0, character_js_1.conditionsResponse)(data, res);
+                            (0, info_js_1.conditionsResponse)(data, res);
                             return [2];
                         case "spells":
-                            (0, character_js_1.spellsResponse)(data, res);
+                            (0, info_js_1.spellsResponse)(data, res);
                             return [2];
                         case "proficiencies":
-                            (0, character_js_1.proficienciesResponse)(data, res);
+                            (0, info_js_1.proficienciesResponse)(data, res);
                             return [2];
                         case "features":
-                            (0, character_js_1.featuresResponse)(data, res);
+                            (0, info_js_1.featuresResponse)(data, res);
                             return [2];
                         case "traits":
-                            (0, character_js_1.traitsResponse)(data, res);
+                            (0, info_js_1.traitsResponse)(data, res);
                             return [2];
                         case "equipment":
-                            (0, character_js_1.equipmentResponse)(data, res);
+                            (0, info_js_1.equipmentResponse)(data, res);
                             return [2];
                         case "magicitems":
-                            (0, character_js_1.magicItemsResponse)(data, res);
+                            (0, info_js_1.magicItemsResponse)(data, res);
+                            return [2];
+                        case "monsters":
+                            (0, info_js_1.monstersResponse)(data, res);
                             return [2];
                     }
                 }
@@ -111,22 +114,25 @@ function interactionsController(req, res, _next) {
                     console.log(data);
                     switch (data.custom_id) {
                         case "select_spell":
-                            (0, character_js_1.selectSpellResponse)(data, res);
+                            (0, info_js_1.selectSpellResponse)(data, res);
                             return [2];
                         case "select_proficiency":
-                            (0, character_js_1.selectProficiencyResponse)(data, res);
+                            (0, info_js_1.selectProficiencyResponse)(data, res);
                             return [2];
                         case "select_feature":
-                            (0, character_js_1.selectFeatureResponse)(data, res);
+                            (0, info_js_1.selectFeatureResponse)(data, res);
                             return [2];
                         case "select_trait":
-                            (0, character_js_1.selectTrait)(data, res);
+                            (0, info_js_1.selectTrait)(data, res);
                             return [2];
                         case "select_magicitem":
-                            (0, character_js_1.selectMagicItemResponse)(data, res);
+                            (0, info_js_1.selectMagicItemResponse)(data, res);
                             return [2];
                         case "select_equipment":
-                            (0, character_js_1.selectEquipmentResponse)(data, res);
+                            (0, info_js_1.selectEquipmentResponse)(data, res);
+                            return [2];
+                        case "select_monster":
+                            (0, info_js_1.selectMonster)(data, res);
                             return [2];
                     }
                 }

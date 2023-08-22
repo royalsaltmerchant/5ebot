@@ -9,11 +9,13 @@ import {
   featuresResponse,
   languagesResponse,
   magicItemsResponse,
+  monstersResponse,
   proficienciesResponse,
   racesResponse,
   selectEquipmentResponse,
   selectFeatureResponse,
   selectMagicItemResponse,
+  selectMonster,
   selectProficiencyResponse,
   selectSpellResponse,
   selectTrait,
@@ -22,7 +24,7 @@ import {
   subClassesResponse,
   subRacesResponse,
   traitsResponse,
-} from "../lib/character.js";
+} from "../lib/info.js";
 import { Request, Response, NextFunction } from "express";
 
 export interface DataObject {
@@ -104,6 +106,9 @@ async function interactionsController(
         case "magicitems":
           magicItemsResponse(data, res);
           return;
+        case "monsters":
+          monstersResponse(data, res);
+          return;
       }
     }
     // Handle interactions
@@ -127,6 +132,9 @@ async function interactionsController(
           return;
         case "select_equipment":
           selectEquipmentResponse(data, res);
+          return;
+        case "select_monster":
+          selectMonster(data, res);
           return;
       }
     }

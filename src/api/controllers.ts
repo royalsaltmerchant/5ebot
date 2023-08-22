@@ -46,7 +46,7 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
     // 'alignments',
     // 'languages',
     // 'races',
-    'subraces',
+    // 'subraces',
     // 'classes',
     // 'subclasses',
     // "spells",
@@ -56,6 +56,7 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
     // "conditions",
     // "equipment"
     // "magicitems",
+    "monsters",
     // "roll"
   ]
 
