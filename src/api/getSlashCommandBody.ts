@@ -319,6 +319,42 @@ async function getSlashCommandBody(slashCommandName: string) {
           },
         ],
       };
+    case "subraces":
+      return {
+        name: "subraces",
+        description: "Returns info about 5e character sub-races",
+        type: 1,
+        options: [
+          {
+            name: "choices",
+            description: "Returns info about 5e character sub-races",
+            type: 3,
+            required: true,
+            choices: [
+              {
+                name: "High Elf",
+                value: "high-elf",
+              },
+              {
+                name: "Hill Dwarf",
+                value: "hill-dwarf",
+              },
+              {
+                name: "Elf",
+                value: "elf",
+              },
+              {
+                name: "Lightfoot Halfling",
+                value: "lightfoot-halfling",
+              },
+              {
+                name: "Rock Gnome",
+                value: "rock-gnome",
+              },
+            ],
+          },
+        ],
+      };
     case "spells":
       return {
         name: "spells",

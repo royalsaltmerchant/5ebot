@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.subClassesResponse = exports.racesResponse = exports.classesResponse = exports.selectEquipmentResponse = exports.selectMagicItemResponse = exports.selectTrait = exports.selectFeatureResponse = exports.selectProficiencyResponse = exports.selectSpellResponse = exports.magicItemsResponse = exports.equipmentResponse = exports.traitsResponse = exports.featuresResponse = exports.proficienciesResponse = exports.spellsResponse = exports.conditionsResponse = exports.languagesResponse = exports.alignmentsResponse = exports.abilityScoresResponse = exports.skillsResponse = void 0;
+exports.subRacesResponse = exports.subClassesResponse = exports.racesResponse = exports.classesResponse = exports.selectEquipmentResponse = exports.selectMagicItemResponse = exports.selectTrait = exports.selectFeatureResponse = exports.selectProficiencyResponse = exports.selectSpellResponse = exports.magicItemsResponse = exports.equipmentResponse = exports.traitsResponse = exports.featuresResponse = exports.proficienciesResponse = exports.spellsResponse = exports.conditionsResponse = exports.languagesResponse = exports.alignmentsResponse = exports.abilityScoresResponse = exports.skillsResponse = void 0;
 var discord_interactions_1 = require("discord-interactions");
 var spellOptions_js_1 = __importDefault(require("../data/spellOptions.js"));
 var proficiencyOptions_js_1 = __importDefault(require("../data/proficiencyOptions.js"));
@@ -63,6 +63,7 @@ var equipment_js_1 = __importDefault(require("../data/equipment.js"));
 var classes_js_1 = __importDefault(require("../data/classes.js"));
 var races_js_1 = __importDefault(require("../data/races.js"));
 var subclasses_js_1 = __importDefault(require("../data/subclasses.js"));
+var subraces_js_1 = __importDefault(require("../data/subraces.js"));
 function skillsResponse(data, res) {
     var skillData = skills_js_1.default.filter(function (skill) { return skill.index === data.options[0].value; })[0];
     var returnInfo = "**".concat(skillData.name, "**\n\n").concat(skillData.desc, "\n\n**Ability Score:** ").concat(skillData.ability_score.name);
@@ -122,7 +123,9 @@ function subClassesResponse(data, res) {
     returnInfo += "\n**Description:** ".concat(subClassData.desc);
     returnInfo += "\n**Class:** ".concat(subClassData.class.name);
     if (subClassData.spells && subClassData.spells.length)
-        returnInfo += "\n**Spells:** ".concat(subClassData.spells.map(function (item) { return item.spell.name; }).join(", "));
+        returnInfo += "\n**Spells:** ".concat(subClassData.spells
+            .map(function (item) { return item.spell.name; })
+            .join(", "));
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -143,7 +146,7 @@ function racesResponse(data, res) {
     if (raceData.starting_proficiency_options &&
         raceData.starting_proficiency_options.from &&
         raceData.starting_proficiency_options.from.options)
-        returnInfo += "\n**Starting Proficiency Options:** ".concat((0, dataUtils_js_1.getRaceProficiencyOptions)(raceData));
+        returnInfo += "\n**Starting Proficiency Options:** ".concat((0, dataUtils_js_1.getChooseFromOptions)(raceData.starting_proficiency_options));
     returnInfo += "\n**Languages:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.languages, "name"));
     returnInfo += "\n**Traits:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.traits, "name"));
     returnInfo += "\n**Sub-Races:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.subraces, "name"));
@@ -155,6 +158,27 @@ function racesResponse(data, res) {
     });
 }
 exports.racesResponse = racesResponse;
+function subRacesResponse(data, res) {
+    var subRaceData = subraces_js_1.default.filter(function (subrace) { return subrace.index === data.options[0].value; })[0];
+    var returnInfo = "**".concat(subRaceData.name, "**");
+    returnInfo += "\n**Description:** ".concat(subRaceData.desc);
+    returnInfo += "\n**Race:** ".concat(subRaceData.race.name);
+    returnInfo += "\n**Ability Bonuses:** ".concat((0, dataUtils_js_1.getAbilityBonuses)(subRaceData));
+    returnInfo += "\n**Starting Proficiencies:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(subRaceData.starting_proficiencies, "name"));
+    returnInfo += "\n**Traits:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(subRaceData.racial_traits, "name"));
+    returnInfo += "\n**Languages:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(subRaceData.languages, "name"));
+    if (subRaceData.language_options &&
+        subRaceData.language_options.from &&
+        subRaceData.language_options.from.options)
+        returnInfo += "\n**Starting Proficiency Options:** ".concat((0, dataUtils_js_1.getChooseFromOptions)(subRaceData.language_options));
+    return res.send({
+        type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: returnInfo,
+        },
+    });
+}
+exports.subRacesResponse = subRacesResponse;
 function languagesResponse(data, res) {
     var languageData = languages_js_1.default.filter(function (language) { return language.index === data.options[0].value; })[0];
     var returnInfo = "**".concat(languageData.name, "**\n\n").concat(languageData.desc

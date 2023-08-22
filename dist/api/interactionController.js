@@ -72,6 +72,9 @@ function interactionsController(req, res, _next) {
                         case "races":
                             (0, character_js_1.racesResponse)(data, res);
                             return [2];
+                        case "subraces":
+                            (0, character_js_1.subRacesResponse)(data, res);
+                            return [2];
                         case "ability-scores":
                             (0, character_js_1.abilityScoresResponse)(data, res);
                             return [2];

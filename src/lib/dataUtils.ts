@@ -41,12 +41,12 @@ export function getAbilityBonuses(raceData: any) {
   return string;
 }
 
-export function getRaceProficiencyOptions(raceData: any) {
+export function getChooseFromOptions(data: any) {
   // there is some issue recognizing typeof equipment
   let string = "";
-  const fromData = raceData.starting_proficiency_options.from.options.map((option: any) => option.item.name);
+  const fromData = data.from.options.map((option: any) => option.item.name);
 
-  string += `Choose ${raceData.starting_proficiency_options.choose} from: ${fromData.join(", ")}`;
+  string += `Choose ${data.choose} from: ${fromData.join(", ")}`;
 
   return string;
 }

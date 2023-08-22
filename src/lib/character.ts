@@ -17,7 +17,7 @@ import {
   getArmorClassInfo,
   getContentsInfo,
   getAbilityBonuses,
-  getRaceProficiencyOptions,
+  getChooseFromOptions,
 } from "../lib/dataUtils.js";
 import abilityScores from "../data/abilityScores.js";
 import alignments from "../data/alignments.js";
@@ -32,6 +32,7 @@ import equipment from "../data/equipment.js";
 import classes from "../data/classes.js";
 import races from "../data/races.js";
 import subclasses from "../data/subclasses.js";
+import subraces from "../data/subraces.js";
 
 function skillsResponse(data: DataObject, res: Response) {
   const skillData = skills.filter(
@@ -110,13 +111,17 @@ function classesResponse(data: DataObject, res: Response) {
 }
 
 function subClassesResponse(data: DataObject, res: Response) {
-  const subClassData = subclasses.filter((c) => c.index === data.options[0].value)[0];
+  const subClassData = subclasses.filter(
+    (c) => c.index === data.options[0].value
+  )[0];
 
   let returnInfo = `**${subClassData.name}**`;
   returnInfo += `\n**Description:** ${subClassData.desc}`;
   returnInfo += `\n**Class:** ${subClassData.class.name}`;
-  if (subClassData.spells && subClassData.spells.length) 
-    returnInfo += `\n**Spells:** ${subClassData.spells.map(item => item.spell.name).join(", ")}`;
+  if (subClassData.spells && subClassData.spells.length)
+    returnInfo += `\n**Spells:** ${subClassData.spells
+      .map((item) => item.spell.name)
+      .join(", ")}`;
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -146,8 +151,8 @@ function racesResponse(data: DataObject, res: Response) {
     raceData.starting_proficiency_options.from &&
     raceData.starting_proficiency_options.from.options
   )
-    returnInfo += `\n**Starting Proficiency Options:** ${getRaceProficiencyOptions(
-      raceData
+    returnInfo += `\n**Starting Proficiency Options:** ${getChooseFromOptions(
+      raceData.starting_proficiency_options
     )}`;
   returnInfo += `\n**Languages:** ${returnArrayDataAsString(
     raceData.languages,
@@ -161,6 +166,44 @@ function racesResponse(data: DataObject, res: Response) {
     raceData.subraces,
     "name"
   )}`;
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: returnInfo,
+    },
+  });
+}
+
+function subRacesResponse(data: DataObject, res: Response) {
+  const subRaceData = subraces.filter(
+    (subrace) => subrace.index === data.options[0].value
+  )[0];
+
+  let returnInfo = `**${subRaceData.name}**`;
+  returnInfo += `\n**Description:** ${subRaceData.desc}`;
+  returnInfo += `\n**Race:** ${subRaceData.race.name}`;
+  returnInfo += `\n**Ability Bonuses:** ${getAbilityBonuses(subRaceData)}`;
+  returnInfo += `\n**Starting Proficiencies:** ${returnArrayDataAsString(
+    subRaceData.starting_proficiencies,
+    "name"
+  )}`;
+  returnInfo += `\n**Traits:** ${returnArrayDataAsString(
+    subRaceData.racial_traits,
+    "name"
+  )}`;
+  returnInfo += `\n**Languages:** ${returnArrayDataAsString(
+    subRaceData.languages,
+    "name"
+  )}`;
+  if (
+    subRaceData.language_options &&
+    subRaceData.language_options.from &&
+    subRaceData.language_options.from.options
+  )
+    returnInfo += `\n**Starting Proficiency Options:** ${getChooseFromOptions(
+      subRaceData.language_options
+    )}`;
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -637,4 +680,5 @@ export {
   classesResponse,
   racesResponse,
   subClassesResponse,
+  subRacesResponse,
 };

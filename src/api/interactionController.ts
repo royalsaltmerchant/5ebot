@@ -20,6 +20,7 @@ import {
   skillsResponse,
   spellsResponse,
   subClassesResponse,
+  subRacesResponse,
   traitsResponse,
 } from "../lib/character.js";
 import { Request, Response, NextFunction } from "express";
@@ -69,6 +70,9 @@ async function interactionsController(
           return;
         case "races":
           racesResponse(data, res);
+          return;
+        case "subraces":
+          subRacesResponse(data, res);
           return;
         case "ability-scores":
           abilityScoresResponse(data, res);

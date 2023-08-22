@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRaceProficiencyOptions = exports.getAbilityBonuses = exports.getContentsInfo = exports.getArmorClassInfo = exports.returnArrayDataAsString = void 0;
+exports.getChooseFromOptions = exports.getAbilityBonuses = exports.getContentsInfo = exports.getArmorClassInfo = exports.returnArrayDataAsString = void 0;
 function returnArrayDataAsString(array, key) {
     if (typeof array === "string")
         return array;
@@ -47,10 +47,10 @@ function getAbilityBonuses(raceData) {
     return string;
 }
 exports.getAbilityBonuses = getAbilityBonuses;
-function getRaceProficiencyOptions(raceData) {
+function getChooseFromOptions(data) {
     var string = "";
-    var fromData = raceData.starting_proficiency_options.from.options.map(function (option) { return option.item.name; });
-    string += "Choose ".concat(raceData.starting_proficiency_options.choose, " from: ").concat(fromData.join(", "));
+    var fromData = data.from.options.map(function (option) { return option.item.name; });
+    string += "Choose ".concat(data.choose, " from: ").concat(fromData.join(", "));
     return string;
 }
-exports.getRaceProficiencyOptions = getRaceProficiencyOptions;
+exports.getChooseFromOptions = getChooseFromOptions;
