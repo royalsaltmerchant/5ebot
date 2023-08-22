@@ -102,7 +102,7 @@ function createCommands(req, res, _next) {
             switch (_a.label) {
                 case 0:
                     slashCommandsList = [
-                        'help'
+                        'help',
                     ];
                     responseList = [];
                     return [4, Promise.all(slashCommandsList.map(function (slashCommandName) { return __awaiter(_this, void 0, void 0, function () {

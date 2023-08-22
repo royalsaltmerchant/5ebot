@@ -42,9 +42,10 @@ function getSlashCommandBody(slashCommandName) {
             switch (slashCommandName) {
                 case "help":
                     return [2, {
-                            name: "skills",
+                            name: "help",
                             description: "Returns help info",
                             type: 1,
+                            options: []
                         }];
                 case "skills":
                     return [2, {

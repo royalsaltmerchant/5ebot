@@ -2,9 +2,10 @@ async function getSlashCommandBody(slashCommandName: string) {
   switch (slashCommandName) {
     case "help":
       return {
-        name: "skills",
+        name: "help",
         description: "Returns help info",
         type: 1,
+        options: []
       }
     case "skills":
       return {
