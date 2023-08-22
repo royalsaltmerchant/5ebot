@@ -597,6 +597,70 @@ function getSlashCommandBody(slashCommandName) {
                                 },
                             ],
                         }];
+                case "subclasses":
+                    return [2, {
+                            name: "subclasses",
+                            description: "Returns info about 5e character sub-classes",
+                            type: 1,
+                            options: [
+                                {
+                                    name: "subclass",
+                                    description: "Choose the type of sub-class",
+                                    type: 3,
+                                    required: true,
+                                    choices: [
+                                        {
+                                            name: "Berserker",
+                                            value: "berserker",
+                                        },
+                                        {
+                                            name: "Champion",
+                                            value: "champion",
+                                        },
+                                        {
+                                            name: "Devotion",
+                                            value: "devotion",
+                                        },
+                                        {
+                                            name: "Draconic",
+                                            value: "draconic",
+                                        },
+                                        {
+                                            name: "Evocation",
+                                            value: "evocation",
+                                        },
+                                        {
+                                            name: "Fiend",
+                                            value: "fiend",
+                                        },
+                                        {
+                                            name: "Hunter",
+                                            value: "hunter",
+                                        },
+                                        {
+                                            name: "Land",
+                                            value: "land",
+                                        },
+                                        {
+                                            name: "Life",
+                                            value: "life",
+                                        },
+                                        {
+                                            name: "Lore",
+                                            value: "lore",
+                                        },
+                                        {
+                                            name: "Open Hand",
+                                            value: "open-hand",
+                                        },
+                                        {
+                                            name: "Thief",
+                                            value: "thief",
+                                        },
+                                    ],
+                                },
+                            ],
+                        }];
                 default:
                     return [2, null];
             }

@@ -31,6 +31,7 @@ import magicItems from "../data/magicItems.js";
 import equipment from "../data/equipment.js";
 import classes from "../data/classes.js";
 import races from "../data/races.js";
+import subclasses from "../data/subclasses.js";
 
 function skillsResponse(data: DataObject, res: Response) {
   const skillData = skills.filter(
@@ -99,6 +100,23 @@ function classesResponse(data: DataObject, res: Response) {
     classData.subclasses,
     "name"
   )}`;
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: returnInfo,
+    },
+  });
+}
+
+function subClassesResponse(data: DataObject, res: Response) {
+  const subClassData = subclasses.filter((c) => c.index === data.options[0].value)[0];
+
+  let returnInfo = `**${subClassData.name}**`;
+  returnInfo += `\n**Description:** ${subClassData.desc}`;
+  returnInfo += `\n**Class:** ${subClassData.class.name}`;
+  if (subClassData.spells && subClassData.spells.length) 
+    returnInfo += `\n**Spells:** ${subClassData.spells.map(item => item.spell.name).join(", ")}`;
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -618,4 +636,5 @@ export {
   selectEquipmentResponse,
   classesResponse,
   racesResponse,
+  subClassesResponse,
 };
