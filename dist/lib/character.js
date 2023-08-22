@@ -124,6 +124,7 @@ function racesResponse(data, res) {
     returnInfo += "\n**Alignment:** ".concat(raceData.alignment);
     returnInfo += "\n**Ability Bonuses:** ".concat((0, dataUtils_js_1.getAbilityBonuses)(raceData));
     returnInfo += "\n**Starting Proficiencies:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.starting_proficiencies, "name"));
+    returnInfo += "\n**Starting Proficiency Options:** ".concat((0, dataUtils_js_1.getRaceProficiencyOptions)(raceData));
     returnInfo += "\n**Languages:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.languages, "name"));
     returnInfo += "\n**Traits:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.traits, "name"));
     returnInfo += "\n**Sub-Races:** ".concat((0, dataUtils_js_1.returnArrayDataAsString)(raceData.subraces, "name"));

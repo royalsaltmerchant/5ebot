@@ -15,6 +15,5 @@ router.get('/index', function (_req, res) {
     return res.sendFile("../public/index.html");
 });
 router.get('/get_all_commands', controllers_js_1.getCommands);
-router.get('/create_command', controllers_js_1.createCommands);
 router.post('/interactions', (0, discord_interactions_1.verifyKeyMiddleware)(process.env.PUBLIC_KEY), interactionController_js_1.default);
 exports.default = router;

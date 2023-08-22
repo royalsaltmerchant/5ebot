@@ -17,6 +17,7 @@ import {
   getArmorClassInfo,
   getContentsInfo,
   getAbilityBonuses,
+  getRaceProficiencyOptions,
 } from "../lib/dataUtils.js";
 import abilityScores from "../data/abilityScores.js";
 import alignments from "../data/alignments.js";
@@ -120,6 +121,7 @@ function racesResponse(data: DataObject, res: Response) {
     raceData.starting_proficiencies,
     "name"
   )}`
+  returnInfo += `\n**Starting Proficiency Options:** ${getRaceProficiencyOptions(raceData)}`
   returnInfo += `\n**Languages:** ${returnArrayDataAsString(
     raceData.languages,
     "name"
