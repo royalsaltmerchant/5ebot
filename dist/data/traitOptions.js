@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var traits = [
+const traits = [
     {
         index: "artificers-lore",
         name: "Artificer's Lore",

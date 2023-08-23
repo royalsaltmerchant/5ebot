@@ -2,17 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDataByQuery = void 0;
 function getDataByQuery(data, query) {
-    var lowercaseQueryTokens = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const lowercaseQueryTokens = query.toLowerCase().split(/\s+/).filter(Boolean);
     return data
-        .filter(function (item) {
-        var lowerCaseItemName = item.name.toLowerCase();
-        return lowercaseQueryTokens.every(function (token) { return lowerCaseItemName.includes(token); });
+        .filter(item => {
+        const lowerCaseItemName = item.name.toLowerCase();
+        return lowercaseQueryTokens.every(token => lowerCaseItemName.includes(token));
     })
-        .map(function (item) { return ({
+        .map(item => ({
         label: item.name,
         value: item.index,
         description: item.url
-    }); })
+    }))
         .slice(0, 25);
 }
 exports.getDataByQuery = getDataByQuery;

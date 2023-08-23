@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var discord_interactions_1 = require("discord-interactions");
-var controllers_js_1 = require("./controllers.js");
-var interactionController_js_1 = __importDefault(require("./interactionController.js"));
+const express_1 = __importDefault(require("express"));
+const discord_interactions_1 = require("discord-interactions");
+const controllers_js_1 = require("./controllers.js");
+const interactionController_js_1 = __importDefault(require("./interactionController.js"));
 var router = express_1.default.Router();
 router.get('/', function (_req, res) {
     return res.sendFile("../public/index.html");

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var proficiencies = [
+const proficiencies = [
     {
         index: "alchemists-supplies",
         name: "Alchemist's Supplies",

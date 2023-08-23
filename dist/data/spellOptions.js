@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var spells = [
+const spells = [
     {
         index: "acid-arrow",
         name: "Acid Arrow",

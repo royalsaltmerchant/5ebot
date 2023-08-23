@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var features = [
+const features = [
     {
         index: "action-surge-1-use",
         name: "Action Surge (1 use)",

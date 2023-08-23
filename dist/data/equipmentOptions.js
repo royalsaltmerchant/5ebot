@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var equipment = [
+const equipment = [
     {
         index: "abacus",
         name: "Abacus",

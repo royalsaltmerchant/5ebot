@@ -8,66 +8,61 @@ function returnArrayDataAsString(array, key) {
         return "Unknown";
     var string = "";
     if (key) {
-        array.forEach(function (item) {
-            string += "".concat(item[key], ", ");
+        array.forEach((item) => {
+            string += `${item[key]}, `;
         });
     }
     else {
-        array.forEach(function (item) {
-            string += "".concat(item, ", ");
+        array.forEach((item) => {
+            string += `${item}, `;
         });
     }
     return string;
 }
 exports.returnArrayDataAsString = returnArrayDataAsString;
 function getArmorClassInfo(equipmentData) {
-    var string = "";
-    for (var _i = 0, _a = Object.entries(equipmentData.armor_class); _i < _a.length; _i++) {
-        var _b = _a[_i], key = _b[0], value = _b[1];
-        string += "".concat(key, ": ").concat(value, ", ");
+    let string = "";
+    for (const [key, value] of Object.entries(equipmentData.armor_class)) {
+        string += `${key}: ${value}, `;
     }
     return string;
 }
 exports.getArmorClassInfo = getArmorClassInfo;
 function getContentsInfo(equipmentData) {
-    var string = "";
-    for (var _i = 0, _a = equipmentData.contents; _i < _a.length; _i++) {
-        var item = _a[_i];
-        string += "".concat(item.item.name, ": ").concat(item.quantity, ", ");
+    let string = "";
+    for (const item of equipmentData.contents) {
+        string += `${item.item.name}: ${item.quantity}, `;
     }
     return string;
 }
 exports.getContentsInfo = getContentsInfo;
 function getAbilityBonuses(raceData) {
-    var string = "";
-    for (var _i = 0, _a = raceData.ability_bonuses; _i < _a.length; _i++) {
-        var item = _a[_i];
-        string += "".concat(item.ability_score.name, ": ").concat(item.bonus, ", ");
+    let string = "";
+    for (const item of raceData.ability_bonuses) {
+        string += `${item.ability_score.name}: ${item.bonus}, `;
     }
     return string;
 }
 exports.getAbilityBonuses = getAbilityBonuses;
 function getChooseFromOptions(data) {
-    var string = "";
-    var fromData = data.from.options.map(function (option) { return option.item.name; });
-    string += "Choose ".concat(data.choose, " from: ").concat(fromData.join(", "));
+    let string = "";
+    const fromData = data.from.options.map((option) => option.item.name);
+    string += `Choose ${data.choose} from: ${fromData.join(", ")}`;
     return string;
 }
 exports.getChooseFromOptions = getChooseFromOptions;
 function getMonsterArmorClassInfo(monsterData) {
-    var string = "";
-    for (var _i = 0, _a = monsterData.armor_class; _i < _a.length; _i++) {
-        var item = _a[_i];
-        string += "".concat(item.type, ": ").concat(item.value, ", ");
+    let string = "";
+    for (const item of monsterData.armor_class) {
+        string += `${item.type}: ${item.value}, `;
     }
     return string;
 }
 exports.getMonsterArmorClassInfo = getMonsterArmorClassInfo;
 function getSensesInfo(monsterData) {
-    var string = "";
-    for (var _i = 0, _a = Object.entries(monsterData.senses); _i < _a.length; _i++) {
-        var _b = _a[_i], key = _b[0], value = _b[1];
-        string += "".concat(key, ": ").concat(value, ", ");
+    let string = "";
+    for (const [key, value] of Object.entries(monsterData.senses)) {
+        string += `${key}: ${value}, `;
     }
     return string;
 }

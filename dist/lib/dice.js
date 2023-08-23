@@ -1,19 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rollResponse = void 0;
-var discord_interactions_1 = require("discord-interactions");
+const discord_interactions_1 = require("discord-interactions");
 function calculateDiceRollResponse(data) {
-    var input = data.options[0].value.trim().toLowerCase();
+    const input = data.options[0].value.trim().toLowerCase();
     console.log(input, "**** INPUT ****");
-    var amountOfDice = parseInt(input.split("d", 2)[0].trim());
+    const amountOfDice = parseInt(input.split("d", 2)[0].trim());
     console.log(amountOfDice, "Amount of Dice");
-    var diceSides = input.split("d", 2)[1];
+    let diceSides = input.split("d", 2)[1];
     if (diceSides.includes("+")) {
         diceSides = diceSides.split("+", 2)[0].trim();
     }
     diceSides = parseInt(diceSides);
     console.log(diceSides, "Dice Sides");
-    var modifiers;
+    let modifiers;
     if (input.includes("+")) {
         modifiers = input.split("+");
         modifiers.shift();
@@ -22,13 +22,13 @@ function calculateDiceRollResponse(data) {
         }
         console.log(modifiers, "Modifiers");
     }
-    var diceRolls = [];
+    let diceRolls = [];
     for (var i = 0; i < amountOfDice; i++) {
-        var newValue = Math.floor(Math.random() * diceSides + 1);
+        const newValue = Math.floor(Math.random() * diceSides + 1);
         diceRolls.push(newValue);
     }
     console.log(diceRolls, "Dice Rolls Array");
-    var total = 0;
+    let total = 0;
     for (var i = 0; i < diceRolls.length; i++) {
         total += diceRolls[i];
     }
@@ -38,20 +38,20 @@ function calculateDiceRollResponse(data) {
         }
     }
     console.log(total, "***** TOTAL *****");
-    var responseInfo = "";
-    responseInfo += "**Input:** ".concat(input, "\n");
-    diceRolls.forEach(function (roll, index) {
-        var diceInfoString = "\n**Roll ".concat(index + 1, ":** ").concat(roll);
+    let responseInfo = "";
+    responseInfo += `**Input:** ${input}\n`;
+    diceRolls.forEach((roll, index) => {
+        let diceInfoString = `\n**Roll ${index + 1}:** ${roll}`;
         if (roll === diceSides)
             diceInfoString += " - **CRITICAL**";
         responseInfo += diceInfoString;
     });
-    responseInfo += "\n\n**TOTAL = ".concat(total, "**");
+    responseInfo += `\n\n**TOTAL = ${total}**`;
     return responseInfo;
 }
 function rollResponse(data, res) {
     try {
-        var responseInfo = calculateDiceRollResponse(data);
+        const responseInfo = calculateDiceRollResponse(data);
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
@@ -64,7 +64,7 @@ function rollResponse(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: "Failed to calculate, try again.",
+                content: `Failed to calculate, try again.`,
             },
         });
     }
