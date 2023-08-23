@@ -1,5 +1,5 @@
 # 5e-Bot
-This is a discord bot which allows slash commands for searching through the D&D 5e SRD to fetch information on specific resources. It also has a dice rolling feature. 
+This is a discord bot which allows slash commands for searching through the D&D 5e SRD to fetch information on specific resources. It also has a command for dice rolling and an initiative tracking system.
 
 The data is sourced from this resource: https://github.com/5e-bits/5e-database/ and stored locally in the data folder. Special thanks to the folks at https://www.dnd5eapi.co/ for inspiring this project and making it possible.
 
