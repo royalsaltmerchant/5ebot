@@ -10,7 +10,7 @@ function calculateDiceRollResponse(data: DataObject) {
   const amountOfDice = parseInt(input.split("d", 2)[0].trim());
   console.log(amountOfDice, "Amount of Dice");
   // get dice sides
-  let diceSides: string | number = input.split("d", 2)[1];
+  let diceSides: any = input.split("d", 2)[1];
   if (diceSides.includes("+")) {
     diceSides = diceSides.split("+", 2)[0].trim();
   }

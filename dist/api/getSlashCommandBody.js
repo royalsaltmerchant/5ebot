@@ -45,7 +45,62 @@ function getSlashCommandBody(slashCommandName) {
                             name: "help",
                             description: "Returns help info",
                             type: 1,
-                            options: []
+                            options: [],
+                        }];
+                case "initiative":
+                    return [2, {
+                            name: "in",
+                            description: "Manage initiative tracker",
+                            type: 1,
+                            options: [
+                                {
+                                    name: "list",
+                                    description: "List the names in the tracker",
+                                    type: 1,
+                                },
+                                {
+                                    name: "add",
+                                    description: "Add a name to the tracker",
+                                    type: 1,
+                                    options: [
+                                        {
+                                            name: "name",
+                                            description: "Type the name to add into the tracker",
+                                            type: 3,
+                                            required: true,
+                                        },
+                                        {
+                                            name: "value",
+                                            description: "Type the number value used to place the name in the tracker order",
+                                            type: 3,
+                                            required: true,
+                                        },
+                                    ],
+                                },
+                                {
+                                    name: "remove",
+                                    description: "Remove a name from the tracker",
+                                    type: 1,
+                                    options: [
+                                        {
+                                            name: "name",
+                                            description: "Type the name to remove from the tracker",
+                                            type: 3,
+                                            required: true,
+                                        },
+                                    ],
+                                },
+                                {
+                                    name: "next",
+                                    description: "Move the tracker to the next name in the order",
+                                    type: 1
+                                },
+                                {
+                                    name: "clear",
+                                    description: "Remove all names from the tracker",
+                                    type: 1
+                                },
+                            ],
                         }];
                 case "skills":
                     return [2, {

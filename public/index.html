@@ -4,15 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>5e-Bot</title>
-    <meta name="description" content="Roll Dice and Find Resources for Dungeons & Dragons 5e">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="5e-Bot | Index">
-    <meta property="og:description" content="Roll Dice and Find Resources for Dungeons & Dragons 5e">
-    <meta property="og:image" content="https://5ebot./com/assets/token_dragon_green_og.png">
-    <meta property="og:url" content="https://5ebot.com/">
-    <meta property="og:site_name" content="5e-Bot">
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" sizes="16x16" />
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" sizes="32x32" />
+    <meta
+      name="description"
+      content="Roll Dice and Find Resources for Dungeons & Dragons 5e"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="5e-Bot | Index" />
+    <meta
+      property="og:description"
+      content="Roll Dice and Find Resources for Dungeons & Dragons 5e"
+    />
+    <meta
+      property="og:image"
+      content="https://5ebot./com/assets/token_dragon_green_og.png"
+    />
+    <meta property="og:url" content="https://5ebot.com/" />
+    <meta property="og:site_name" content="5e-Bot" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./assets/favicon.ico"
+      sizes="16x16"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./assets/favicon.ico"
+      sizes="32x32"
+    />
 
     <link rel="stylesheet" href="./style.css" />
     <script src="./index.js" defer></script>
@@ -110,6 +129,92 @@
             </p>
           </div>
           <br />
+          <!-- /in add -->
+          <h3>
+            <code
+              ><div class="command" id="command-add">
+                /in add &lt;name&gt; &lt;value&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>
+              Adds an entry to the initiative list with the given name and
+              value.
+            </div>
+            <ul>
+              <li><code>[name]</code>: The name of the entity to add.</li>
+              <li>
+                <code>[value]</code>: The initiative value associated with the
+                entity.
+              </li>
+            </ul>
+          </div>
+
+          <!-- /in remove -->
+          <h3>
+            <code
+              ><div class="command" id="command-remove">
+                /in remove &lt;name&gt;
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>
+              Removes an entry from the initiative list based on the given name.
+            </div>
+            <ul>
+              <li><code>[name]</code>: The name of the entity to remove.</li>
+            </ul>
+          </div>
+          <br />
+          <!-- /in next -->
+          <h3>
+            <code><div class="command" id="command-next">/in next</div></code>
+          </h3>
+          <div class="ml-p">
+            <div>
+              Moves to the next position in the initiative list and displays it
+              as the current position.
+            </div>
+          </div>
+          <br />
+          <!-- /in clear -->
+          <h3>
+            <code><div class="command" id="command-clear">/in clear</div></code>
+          </h3>
+          <div class="ml-p">
+            <div>Clears the entire initiative list, removing all entries.</div>
+          </div>
+          <br />
+          <!-- /in list -->
+          <h3>
+            <code><div class="command" id="command-list">/in list</div></code>
+          </h3>
+          <div class="ml-p">
+            <div>
+              Displays the entire initiative list in a formatted manner, marking
+              the current position.
+            </div>
+          </div>
+          <br>
+          <h3>Output Format</h3>
+          <div class="ml-p">
+            <div>
+              The initiative list is displayed in descending order based on
+              initiative values. The current position is highlighted with a "-
+              CURRENT" notation next to it.
+            </div>
+            <p><strong>Example:</strong></p>
+            <blockquote class="ml-p">
+              Eliza : 25<br />
+              Thandor : 20 - CURRENT<br />
+              Caelum : 18<br />
+              Mirelia : 16<br />
+              Alaric : 2<br />
+            </blockquote>
+          </div>
+          <br />
           <!-- /skills -->
           <h3>
             <code
@@ -135,7 +240,7 @@
               Stealth, Survival.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /ability-scores -->
           <h3>
             <code
@@ -158,7 +263,7 @@
               Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /alignments -->
           <h3>
             <code
@@ -182,7 +287,7 @@
               Neutral, Chaotic Neutral, Lawful Evil, Neutral Evil, Chaotic Evil.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /languages -->
           <h3>
             <code
@@ -207,7 +312,7 @@
               Sylvan, Undercommon.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /classes -->
           <h3>
             <code
@@ -227,10 +332,11 @@
             </ul>
             <h3>Choices</h3>
             <p class="ml-p">
-              Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard.
+              Barbarian, Bard, Cleric, Druid, Fighter, Monk, Paladin, Ranger,
+              Rogue, Sorcerer, Warlock, Wizard.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /sub classes -->
           <h3>
             <code
@@ -250,10 +356,11 @@
             </ul>
             <h3>Choices</h3>
             <p class="ml-p">
-              Berserker, Champion, Devotion, Draconic, Evocation, Fiend, Hunter, Land, Life, Lore, Open Hand, Thief.
+              Berserker, Champion, Devotion, Draconic, Evocation, Fiend, Hunter,
+              Land, Life, Lore, Open Hand, Thief.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /races -->
           <h3>
             <code
@@ -273,10 +380,11 @@
             </ul>
             <h3>Choices</h3>
             <p class="ml-p">
-              Dragonborn, Dwarf, Elf, Gnome, Half-Elf, Half-Orc, Halfling, Human, Tiefling.
+              Dragonborn, Dwarf, Elf, Gnome, Half-Elf, Half-Orc, Halfling,
+              Human, Tiefling.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /subraces -->
           <h3>
             <code
@@ -299,7 +407,7 @@
               High Elf, Hill Dwarf, Lightfoot Halfling Rock Gnome.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /conditions -->
           <h3>
             <code
@@ -324,7 +432,7 @@
               Restrained, Stunned, Unconscious.
             </p>
           </div>
-          <br>
+          <br />
           <!-- /spells -->
           <h3>
             <code
@@ -340,7 +448,7 @@
               <li><code>[search term]</code>: The term to search for.</li>
             </ul>
           </div>
-          <br>
+          <br />
           <!-- /proficiencies -->
           <h3>
             <code
@@ -356,7 +464,7 @@
               <li><code>[search term]</code>: The term to search for.</li>
             </ul>
           </div>
-          <br>
+          <br />
           <!-- /features -->
           <h3>
             <code
@@ -372,7 +480,7 @@
               <li><code>[search term]</code>: The term to search for.</li>
             </ul>
           </div>
-          <br>
+          <br />
           <!-- /traits -->
           <h3>
             <code
@@ -388,7 +496,7 @@
               <li><code>[search term]</code>: The term to search for.</li>
             </ul>
           </div>
-          <br>
+          <br />
           <!-- /equipment -->
           <h3>
             <code
@@ -404,7 +512,7 @@
               <li><code>[search term]</code>: The term to search for.</li>
             </ul>
           </div>
-          <br>
+          <br />
           <!-- /magicitems -->
           <h3>
             <code
@@ -447,7 +555,7 @@
           />
           <a href="https://discord.gg/rUqQbvV9">Support Server</a>
         </div>
-        <br>
+        <br />
         <div class="support-link-container">
           <img
             src="./assets/github-mark.png"

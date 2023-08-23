@@ -26,11 +26,15 @@ import {
   traitsResponse,
 } from "../lib/info.js";
 import { Request, Response, NextFunction } from "express";
+import { initiativeResponse } from "../lib/initiative.js";
 
 export interface DataObject {
+  id: string;
   options: [
     {
-      value: string;
+      value: any;
+      options: any[];
+      name: string;
     }
   ];
   values: [{}];
@@ -55,11 +59,15 @@ async function interactionsController(
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: "Please visit this documentation site to better understand the usage of the commands: https://5ebot.com/",
+              content:
+                "Please visit this documentation site to better understand the usage of the commands: https://5ebot.com/",
             },
           });
         case "roll":
           rollResponse(data, res);
+          return;
+        case "in": // initiative tracker
+          initiativeResponse(data, res);
           return;
         case "skills":
           skillsResponse(data, res);
@@ -113,7 +121,6 @@ async function interactionsController(
     }
     // Handle interactions
     if (type === InteractionType.MESSAGE_COMPONENT) {
-      console.log(data)
       switch (data.custom_id) {
         case "select_spell":
           selectSpellResponse(data, res);
@@ -136,10 +143,23 @@ async function interactionsController(
         case "select_monster":
           selectMonster(data, res);
           return;
+        default:
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "There was an error",
+            },
+          });
       }
     }
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: "There was an error",
+      },
+    });
   }
 }
 

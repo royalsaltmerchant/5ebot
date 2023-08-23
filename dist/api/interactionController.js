@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var discord_interactions_1 = require("discord-interactions");
 var dice_js_1 = require("../lib/dice.js");
 var info_js_1 = require("../lib/info.js");
+var initiative_js_1 = require("../lib/initiative.js");
 function interactionsController(req, res, _next) {
     return __awaiter(this, void 0, void 0, function () {
         var _a, type, data;
@@ -59,6 +60,9 @@ function interactionsController(req, res, _next) {
                                 })];
                         case "roll":
                             (0, dice_js_1.rollResponse)(data, res);
+                            return [2];
+                        case "in":
+                            (0, initiative_js_1.initiativeResponse)(data, res);
                             return [2];
                         case "skills":
                             (0, info_js_1.skillsResponse)(data, res);
@@ -111,7 +115,6 @@ function interactionsController(req, res, _next) {
                     }
                 }
                 if (type === discord_interactions_1.InteractionType.MESSAGE_COMPONENT) {
-                    console.log(data);
                     switch (data.custom_id) {
                         case "select_spell":
                             (0, info_js_1.selectSpellResponse)(data, res);
@@ -134,11 +137,24 @@ function interactionsController(req, res, _next) {
                         case "select_monster":
                             (0, info_js_1.selectMonster)(data, res);
                             return [2];
+                        default:
+                            return [2, res.send({
+                                    type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                                    data: {
+                                        content: "There was an error",
+                                    },
+                                })];
                     }
                 }
             }
             catch (err) {
-                return [2, console.log(err)];
+                console.log(err);
+                return [2, res.send({
+                        type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                        data: {
+                            content: "There was an error",
+                        },
+                    })];
             }
             return [2];
         });

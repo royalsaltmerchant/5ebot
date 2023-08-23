@@ -4,6 +4,7 @@ import { resolve } from 'path';
 config({ path: resolve(__dirname, '../.env') });
 import express from 'express'
 import routes from './api/routes.js'
+import { createClient } from 'redis';
 
 // Create and configure express app
 const app = express();
@@ -17,6 +18,10 @@ app.use('/', routes)
 // It's best to set up body-parser so that it does NOT apply to interaction
 // routes.
 app.use(express.json());
+
+// Setup redis
+export const redisClient = createClient();
+redisClient.on('error', err => console.log('Redis Client Error', err));
 
 
 app.listen(3000, () => {

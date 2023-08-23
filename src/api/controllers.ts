@@ -56,7 +56,8 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
     // "conditions",
     // "equipment"
     // "magicitems",
-    "monsters",
+    // "monsters",
+    "initiative",
     // "roll"
   ]
 
