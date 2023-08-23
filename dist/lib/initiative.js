@@ -86,7 +86,6 @@ function handleListResponse(data, res) {
                 case 0:
                     redisKey = "".concat(data.id, "-initiative");
                     currentPositionKey = "".concat(redisKey, "-currentPosition");
-                    server_1.redisClient.connect();
                     return [4, server_1.redisClient.hGetAll(redisKey)];
                 case 1:
                     listData = _a.sent();
@@ -96,7 +95,6 @@ function handleListResponse(data, res) {
                     content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
                     if (content == "")
                         content = "List is empty";
-                    server_1.redisClient.quit();
                     return [2, res.send({
                             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                             data: {
@@ -119,7 +117,6 @@ function handleAddResponse(data, res) {
                     objectArrOptions = objectFromArray(data.options[0].options);
                     name = objectArrOptions.name;
                     value = objectArrOptions.value;
-                    server_1.redisClient.connect();
                     return [4, server_1.redisClient.hSet(redisKey, (_a = {},
                             _a[name] = value,
                             _a))];
@@ -132,7 +129,6 @@ function handleAddResponse(data, res) {
                 case 3:
                     currentPosition = _b.sent();
                     content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
-                    server_1.redisClient.quit();
                     return [2, res.send({
                             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                             data: {
@@ -152,7 +148,6 @@ function handleRemoveResponse(data, res) {
                     redisKey = "".concat(data.id, "-initiative");
                     currentPositionKey = "".concat(redisKey, "-currentPosition");
                     itemToRemoveKey = data.options[0].options[0].value;
-                    server_1.redisClient.connect();
                     return [4, server_1.redisClient.hDel(redisKey, itemToRemoveKey)];
                 case 1:
                     _a.sent();
@@ -163,7 +158,6 @@ function handleRemoveResponse(data, res) {
                 case 3:
                     currentPosition = _a.sent();
                     content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
-                    server_1.redisClient.quit();
                     return [2, res.send({
                             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                             data: {
@@ -182,7 +176,6 @@ function handleNextResponse(data, res) {
                 case 0:
                     redisKey = "".concat(data.id, "-initiative");
                     currentPositionKey = "".concat(redisKey, "-currentPosition");
-                    server_1.redisClient.connect();
                     return [4, server_1.redisClient.get(currentPositionKey)];
                 case 1:
                     currentPosition = _a.sent();
@@ -194,7 +187,6 @@ function handleNextResponse(data, res) {
                 case 3:
                     _a.sent();
                     content = getFormattedListDataWithCurrentPosition(listData, nextPosition);
-                    server_1.redisClient.quit();
                     return [2, res.send({
                             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                             data: {
@@ -213,14 +205,12 @@ function handleClearResponse(data, res) {
                 case 0:
                     redisKey = "".concat(data.id, "-initiative");
                     currentPositionKey = "".concat(redisKey, "-currentPosition");
-                    server_1.redisClient.connect();
                     return [4, server_1.redisClient.del(redisKey)];
                 case 1:
                     _a.sent();
                     return [4, server_1.redisClient.del(currentPositionKey)];
                 case 2:
                     _a.sent();
-                    server_1.redisClient.quit();
                     return [2, res.send({
                             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                             data: {

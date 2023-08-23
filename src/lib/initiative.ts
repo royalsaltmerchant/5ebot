@@ -52,7 +52,6 @@ async function handleListResponse(data: DataObject, res: Response) {
   const redisKey = `${data.id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
-  redisClient.connect();
   // get
   const listData = await redisClient.hGetAll(redisKey);
   const currentPosition = await redisClient.get(currentPositionKey);
@@ -64,7 +63,6 @@ async function handleListResponse(data: DataObject, res: Response) {
 
   if (content == "") content = "List is empty";
 
-  redisClient.quit();
   // send
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -82,7 +80,6 @@ async function handleAddResponse(data: DataObject, res: Response) {
   const name = objectArrOptions.name;
   const value = objectArrOptions.value;
 
-  redisClient.connect();
   // set
   await redisClient.hSet(redisKey, {
     [name]: value,
@@ -96,7 +93,6 @@ async function handleAddResponse(data: DataObject, res: Response) {
     currentPosition
   );
 
-  redisClient.quit();
   // send
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -111,7 +107,6 @@ async function handleRemoveResponse(data: DataObject, res: Response) {
   const currentPositionKey = `${redisKey}-currentPosition`;
   const itemToRemoveKey = data.options[0].options[0].value;
 
-  redisClient.connect();
   // set
   await redisClient.hDel(redisKey, itemToRemoveKey);
 
@@ -124,7 +119,6 @@ async function handleRemoveResponse(data: DataObject, res: Response) {
     currentPosition
   );
 
-  redisClient.quit();
   // send
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -138,7 +132,6 @@ async function handleNextResponse(data: DataObject, res: Response) {
   const redisKey = `${data.id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
-  redisClient.connect();
   // get
   let currentPosition = await redisClient.get(currentPositionKey);
   const listData = await redisClient.hGetAll(redisKey);
@@ -150,8 +143,6 @@ async function handleNextResponse(data: DataObject, res: Response) {
     listData,
     nextPosition
   );
-
-  redisClient.quit();
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -165,12 +156,8 @@ async function handleClearResponse(data: DataObject, res: Response) {
   const redisKey = `${data.id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
-  redisClient.connect();
-
   await redisClient.del(redisKey);
   await redisClient.del(currentPositionKey);
-
-  redisClient.quit();
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

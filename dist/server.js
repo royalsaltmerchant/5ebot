@@ -16,6 +16,7 @@ app.use('/', routes_js_1.default);
 app.use(express_1.default.json());
 exports.redisClient = (0, redis_1.createClient)();
 exports.redisClient.on('error', function (err) { return console.log('Redis Client Error', err); });
+exports.redisClient.connect();
 app.listen(3000, function () {
     console.log('Listening on port http://localhost:3000');
 });
