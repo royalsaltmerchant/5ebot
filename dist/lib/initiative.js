@@ -47,9 +47,9 @@ function getNextPosition(listData, currentPosition) {
     index = (index + 1) % sortedList.length;
     return sortedList[index][0];
 }
-function handleListResponse(data, res) {
+function handleListResponse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const redisKey = `${data.id}-initiative`;
+        const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
         const listData = yield server_1.redisClient.hGetAll(redisKey);
         const currentPosition = yield server_1.redisClient.get(currentPositionKey);
@@ -64,11 +64,11 @@ function handleListResponse(data, res) {
         });
     });
 }
-function handleAddResponse(data, res) {
+function handleAddResponse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const redisKey = `${data.id}-initiative`;
+        const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
-        const objectArrOptions = objectFromArray(data.options[0].options);
+        const objectArrOptions = objectFromArray(req.body.data.options[0].options);
         const name = objectArrOptions.name;
         const value = objectArrOptions.value;
         yield server_1.redisClient.hSet(redisKey, {
@@ -85,11 +85,11 @@ function handleAddResponse(data, res) {
         });
     });
 }
-function handleRemoveResponse(data, res) {
+function handleRemoveResponse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const redisKey = `${data.id}-initiative`;
+        const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
-        const itemToRemoveKey = data.options[0].options[0].value;
+        const itemToRemoveKey = req.body.data.options[0].options[0].value;
         yield server_1.redisClient.hDel(redisKey, itemToRemoveKey);
         const listData = yield server_1.redisClient.hGetAll(redisKey);
         const currentPosition = yield server_1.redisClient.get(currentPositionKey);
@@ -102,9 +102,9 @@ function handleRemoveResponse(data, res) {
         });
     });
 }
-function handleNextResponse(data, res) {
+function handleNextResponse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const redisKey = `${data.id}-initiative`;
+        const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
         let currentPosition = yield server_1.redisClient.get(currentPositionKey);
         const listData = yield server_1.redisClient.hGetAll(redisKey);
@@ -119,9 +119,9 @@ function handleNextResponse(data, res) {
         });
     });
 }
-function handleClearResponse(data, res) {
+function handleClearResponse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const redisKey = `${data.id}-initiative`;
+        const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
         yield server_1.redisClient.del(redisKey);
         yield server_1.redisClient.del(currentPositionKey);
@@ -133,24 +133,24 @@ function handleClearResponse(data, res) {
         });
     });
 }
-function initiativeResponse(data, res) {
+function initiativeResponse(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            switch (data.options[0].name) {
+            switch (req.body.data.options[0].name) {
                 case "list":
-                    handleListResponse(data, res);
+                    handleListResponse(req, res);
                     return;
                 case "add":
-                    handleAddResponse(data, res);
+                    handleAddResponse(req, res);
                     return;
                 case "remove":
-                    handleRemoveResponse(data, res);
+                    handleRemoveResponse(req, res);
                     return;
                 case "next":
-                    handleNextResponse(data, res);
+                    handleNextResponse(req, res);
                     return;
                 case "clear":
-                    handleClearResponse(data, res);
+                    handleClearResponse(req, res);
                     return;
                 default:
                     return res.send({

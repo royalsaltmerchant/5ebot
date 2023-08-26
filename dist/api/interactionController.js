@@ -33,7 +33,7 @@ function interactionsController(req, res, _next) {
                         (0, dice_js_1.rollResponse)(data, res);
                         return;
                     case "in":
-                        (0, initiative_js_1.initiativeResponse)(data, res);
+                        (0, initiative_js_1.initiativeResponse)(req, res);
                         return;
                     case "skills":
                         (0, info_js_1.skillsResponse)(data, res);

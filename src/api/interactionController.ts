@@ -67,7 +67,7 @@ async function interactionsController(
           rollResponse(data, res);
           return;
         case "in": // initiative tracker
-          initiativeResponse(data, res);
+          initiativeResponse(req, res);
           return;
         case "skills":
           skillsResponse(data, res);

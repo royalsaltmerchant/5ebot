@@ -1,5 +1,5 @@
 import { InteractionResponseType } from "discord-interactions";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { DataObject } from "../api/interactionController";
 import { redisClient } from "../server";
 
@@ -48,8 +48,8 @@ function getNextPosition(
   return sortedList[index][0];
 }
 
-async function handleListResponse(data: DataObject, res: Response) {
-  const redisKey = `${data.id}-initiative`;
+async function handleListResponse(req: Request, res: Response) {
+  const redisKey = `${req.body.guild_id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
   // get
@@ -72,11 +72,11 @@ async function handleListResponse(data: DataObject, res: Response) {
   });
 }
 
-async function handleAddResponse(data: DataObject, res: Response) {
-  const redisKey = `${data.id}-initiative`;
+async function handleAddResponse(req: Request, res: Response) {
+  const redisKey = `${req.body.guild_id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
-  const objectArrOptions = objectFromArray(data.options[0].options);
+  const objectArrOptions = objectFromArray(req.body.data.options[0].options);
   const name = objectArrOptions.name;
   const value = objectArrOptions.value;
 
@@ -102,10 +102,10 @@ async function handleAddResponse(data: DataObject, res: Response) {
   });
 }
 
-async function handleRemoveResponse(data: DataObject, res: Response) {
-  const redisKey = `${data.id}-initiative`;
+async function handleRemoveResponse(req: Request, res: Response) {
+  const redisKey = `${req.body.guild_id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
-  const itemToRemoveKey = data.options[0].options[0].value;
+  const itemToRemoveKey = req.body.data.options[0].options[0].value;
 
   // set
   await redisClient.hDel(redisKey, itemToRemoveKey);
@@ -128,8 +128,8 @@ async function handleRemoveResponse(data: DataObject, res: Response) {
   });
 }
 
-async function handleNextResponse(data: DataObject, res: Response) {
-  const redisKey = `${data.id}-initiative`;
+async function handleNextResponse(req: Request, res: Response) {
+  const redisKey = `${req.body.guild_id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
   // get
@@ -152,8 +152,8 @@ async function handleNextResponse(data: DataObject, res: Response) {
   });
 }
 
-async function handleClearResponse(data: DataObject, res: Response) {
-  const redisKey = `${data.id}-initiative`;
+async function handleClearResponse(req: Request, res: Response) {
+  const redisKey = `${req.body.guild_id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
 
   await redisClient.del(redisKey);
@@ -167,23 +167,23 @@ async function handleClearResponse(data: DataObject, res: Response) {
   });
 }
 
-async function initiativeResponse(data: DataObject, res: Response) {
+async function initiativeResponse(req: Request, res: Response) {
   try {
-    switch (data.options[0].name) {
+    switch (req.body.data.options[0].name) {
       case "list":
-        handleListResponse(data, res);
+        handleListResponse(req, res);
         return;
       case "add":
-        handleAddResponse(data, res);
+        handleAddResponse(req, res);
         return;
       case "remove":
-        handleRemoveResponse(data, res);
+        handleRemoveResponse(req, res);
         return;
       case "next":
-        handleNextResponse(data, res);
+        handleNextResponse(req, res);
         return;
       case "clear":
-        handleClearResponse(data, res);
+        handleClearResponse(req, res);
         return;
       default:
         return res.send({
