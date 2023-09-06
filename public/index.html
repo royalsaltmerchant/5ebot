@@ -36,6 +36,20 @@
     <link rel="stylesheet" href="./style.css" />
     <script src="./index.js" defer></script>
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-44Y9FN44HM"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-44Y9FN44HM");
+  </script>
   <body>
     <div class="container">
       <header>
@@ -56,8 +70,8 @@
           <p class="indented">
             This bot is designed to search for resources within the
             Dungeons&Dragons official 5th edition SRD. Such resources include:
-            spells, items, monsters and class-features. The bot also has a dice rolling
-            command which supports modifiers and an initiative tracker.
+            spells, items, monsters and class-features. The bot also has a dice
+            rolling command which supports modifiers and an initiative tracker.
           </p>
         </article>
         <br />
@@ -180,7 +194,9 @@
           <br />
           <!-- /in clear -->
           <h3>
-            <code><div class="command" id="command-inclear">/in clear</div></code>
+            <code
+              ><div class="command" id="command-inclear">/in clear</div></code
+            >
           </h3>
           <div class="ml-p">
             <div>Clears the entire initiative list, removing all entries.</div>
@@ -196,7 +212,7 @@
               the current position.
             </div>
           </div>
-          <br>
+          <br />
           <h3>Output Format</h3>
           <div class="ml-p">
             <div>
