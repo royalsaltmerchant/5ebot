@@ -1,70 +1,44 @@
 export function returnArrayDataAsString(array: any, key: string | null) {
   if (typeof array === "string") return array;
   if (!Array.isArray(array)) return "Unknown";
-  var string = "";
   if (key) {
-    array.forEach((item) => {
-      string += `${item[key]}, `;
-    });
+    return array.map((item: any) => item[key]).join(", ");
   } else {
-    array.forEach((item) => {
-      string += `${item}, `;
-    });
+    return array.map((item: any) => String(item)).join(", ");
   }
-  return string;
 }
 
 export function getArmorClassInfo(equipmentData: any) {
-  // there is some issue recognizing typeof equipment
-  let string = "";
-  for (const [key, value] of Object.entries(equipmentData.armor_class)) {
-    string += `${key}: ${value}, `;
-  }
-  return string;
+  return Object.entries(equipmentData.armor_class)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(", ");
 }
 
 export function getContentsInfo(equipmentData: any) {
-  // there is some issue recognizing typeof equipment
-  let string = "";
-  for (const item of equipmentData.contents) {
-    string += `${item.item.name}: ${item.quantity}, `;
-  }
-  return string;
+  return equipmentData.contents
+    .map((item: any) => `${item.item.name}: ${item.quantity}`)
+    .join(", ");
 }
 
 export function getAbilityBonuses(raceData: any) {
-  // there is some issue recognizing typeof equipment
-  let string = "";
-  for (const item of raceData.ability_bonuses) {
-    string += `${item.ability_score.name}: ${item.bonus}, `;
-  }
-  return string;
+  return raceData.ability_bonuses
+    .map((item: any) => `${item.ability_score.name}: ${item.bonus}`)
+    .join(", ");
 }
 
 export function getChooseFromOptions(data: any) {
-  // there is some issue recognizing typeof equipment
-  let string = "";
   const fromData = data.from.options.map((option: any) => option.item.name);
-
-  string += `Choose ${data.choose} from: ${fromData.join(", ")}`;
-
-  return string;
+  return `Choose ${data.choose} from: ${fromData.join(", ")}`;
 }
 
 export function getMonsterArmorClassInfo(monsterData: any) {
-  // there is some issue recognizing typeof equipment
-  let string = "";
-  for (const item of monsterData.armor_class) {
-    string += `${item.type}: ${item.value}, `;
-  }
-  return string;
+  return monsterData.armor_class
+    .map((item: any) => `${item.type}: ${item.value}`)
+    .join(", ");
 }
 
 export function getSensesInfo(monsterData: any) {
-  // there is some issue recognizing typeof equipment
-  let string = "";
-  for (const [key, value] of Object.entries(monsterData.senses)) {
-    string += `${key}: ${value}, `;
-  }
-  return string;
+  return Object.entries(monsterData.senses)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(", ");
 }

@@ -5,18 +5,6 @@ import { Request, Response, NextFunction } from "express";
 const appId = process.env.APP_ID;
 const globalEndpoint = `applications/${appId}/commands`;
 
-async function getCommands(req: Request, res: Response, _next: NextFunction) {
-  try {
-    const discordRes = await DiscordRequest(globalEndpoint, {
-      method: 'GET',
-    });
-    const result = await discordRes.json()
-    return res.send(result)
-  } catch (err) {
-    return res.send({message: "Failed to get slash commands", error: err})
-  }
-}
-
 async function deleteCommand(req: Request, res: Response, _next: NextFunction) {
   try {
     const discordRes = await DiscordRequest(`${globalEndpoint}/${req.params.id}`, {
@@ -38,7 +26,7 @@ interface CreateCommandsResponseObject {
   error?: any;
 }
 
-async function createCommands(req: Response, res: Response, _next: NextFunction) {
+async function createCommands(req: Request, res: Response, _next: NextFunction) {
   const slashCommandsList = [
     // 'help',
     // 'skills',
@@ -58,7 +46,8 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
     // "magicitems",
     // "monsters",
     "initiative",
-    // "roll"
+    // "roll",
+    "query",
   ]
 
   const responseList: CreateCommandsResponseObject[] = []
@@ -87,7 +76,6 @@ async function createCommands(req: Response, res: Response, _next: NextFunction)
 }
 
 export {
-  getCommands,
   deleteCommand,
   createCommands
 }
