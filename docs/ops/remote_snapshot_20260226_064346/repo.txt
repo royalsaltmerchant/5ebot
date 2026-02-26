@@ -1,0 +1,5 @@
+/root/5ebot
+7a5b1612418e
+main
+origin	https://github.com/royalsaltmerchant/5ebot.git (fetch)
+origin	https://github.com/royalsaltmerchant/5ebot.git (push)

@@ -71,7 +71,15 @@
             This bot is designed to search for resources within the
             Dungeons&Dragons official 5th edition SRD. Such resources include:
             spells, items, monsters and class-features. The bot also has a dice
-            rolling command which supports modifiers and an initiative tracker. This is currently a free service and if you would be so kind as to help maintain the existence of this useful bot you can donate at this link: <a href="https://buy.stripe.com/9AQ6q60gqelL3Xq8ww">SUPPORT 5E-BOT</a>
+            rolling command which supports modifiers and an initiative tracker.
+            New: `/query` provides AI-assisted rules answers, and all 5e info
+            responses now include a direct Far Reach Co. SRD "Read more" link.
+            This is currently a free service and if you would be so kind as to
+            help maintain the existence of this useful bot you can donate at
+            this link:
+            <a href="https://buy.stripe.com/9AQ6q60gqelL3Xq8ww"
+              >SUPPORT 5E-BOT</a
+            >
           </p>
         </article>
         <br />
@@ -124,6 +132,7 @@
               <h4>SRD Database</h4>
               <p>Search the official 5e SRD for spells, monsters, items, and more</p>
               <ul>
+                <li><a href="#command-query">/query</a></li>
                 <li><a href="#command-skills">/skills</a></li>
                 <li><a href="#command-ability-scores">/ability-scores</a></li>
                 <li><a href="#command-alignments">/alignments</a></li>
@@ -204,6 +213,31 @@
             <p class="gray-text">
               // In case of any errors or incorrect inputs, the bot will notify
               the user with a "Failed to calculate, try again." message.
+            </p>
+          </div>
+          <br />
+          <!-- /query -->
+          <h3>
+            <code
+              ><div class="command" id="command-query">
+                /query &lt;question&gt; [brief]
+              </div></code
+            >
+          </h3>
+          <div class="ml-p">
+            <div>
+              Ask a D&D 5e SRD rules question and get an AI-assisted response.
+            </div>
+            <ul>
+              <li>
+                <code>[question]</code>: Your rules question in plain language.
+              </li>
+              <li>
+                <code>[brief]</code>: Optional boolean for a shorter answer.
+              </li>
+            </ul>
+            <p class="ml-p">
+              Responses include a "Read more" link to Far Reach Co. SRD.
             </p>
           </div>
           <br />

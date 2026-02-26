@@ -69,19 +69,35 @@ function handleAddResponse(req, res) {
         const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
         const objectArrOptions = objectFromArray(req.body.data.options[0].options);
-        const name = objectArrOptions.name;
-        const value = objectArrOptions.value;
-        yield server_1.redisClient.hSet(redisKey, {
-            [name]: value,
-        });
+        const name = String(objectArrOptions.name).trim();
+        const value = String(objectArrOptions.value).trim();
+        if (name.length === 0 || name.length > 50) {
+            return res.send({
+                type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: { content: "Name must be between 1 and 50 characters." },
+            });
+        }
+        const numericValue = parseInt(value, 10);
+        if (isNaN(numericValue)) {
+            return res.send({
+                type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: { content: "Value must be a whole number (e.g. 18)." },
+            });
+        }
+        const existingList = yield server_1.redisClient.hGetAll(redisKey);
+        if (Object.keys(existingList).length >= 50 && !(name in existingList)) {
+            return res.send({
+                type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: { content: "Initiative list is full (max 50 entries). Use `/in remove` or `/in clear`." },
+            });
+        }
+        yield server_1.redisClient.hSet(redisKey, { [name]: String(numericValue) });
         const listData = yield server_1.redisClient.hGetAll(redisKey);
         let currentPosition = yield server_1.redisClient.get(currentPositionKey);
         const content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                content,
-            },
+            data: { content },
         });
     });
 }
@@ -90,15 +106,19 @@ function handleRemoveResponse(req, res) {
         const redisKey = `${req.body.guild_id}-initiative`;
         const currentPositionKey = `${redisKey}-currentPosition`;
         const itemToRemoveKey = req.body.data.options[0].options[0].value;
-        yield server_1.redisClient.hDel(redisKey, itemToRemoveKey);
+        const deleted = yield server_1.redisClient.hDel(redisKey, itemToRemoveKey);
+        if (deleted === 0) {
+            return res.send({
+                type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: { content: `"${itemToRemoveKey}" was not found in the initiative list.` },
+            });
+        }
         const listData = yield server_1.redisClient.hGetAll(redisKey);
         const currentPosition = yield server_1.redisClient.get(currentPositionKey);
         const content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                content: content,
-            },
+            data: { content },
         });
     });
 }
@@ -108,6 +128,12 @@ function handleNextResponse(req, res) {
         const currentPositionKey = `${redisKey}-currentPosition`;
         let currentPosition = yield server_1.redisClient.get(currentPositionKey);
         const listData = yield server_1.redisClient.hGetAll(redisKey);
+        if (Object.keys(listData).length === 0) {
+            return res.send({
+                type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: { content: "Initiative list is empty. Use `/in add` to add entries." },
+            });
+        }
         const nextPosition = getNextPosition(listData, currentPosition);
         yield server_1.redisClient.set(currentPositionKey, nextPosition);
         const content = getFormattedListDataWithCurrentPosition(listData, nextPosition);

@@ -2,6 +2,7 @@ import express from "express"
 import { verifyKeyMiddleware } from 'discord-interactions'
 import interactionsController from "./interactionController.js"
 import { createCommands } from './controllers.js'
+import { interactionRateLimiter } from "../lib/rateLimit.js";
 
 var router = express.Router()
 
@@ -16,6 +17,11 @@ router.get('/create_command', createCommands)
 
 // router.get('/delete_command/:id', deleteCommand)
 
-router.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY as string), interactionsController)
+router.post(
+  '/interactions',
+  verifyKeyMiddleware(process.env.PUBLIC_KEY as string),
+  interactionRateLimiter,
+  interactionsController
+)
 
 export default router

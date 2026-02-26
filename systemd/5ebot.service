@@ -1,0 +1,19 @@
+[Unit]
+Description=5ebot Discord interactions service
+After=network.target redis-server.service
+Wants=redis-server.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/5ebot
+Environment=NODE_ENV=production
+EnvironmentFile=/root/5ebot/.env
+ExecStart=/usr/bin/node /root/5ebot/dist/server.js
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+ubuntu-s-1vcpu-1gb-nyc1-01
+Thu Feb 26 06:43:48 UTC 2026
+Linux ubuntu-s-1vcpu-1gb-nyc1-01 5.15.0-170-generic #180-Ubuntu SMP Fri Jan 9 16:10:31 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux

@@ -39,37 +39,54 @@ const subclasses_js_1 = __importDefault(require("../data/subclasses.js"));
 const subraces_js_1 = __importDefault(require("../data/subraces.js"));
 const monsterOptions_js_1 = __importDefault(require("../data/monsterOptions.js"));
 const monsters_js_1 = __importDefault(require("../data/monsters.js"));
+const FRC_SRD_BASE_URL = "https://farreachco.com";
+const FRC_SRD_CONTENTS_PATH = "/dnd/5e/srd/contents";
+function withReadMoreLink(content, srdPath = FRC_SRD_CONTENTS_PATH) {
+    return `${content}\n\nRead more: ${FRC_SRD_BASE_URL}${srdPath}`;
+}
+function notFoundResponse(res) {
+    return res.send({
+        type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: { content: "Could not find that entry." },
+    });
+}
 function skillsResponse(data, res) {
     const skillData = skills_js_1.default.filter((skill) => skill.index === data.options[0].value)[0];
+    if (!skillData)
+        return notFoundResponse(res);
     const returnInfo = `**${skillData.name}**\n\n${skillData.desc}\n\n**Ability Score:** ${skillData.ability_score.name}`;
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, "/dnd/5e/srd/skills"),
         },
     });
 }
 exports.skillsResponse = skillsResponse;
 function abilityScoresResponse(data, res) {
     const scoreData = abilityScores_js_1.default.filter((score) => score.index === data.options[0].value)[0];
+    if (!scoreData)
+        return notFoundResponse(res);
     let returnInfo = `**${scoreData.name}**\n\n${(0, dataUtils_js_1.returnArrayDataAsString)(scoreData.desc, null)}`;
     if (scoreData.skills && scoreData.skills.length)
         returnInfo += `\n**Skills:** ${(0, dataUtils_js_1.returnArrayDataAsString)(scoreData.skills, "name")}`;
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, "/dnd/5e/srd/ability-scores"),
         },
     });
 }
 exports.abilityScoresResponse = abilityScoresResponse;
 function alignmentsResponse(data, res) {
     const alignmentData = alignments_js_1.default.filter((alignment) => alignment.index === data.options[0].value)[0];
+    if (!alignmentData)
+        return notFoundResponse(res);
     const returnInfo = `**${alignmentData.name}**\n\n${alignmentData.desc}`;
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, "/dnd/5e/srd/alignments"),
         },
     });
 }
@@ -77,6 +94,8 @@ exports.alignmentsResponse = alignmentsResponse;
 function classesResponse(data, res) {
     var _a;
     const classData = classes_js_1.default.filter((c) => c.index === data.options[0].value)[0];
+    if (!classData)
+        return notFoundResponse(res);
     let returnInfo = `**${classData.name}**`;
     returnInfo += `\n**Hit Dice:** ${classData.hit_die}`;
     if (classData.spellcasting && classData.spellcasting.spellcasting_ability)
@@ -87,13 +106,15 @@ function classesResponse(data, res) {
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, `/dnd/5e/srd/classes/${classData.index}`),
         },
     });
 }
 exports.classesResponse = classesResponse;
 function subClassesResponse(data, res) {
     const subClassData = subclasses_js_1.default.filter((c) => c.index === data.options[0].value)[0];
+    if (!subClassData)
+        return notFoundResponse(res);
     let returnInfo = `**${subClassData.name}**`;
     returnInfo += `\n**Description:** ${subClassData.desc}`;
     returnInfo += `\n**Class:** ${subClassData.class.name}`;
@@ -104,13 +125,15 @@ function subClassesResponse(data, res) {
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, `/dnd/5e/srd/classes/${subClassData.class.index}`),
         },
     });
 }
 exports.subClassesResponse = subClassesResponse;
 function racesResponse(data, res) {
     const raceData = races_js_1.default.filter((race) => race.index === data.options[0].value)[0];
+    if (!raceData)
+        return notFoundResponse(res);
     let returnInfo = `**${raceData.name}**`;
     returnInfo += `\n**Speed:** ${raceData.speed}`;
     returnInfo += `\n**Age:** ${raceData.age}`;
@@ -128,13 +151,15 @@ function racesResponse(data, res) {
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, `/dnd/5e/srd/races/${raceData.index}`),
         },
     });
 }
 exports.racesResponse = racesResponse;
 function subRacesResponse(data, res) {
     const subRaceData = subraces_js_1.default.filter((subrace) => subrace.index === data.options[0].value)[0];
+    if (!subRaceData)
+        return notFoundResponse(res);
     let returnInfo = `**${subRaceData.name}**`;
     returnInfo += `\n**Description:** ${subRaceData.desc}`;
     returnInfo += `\n**Race:** ${subRaceData.race.name}`;
@@ -149,33 +174,37 @@ function subRacesResponse(data, res) {
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, `/dnd/5e/srd/races/${subRaceData.race.index}`),
         },
     });
 }
 exports.subRacesResponse = subRacesResponse;
 function languagesResponse(data, res) {
     const languageData = languages_js_1.default.filter((language) => language.index === data.options[0].value)[0];
+    if (!languageData)
+        return notFoundResponse(res);
     const returnInfo = `**${languageData.name}**\n\n${languageData.desc
         ? (0, dataUtils_js_1.returnArrayDataAsString)(languageData.desc, null)
         : "Description is missing"}\n\n**Typical Speakers:** ${JSON.stringify(languageData.typical_speakers)}`;
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, "/dnd/5e/srd/languages"),
         },
     });
 }
 exports.languagesResponse = languagesResponse;
 function conditionsResponse(data, res) {
     const conditionData = conditions_js_1.default.filter((condition) => condition.index === data.options[0].value)[0];
+    if (!conditionData)
+        return notFoundResponse(res);
     const returnInfo = `**${conditionData.name}**\n\n${conditionData.desc
         ? (0, dataUtils_js_1.returnArrayDataAsString)(conditionData.desc, null)
         : "Description is missing"}`;
     return res.send({
         type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-            content: returnInfo,
+            content: withReadMoreLink(returnInfo, "/dnd/5e/srd/conditions"),
         },
     });
 }
@@ -407,6 +436,8 @@ exports.monstersResponse = monstersResponse;
 function selectSpellResponse(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const spellData = spells_js_1.default.filter((spell) => spell.index === data.values[0])[0];
+        if (!spellData)
+            return notFoundResponse(res);
         let formattedData = `**${spellData.name}** - `;
         if (spellData.school && spellData.school.name)
             formattedData += spellData.school.name;
@@ -437,7 +468,7 @@ function selectSpellResponse(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData, `/dnd/5e/srd/spells/${spellData.index}`),
             },
         });
     });
@@ -446,6 +477,8 @@ exports.selectSpellResponse = selectSpellResponse;
 function selectProficiencyResponse(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const proficiencyData = proficiencies_js_1.default.filter((proficiency) => proficiency.index === data.values[0])[0];
+        if (!proficiencyData)
+            return notFoundResponse(res);
         let formattedData = `**${proficiencyData.name}** - `;
         if (proficiencyData.type)
             formattedData += `\n**Type:** ${proficiencyData.type}`;
@@ -456,7 +489,7 @@ function selectProficiencyResponse(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData),
             },
         });
     });
@@ -465,6 +498,8 @@ exports.selectProficiencyResponse = selectProficiencyResponse;
 function selectFeatureResponse(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const featureData = features_js_1.default.filter((feature) => feature.index === data.values[0])[0];
+        if (!featureData)
+            return notFoundResponse(res);
         let formattedData = `**${featureData.name}**`;
         if (featureData.level)
             formattedData += `\n**Level:** ${featureData.level}`;
@@ -479,15 +514,18 @@ function selectFeatureResponse(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData, `/dnd/5e/srd/features/${featureData.index}`),
             },
         });
     });
 }
 exports.selectFeatureResponse = selectFeatureResponse;
 function selectTrait(data, res) {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function* () {
         const traitData = traits_js_1.default.filter((trait) => trait.index === data.values[0])[0];
+        if (!traitData)
+            return notFoundResponse(res);
         let formattedData = `**${traitData.name}**`;
         if (traitData.races && traitData.races.length !== 0)
             formattedData += `\n**Races:** ${(0, dataUtils_js_1.returnArrayDataAsString)(traitData.races, "name")}`;
@@ -498,7 +536,9 @@ function selectTrait(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData, ((_b = (_a = traitData.races) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.index)
+                    ? `/dnd/5e/srd/races/${traitData.races[0].index}`
+                    : FRC_SRD_CONTENTS_PATH),
             },
         });
     });
@@ -507,6 +547,8 @@ exports.selectTrait = selectTrait;
 function selectMagicItemResponse(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const magicItemData = magicItems_js_1.default.filter((item) => item.index === data.values[0])[0];
+        if (!magicItemData)
+            return notFoundResponse(res);
         let formattedData = `**${magicItemData.name}**`;
         if (magicItemData.desc)
             formattedData += `\n**Description:** ${(0, dataUtils_js_1.returnArrayDataAsString)(magicItemData.desc, null)}`;
@@ -521,7 +563,7 @@ function selectMagicItemResponse(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData, `/dnd/5e/srd/magic-items/${magicItemData.index}`),
             },
         });
     });
@@ -529,7 +571,9 @@ function selectMagicItemResponse(data, res) {
 exports.selectMagicItemResponse = selectMagicItemResponse;
 function selectEquipmentResponse(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const equipmentData = equipment_js_1.default.filter((equipment) => equipment.index === data.values[0])[0];
+        const equipmentData = equipment_js_1.default.filter((item) => item.index === data.values[0])[0];
+        if (!equipmentData)
+            return notFoundResponse(res);
         let formattedData = `**${equipmentData.name}**`;
         if (equipmentData.weight)
             formattedData += `\n**Weight:** ${equipmentData.weight}`;
@@ -568,7 +612,7 @@ function selectEquipmentResponse(data, res) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData, `/dnd/5e/srd/equipment/${equipmentData.index}`),
             },
         });
     });
@@ -577,6 +621,8 @@ exports.selectEquipmentResponse = selectEquipmentResponse;
 function selectMonster(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const monsterData = monsters_js_1.default.filter((monster) => monster.index === data.values[0])[0];
+        if (!monsterData)
+            return notFoundResponse(res);
         let formattedData = `**${monsterData.name}**`;
         if (monsterData.desc)
             formattedData += `\n**Description:** ${monsterData.desc}`;
@@ -625,11 +671,10 @@ function selectMonster(data, res) {
                 },
             ];
         }
-        console.log(embeds);
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: formattedData,
+                content: withReadMoreLink(formattedData, `/dnd/5e/srd/monsters/${monsterData.index}`),
                 embeds,
             },
         });
