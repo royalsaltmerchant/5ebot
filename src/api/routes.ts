@@ -1,11 +1,7 @@
 import express from "express"
 import { verifyKeyMiddleware } from 'discord-interactions'
-import {
-  getCommands,
-  // deleteCommand,
-  // createCommands
-} from './controllers.js'
 import interactionsController from "./interactionController.js"
+import { createCommands } from './controllers.js'
 
 var router = express.Router()
 
@@ -16,9 +12,7 @@ router.get('/index', function (_req, res) {
   return res.sendFile("../public/index.html")
 })
 
-router.get('/get_all_commands', getCommands)
-
-// router.get('/create_command', createCommands)
+router.get('/create_command', createCommands)
 
 // router.get('/delete_command/:id', deleteCommand)
 
