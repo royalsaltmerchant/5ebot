@@ -12,26 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCommands = exports.deleteCommand = exports.getCommands = void 0;
+exports.createCommands = exports.deleteCommand = void 0;
 const discordUtils_js_1 = require("./discordUtils.js");
 const getSlashCommandBody_js_1 = __importDefault(require("./getSlashCommandBody.js"));
 const appId = process.env.APP_ID;
 const globalEndpoint = `applications/${appId}/commands`;
-function getCommands(req, res, _next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const discordRes = yield (0, discordUtils_js_1.DiscordRequest)(globalEndpoint, {
-                method: 'GET',
-            });
-            const result = yield discordRes.json();
-            return res.send(result);
-        }
-        catch (err) {
-            return res.send({ message: "Failed to get slash commands", error: err });
-        }
-    });
-}
-exports.getCommands = getCommands;
 function deleteCommand(req, res, _next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -51,6 +36,7 @@ function createCommands(req, res, _next) {
     return __awaiter(this, void 0, void 0, function* () {
         const slashCommandsList = [
             "initiative",
+            "query",
         ];
         const responseList = [];
         yield Promise.all(slashCommandsList.map((slashCommandName) => __awaiter(this, void 0, void 0, function* () {

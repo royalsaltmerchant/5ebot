@@ -318,6 +318,21 @@ The `/query` command must be registered with Discord's API once. Add it to the `
 
 Read `src/api/controllers.ts`.
 
+## Task 5 completion note
+
+Completed on **2026-02-26 06:42 UTC** via Discord API global command registration.
+
+Registered command details:
+
+- `name`: `query`
+- `id`: `1476469730297512068`
+- `application_id`: `1029113452763037767`
+
+Verification:
+
+- Command appears in `GET /applications/{APP_ID}/commands` response.
+- Reminder: global command propagation can take several minutes (occasionally up to ~1 hour) before visible in all guild clients.
+
 **Step 2: Add "query" to the slashCommandsList**
 
 Find:

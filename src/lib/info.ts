@@ -38,6 +38,13 @@ import subraces from "../data/subraces.js";
 import monsterOptions from "../data/monsterOptions.js";
 import monsters from "../data/monsters.js";
 
+const FRC_SRD_BASE_URL = "https://farreachco.com";
+const FRC_SRD_CONTENTS_PATH = "/dnd/5e/srd/contents";
+
+function withReadMoreLink(content: string, srdPath: string = FRC_SRD_CONTENTS_PATH): string {
+  return `${content}\n\nRead more: ${FRC_SRD_BASE_URL}${srdPath}`;
+}
+
 function notFoundResponse(res: Response): Response {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -54,7 +61,7 @@ function skillsResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, "/dnd/5e/srd/skills"),
     },
   });
 }
@@ -76,7 +83,7 @@ function abilityScoresResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, "/dnd/5e/srd/ability-scores"),
     },
   });
 }
@@ -91,7 +98,7 @@ function alignmentsResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, "/dnd/5e/srd/alignments"),
     },
   });
 }
@@ -120,7 +127,7 @@ function classesResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, `/dnd/5e/srd/classes/${classData.index}`),
     },
   });
 }
@@ -142,7 +149,7 @@ function subClassesResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, `/dnd/5e/srd/classes/${subClassData.class.index}`),
     },
   });
 }
@@ -187,7 +194,7 @@ function racesResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, `/dnd/5e/srd/races/${raceData.index}`),
     },
   });
 }
@@ -226,7 +233,7 @@ function subRacesResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, `/dnd/5e/srd/races/${subRaceData.race.index}`),
     },
   });
 }
@@ -244,7 +251,7 @@ function languagesResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, "/dnd/5e/srd/languages"),
     },
   });
 }
@@ -262,7 +269,7 @@ function conditionsResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: returnInfo,
+      content: withReadMoreLink(returnInfo, "/dnd/5e/srd/conditions"),
     },
   });
 }
@@ -546,7 +553,7 @@ async function selectSpellResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(formattedData, `/dnd/5e/srd/spells/${spellData.index}`),
     },
   });
 }
@@ -574,7 +581,7 @@ async function selectProficiencyResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(formattedData),
     },
   });
 }
@@ -605,7 +612,7 @@ async function selectFeatureResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(formattedData, `/dnd/5e/srd/features/${featureData.index}`),
     },
   });
 }
@@ -630,7 +637,12 @@ async function selectTrait(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(
+        formattedData,
+        traitData.races?.[0]?.index
+          ? `/dnd/5e/srd/races/${traitData.races[0].index}`
+          : FRC_SRD_CONTENTS_PATH
+      ),
     },
   });
 }
@@ -662,7 +674,7 @@ async function selectMagicItemResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(formattedData, `/dnd/5e/srd/magic-items/${magicItemData.index}`),
     },
   });
 }
@@ -718,7 +730,7 @@ async function selectEquipmentResponse(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(formattedData, `/dnd/5e/srd/equipment/${equipmentData.index}`),
     },
   });
 }
@@ -805,7 +817,7 @@ async function selectMonster(data: DataObject, res: Response) {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content: formattedData,
+      content: withReadMoreLink(formattedData, `/dnd/5e/srd/monsters/${monsterData.index}`),
       embeds,
     },
   });

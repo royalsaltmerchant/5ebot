@@ -13,7 +13,10 @@ const discord_interactions_1 = require("discord-interactions");
 const dice_js_1 = require("../lib/dice.js");
 const info_js_1 = require("../lib/info.js");
 const initiative_js_1 = require("../lib/initiative.js");
+const query_js_1 = require("../lib/query.js");
+const logger_js_1 = require("../lib/logger.js");
 function interactionsController(req, res, _next) {
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { type, data } = req.body;
@@ -83,6 +86,31 @@ function interactionsController(req, res, _next) {
                     case "monsters":
                         (0, info_js_1.monstersResponse)(data, res);
                         return;
+                    case "query": {
+                        const question = data.options[0].value;
+                        const briefOption = data.options.find((o) => o.name === "brief");
+                        const short = (briefOption === null || briefOption === void 0 ? void 0 : briefOption.value) === true;
+                        const appId = process.env.APP_ID;
+                        const token = req.body.token;
+                        (0, query_js_1.handleQueryResponse)(question, short, appId, token).catch((err) => {
+                            var _a;
+                            (0, logger_js_1.logError)("query_background_failed", err, {
+                                command: "query",
+                                guildId: (_a = req.body) === null || _a === void 0 ? void 0 : _a.guild_id,
+                                requestId: req.requestId,
+                            });
+                        });
+                        return res.send({
+                            type: discord_interactions_1.InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+                        });
+                    }
+                    default:
+                        return res.send({
+                            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                            data: {
+                                content: "Unknown command.",
+                            },
+                        });
                 }
             }
             if (type === discord_interactions_1.InteractionType.MESSAGE_COMPONENT) {
@@ -117,9 +145,20 @@ function interactionsController(req, res, _next) {
                         });
                 }
             }
+            return res.send({
+                type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    content: "Unsupported interaction type.",
+                },
+            });
         }
         catch (err) {
-            console.log(err);
+            (0, logger_js_1.logError)("interaction_controller_failed", err, {
+                interactionType: (_a = req.body) === null || _a === void 0 ? void 0 : _a.type,
+                command: (_c = (_b = req.body) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.name,
+                guildId: (_d = req.body) === null || _d === void 0 ? void 0 : _d.guild_id,
+                requestId: req.requestId,
+            });
             return res.send({
                 type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {

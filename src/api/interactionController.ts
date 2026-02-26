@@ -28,6 +28,7 @@ import {
 import { Request, Response, NextFunction } from "express";
 import { initiativeResponse } from "../lib/initiative.js";
 import { handleQueryResponse } from "../lib/query.js";
+import { logError } from "../lib/logger.js";
 
 export interface DataObject {
   id: string;
@@ -126,12 +127,25 @@ async function interactionsController(
           const token: string = req.body.token;
 
           // Fire in background; don't await so we respond within 3s
-          handleQueryResponse(question, short, appId, token).catch(() => {});
+          handleQueryResponse(question, short, appId, token).catch((err) => {
+            logError("query_background_failed", err, {
+              command: "query",
+              guildId: req.body?.guild_id,
+              requestId: (req as any).requestId,
+            });
+          });
 
           return res.send({
             type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
           });
         }
+        default:
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "Unknown command.",
+            },
+          });
       }
     }
     // Handle interactions
@@ -167,8 +181,20 @@ async function interactionsController(
           });
       }
     }
+
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: "Unsupported interaction type.",
+      },
+    });
   } catch (err) {
-    console.log(err);
+    logError("interaction_controller_failed", err, {
+      interactionType: req.body?.type,
+      command: req.body?.data?.name,
+      guildId: req.body?.guild_id,
+      requestId: (req as any).requestId,
+    });
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {

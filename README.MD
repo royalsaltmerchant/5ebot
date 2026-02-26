@@ -6,10 +6,40 @@ The data is sourced from this resource: https://github.com/5e-bits/5e-database/ 
 ## Dev
 The service is using express.js written in Typescript utilizing a light-weight discord wrapper lib: "discord-interactions" (https://github.com/discord/discord-interactions-js). 
 
-Don't for get to `npm install`
+Run initial setup:
 
-There are two commands to run the service:
+`cp .env.example .env`
 
-`sh ./commands/start_dev.sh` For Development.
+`npm install`
 
-`sh ./commands/start_prod.sh` For Production.
+`npm run build`
+
+`npm run start`
+
+Useful development commands:
+
+`npm run typecheck` Type-check only
+
+`npm run build` Compile to `dist/`
+
+`npm run dev:all` Run TypeScript watch + nodemon
+
+`npm run dev` Run nodemon against built output (`dist/`)
+
+Runtime endpoints:
+
+`GET /healthz` Liveness check
+
+`GET /readyz` Readiness check (env + Redis)
+
+## Deploy / Ops
+
+Use `docs/ops/deploy.md` for deployment and remote service control.
+
+Common commands:
+
+`npm run ops:preflight`
+
+`npm run ops:deploy`
+
+`npm run ops:migrate-systemd`
