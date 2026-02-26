@@ -732,6 +732,26 @@ async function getSlashCommandBody(slashCommandName: string) {
           },
         ],
       };
+    case "query":
+      return {
+        name: "query",
+        description: "Ask a D&D 5e rules question powered by AI",
+        type: 1,
+        options: [
+          {
+            name: "question",
+            description: "Your D&D 5e rules question",
+            type: 3,
+            required: true,
+          },
+          {
+            name: "brief",
+            description: "Get a shorter, Discord-optimized answer (2-3 sentences)",
+            type: 5,
+            required: false,
+          },
+        ],
+      };
     default:
       return null;
   }

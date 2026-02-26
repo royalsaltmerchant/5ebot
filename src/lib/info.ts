@@ -38,10 +38,18 @@ import subraces from "../data/subraces.js";
 import monsterOptions from "../data/monsterOptions.js";
 import monsters from "../data/monsters.js";
 
+function notFoundResponse(res: Response): Response {
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: { content: "Could not find that entry." },
+  });
+}
+
 function skillsResponse(data: DataObject, res: Response) {
   const skillData = skills.filter(
     (skill) => skill.index === data.options[0].value
   )[0];
+  if (!skillData) return notFoundResponse(res);
   const returnInfo = `**${skillData.name}**\n\n${skillData.desc}\n\n**Ability Score:** ${skillData.ability_score.name}`;
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -55,6 +63,7 @@ function abilityScoresResponse(data: DataObject, res: Response) {
   const scoreData = abilityScores.filter(
     (score) => score.index === data.options[0].value
   )[0];
+  if (!scoreData) return notFoundResponse(res);
   let returnInfo = `**${scoreData.name}**\n\n${returnArrayDataAsString(
     scoreData.desc,
     null
@@ -76,6 +85,7 @@ function alignmentsResponse(data: DataObject, res: Response) {
   const alignmentData = alignments.filter(
     (alignment) => alignment.index === data.options[0].value
   )[0];
+  if (!alignmentData) return notFoundResponse(res);
 
   const returnInfo = `**${alignmentData.name}**\n\n${alignmentData.desc}`;
   return res.send({
@@ -88,6 +98,7 @@ function alignmentsResponse(data: DataObject, res: Response) {
 
 function classesResponse(data: DataObject, res: Response) {
   const classData = classes.filter((c) => c.index === data.options[0].value)[0];
+  if (!classData) return notFoundResponse(res);
 
   let returnInfo = `**${classData.name}**`;
   returnInfo += `\n**Hit Dice:** ${classData.hit_die}`;
@@ -118,6 +129,7 @@ function subClassesResponse(data: DataObject, res: Response) {
   const subClassData = subclasses.filter(
     (c) => c.index === data.options[0].value
   )[0];
+  if (!subClassData) return notFoundResponse(res);
 
   let returnInfo = `**${subClassData.name}**`;
   returnInfo += `\n**Description:** ${subClassData.desc}`;
@@ -139,6 +151,7 @@ function racesResponse(data: DataObject, res: Response) {
   const raceData = races.filter(
     (race) => race.index === data.options[0].value
   )[0];
+  if (!raceData) return notFoundResponse(res);
 
   let returnInfo = `**${raceData.name}**`;
   returnInfo += `\n**Speed:** ${raceData.speed}`;
@@ -183,6 +196,7 @@ function subRacesResponse(data: DataObject, res: Response) {
   const subRaceData = subraces.filter(
     (subrace) => subrace.index === data.options[0].value
   )[0];
+  if (!subRaceData) return notFoundResponse(res);
 
   let returnInfo = `**${subRaceData.name}**`;
   returnInfo += `\n**Description:** ${subRaceData.desc}`;
@@ -221,6 +235,7 @@ function languagesResponse(data: DataObject, res: Response) {
   const languageData = languages.filter(
     (language) => language.index === data.options[0].value
   )[0];
+  if (!languageData) return notFoundResponse(res);
   const returnInfo = `**${languageData.name}**\n\n${
     languageData.desc
       ? returnArrayDataAsString(languageData.desc, null)
@@ -238,6 +253,7 @@ function conditionsResponse(data: DataObject, res: Response) {
   const conditionData = conditions.filter(
     (condition) => condition.index === data.options[0].value
   )[0];
+  if (!conditionData) return notFoundResponse(res);
   const returnInfo = `**${conditionData.name}**\n\n${
     conditionData.desc
       ? returnArrayDataAsString(conditionData.desc, null)
@@ -490,6 +506,7 @@ function monstersResponse(data: DataObject, res: Response) {
 
 async function selectSpellResponse(data: DataObject, res: Response) {
   const spellData = spells.filter((spell) => spell.index === data.values[0])[0];
+  if (!spellData) return notFoundResponse(res);
 
   let formattedData = `**${spellData.name}** - `;
   if (spellData.school && spellData.school.name)
@@ -538,6 +555,7 @@ async function selectProficiencyResponse(data: DataObject, res: Response) {
   const proficiencyData = proficiencies.filter(
     (proficiency) => proficiency.index === data.values[0]
   )[0];
+  if (!proficiencyData) return notFoundResponse(res);
 
   let formattedData = `**${proficiencyData.name}** - `;
   if (proficiencyData.type)
@@ -565,6 +583,7 @@ async function selectFeatureResponse(data: DataObject, res: Response) {
   const featureData = features.filter(
     (feature) => feature.index === data.values[0]
   )[0];
+  if (!featureData) return notFoundResponse(res);
 
   let formattedData = `**${featureData.name}**`;
   if (featureData.level) formattedData += `\n**Level:** ${featureData.level}`;
@@ -593,6 +612,7 @@ async function selectFeatureResponse(data: DataObject, res: Response) {
 
 async function selectTrait(data: DataObject, res: Response) {
   const traitData = traits.filter((trait) => trait.index === data.values[0])[0];
+  if (!traitData) return notFoundResponse(res);
 
   let formattedData = `**${traitData.name}**`;
   if (traitData.races && traitData.races.length !== 0)
@@ -619,6 +639,7 @@ async function selectMagicItemResponse(data: DataObject, res: Response) {
   const magicItemData = magicItems.filter(
     (item) => item.index === data.values[0]
   )[0];
+  if (!magicItemData) return notFoundResponse(res);
 
   let formattedData = `**${magicItemData.name}**`;
   if (magicItemData.desc)
@@ -648,8 +669,9 @@ async function selectMagicItemResponse(data: DataObject, res: Response) {
 
 async function selectEquipmentResponse(data: DataObject, res: Response) {
   const equipmentData = equipment.filter(
-    (equipment) => equipment.index === data.values[0]
+    (item) => item.index === data.values[0]
   )[0];
+  if (!equipmentData) return notFoundResponse(res);
 
   let formattedData = `**${equipmentData.name}**`;
   if (equipmentData.weight)
@@ -705,6 +727,7 @@ async function selectMonster(data: DataObject, res: Response) {
   const monsterData = monsters.filter(
     (monster) => monster.index === data.values[0]
   )[0];
+  if (!monsterData) return notFoundResponse(res);
 
   let formattedData = `**${monsterData.name}**`;
   if (monsterData.desc)
@@ -778,8 +801,6 @@ async function selectMonster(data: DataObject, res: Response) {
       },
     ];
   }
-
-  console.log(embeds)
 
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

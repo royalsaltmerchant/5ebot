@@ -27,6 +27,7 @@ import {
 } from "../lib/info.js";
 import { Request, Response, NextFunction } from "express";
 import { initiativeResponse } from "../lib/initiative.js";
+import { handleQueryResponse } from "../lib/query.js";
 
 export interface DataObject {
   id: string;
@@ -117,6 +118,20 @@ async function interactionsController(
         case "monsters":
           monstersResponse(data, res);
           return;
+        case "query": {
+          const question: string = data.options[0].value;
+          const briefOption = data.options.find((o: any) => o.name === "brief");
+          const short: boolean = briefOption?.value === true;
+          const appId = process.env.APP_ID as string;
+          const token: string = req.body.token;
+
+          // Fire in background; don't await so we respond within 3s
+          handleQueryResponse(question, short, appId, token).catch(() => {});
+
+          return res.send({
+            type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+          });
+        }
       }
     }
     // Handle interactions

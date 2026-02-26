@@ -15,10 +15,6 @@ app.use(express.static("public"));
 // add routes
 app.use('/', routes)
 
-// It's best to set up body-parser so that it does NOT apply to interaction
-// routes.
-app.use(express.json());
-
 // Setup redis
 export const redisClient = createClient();
 redisClient.on('error', err => console.log('Redis Client Error', err));

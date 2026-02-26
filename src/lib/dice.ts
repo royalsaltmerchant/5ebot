@@ -3,59 +3,90 @@ import { Response } from "express";
 import { DataObject } from "../api/interactionController";
 
 function calculateDiceRollResponse(data: DataObject) {
-  // INIT Input
-  const input = data.options[0].value.trim().toLowerCase();
-  console.log(input, "**** INPUT ****");
-  // get amount of dice
-  const amountOfDice = parseInt(input.split("d", 2)[0].trim());
-  console.log(amountOfDice, "Amount of Dice");
-  // get dice sides
-  let diceSides: any = input.split("d", 2)[1];
-  if (diceSides.includes("+")) {
-    diceSides = diceSides.split("+", 2)[0].trim();
-  }
-  diceSides = parseInt(diceSides);
-  console.log(diceSides, "Dice Sides");
-  // get modifiers
-  let modifiers: any;
-  if (input.includes("+")) {
-    modifiers = input.split("+");
-    modifiers.shift();
-    for (var i = 0; i < modifiers.length; i++) {
-      modifiers[i] = parseInt(modifiers[i]);
-    }
-    console.log(modifiers, "Modifiers");
-  }
-  // get dice rolls
-  let diceRolls = [];
-  for (var i = 0; i < amountOfDice; i++) {
-    const newValue = Math.floor(Math.random() * diceSides + 1);
-    diceRolls.push(newValue);
-  }
-  console.log(diceRolls, "Dice Rolls Array");
+  const raw = data.options[0].value.trim();
 
-  // CALCULATE TOTAL
-  // Add modifiers
-  let total = 0; // ******************** TOTAL ******************************
-  for (var i = 0; i < diceRolls.length; i++) {
-    total += diceRolls[i];
+  // Detect advantage/disadvantage (case-insensitive), strip keyword
+  let mode: 'normal' | 'adv' | 'dis' = 'normal';
+  let stripped = raw;
+  if (/\b(adv(antage)?)\b/i.test(stripped)) {
+    mode = 'adv';
+    stripped = stripped.replace(/\b(adv(antage)?)\b/gi, '').trim();
+  } else if (/\b(dis(advantage)?)\b/i.test(stripped)) {
+    mode = 'dis';
+    stripped = stripped.replace(/\b(dis(advantage)?)\b/gi, '').trim();
   }
-  if (modifiers) {
-    for (var i = 0; i < modifiers.length; i++) {
-      total += modifiers[i];
+
+  // Match: <amount>d<sides> [modifiers] [label]
+  const diceMatch = stripped.match(/^(\d+)\s*d\s*(\d+)((?:\s*[+-]\s*\d+)*)(.*)?$/i);
+  if (!diceMatch) {
+    return `Invalid input: "${raw}". Try: 2d6+3, 1d20 adv, 1d20+5 adv attack roll`;
+  }
+
+  const amount = parseInt(diceMatch[1], 10);
+  const sides = parseInt(diceMatch[2], 10);
+  const modString = (diceMatch[3] || '').trim();
+  const label = (diceMatch[4] || '').trim().replace(/^[,\s]+/, '');
+
+  if (amount < 1 || amount > 100) return 'Number of dice must be between 1 and 100.';
+  if (sides < 2 || sides > 1000) return 'Dice sides must be between 2 and 1000.';
+
+  // Parse modifiers (supports + and -)
+  let modifierTotal = 0;
+  const modMatches = modString.match(/[+-]\s*\d+/g) || [];
+  modMatches.forEach((m: string) => {
+    modifierTotal += parseInt(m.replace(/\s/g, ''), 10);
+  });
+
+  function rollDie(): number {
+    return Math.floor(Math.random() * sides) + 1;
+  }
+
+  let rolls: number[];
+  let keptRoll: number | null = null;
+  let droppedRoll: number | null = null;
+
+  if (mode !== 'normal') {
+    const roll1 = rollDie();
+    const roll2 = rollDie();
+    if (mode === 'adv') {
+      keptRoll = Math.max(roll1, roll2);
+      droppedRoll = Math.min(roll1, roll2);
+    } else {
+      keptRoll = Math.min(roll1, roll2);
+      droppedRoll = Math.max(roll1, roll2);
+    }
+    rolls = [keptRoll];
+  } else {
+    rolls = [];
+    for (let i = 0; i < amount; i++) {
+      rolls.push(rollDie());
     }
   }
-  console.log(total, "***** TOTAL *****");
-  // Display Information
-  let responseInfo = "";
-  responseInfo += `**Input:** ${input}\n`;
-  diceRolls.forEach((roll, index) => {
-    let diceInfoString = `\n**Roll ${index + 1}:** ${roll}`;
-    if (roll === diceSides) diceInfoString += " - **CRITICAL**";
-    responseInfo += diceInfoString;
-  });
-  responseInfo += `\n\n**TOTAL = ${total}**`;
-  return responseInfo;
+
+  const rollSum = rolls.reduce((a, b) => a + b, 0);
+  const total = rollSum + modifierTotal;
+
+  const modeLabel = mode === 'adv' ? ' (Advantage)' : mode === 'dis' ? ' (Disadvantage)' : '';
+  const titleLine = label ? `🎲 **${label}**${modeLabel}` : `🎲 **Roll**${modeLabel}`;
+
+  let lines = titleLine + '\n';
+
+  if (mode !== 'normal') {
+    lines += `Roll 1: ${keptRoll} ✓\n`;
+    lines += `Roll 2: ${droppedRoll} ✗ (dropped)\n`;
+  } else {
+    rolls.forEach((r: number, i: number) => {
+      const crit = r === sides ? ' — **CRITICAL**' : '';
+      lines += `Roll ${i + 1}: ${r}${crit}\n`;
+    });
+  }
+
+  if (modifierTotal !== 0) {
+    lines += `Modifier: ${modifierTotal > 0 ? '+' : ''}${modifierTotal}\n`;
+  }
+  lines += `**TOTAL = ${total}**`;
+
+  return lines;
 }
 
 function rollResponse(data: DataObject, res: Response) {
@@ -69,7 +100,6 @@ function rollResponse(data: DataObject, res: Response) {
       },
     });
   } catch (err) {
-    console.log(err);
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {

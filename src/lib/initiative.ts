@@ -77,54 +77,64 @@ async function handleAddResponse(req: Request, res: Response) {
   const currentPositionKey = `${redisKey}-currentPosition`;
 
   const objectArrOptions = objectFromArray(req.body.data.options[0].options);
-  const name = objectArrOptions.name;
-  const value = objectArrOptions.value;
+  const name: string = String(objectArrOptions.name).trim();
+  const value: string = String(objectArrOptions.value).trim();
 
-  // set
-  await redisClient.hSet(redisKey, {
-    [name]: value,
-  });
-  // get
+  if (name.length === 0 || name.length > 50) {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: "Name must be between 1 and 50 characters." },
+    });
+  }
+
+  const numericValue = parseInt(value, 10);
+  if (isNaN(numericValue)) {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: "Value must be a whole number (e.g. 18)." },
+    });
+  }
+
+  // Enforce max 50 entries per guild
+  const existingList = await redisClient.hGetAll(redisKey);
+  if (Object.keys(existingList).length >= 50 && !(name in existingList)) {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: "Initiative list is full (max 50 entries). Use `/in remove` or `/in clear`." },
+    });
+  }
+
+  await redisClient.hSet(redisKey, { [name]: String(numericValue) });
   const listData = await redisClient.hGetAll(redisKey);
   let currentPosition = await redisClient.get(currentPositionKey);
-  // format
-  const content = getFormattedListDataWithCurrentPosition(
-    listData,
-    currentPosition
-  );
+  const content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
 
-  // send
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-    data: {
-      content,
-    },
+    data: { content },
   });
 }
 
 async function handleRemoveResponse(req: Request, res: Response) {
   const redisKey = `${req.body.guild_id}-initiative`;
   const currentPositionKey = `${redisKey}-currentPosition`;
-  const itemToRemoveKey = req.body.data.options[0].options[0].value;
+  const itemToRemoveKey: string = req.body.data.options[0].options[0].value;
 
-  // set
-  await redisClient.hDel(redisKey, itemToRemoveKey);
+  const deleted = await redisClient.hDel(redisKey, itemToRemoveKey);
+  if (deleted === 0) {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: `"${itemToRemoveKey}" was not found in the initiative list.` },
+    });
+  }
 
-  // get
   const listData = await redisClient.hGetAll(redisKey);
   const currentPosition = await redisClient.get(currentPositionKey);
-  // format
-  const content = getFormattedListDataWithCurrentPosition(
-    listData,
-    currentPosition
-  );
+  const content = getFormattedListDataWithCurrentPosition(listData, currentPosition);
 
-  // send
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-    data: {
-      content: content,
-    },
+    data: { content },
   });
 }
 
@@ -135,6 +145,14 @@ async function handleNextResponse(req: Request, res: Response) {
   // get
   let currentPosition = await redisClient.get(currentPositionKey);
   const listData = await redisClient.hGetAll(redisKey);
+
+  if (Object.keys(listData).length === 0) {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: "Initiative list is empty. Use `/in add` to add entries." },
+    });
+  }
+
   // set
   const nextPosition = getNextPosition(listData, currentPosition);
   await redisClient.set(currentPositionKey, nextPosition);
