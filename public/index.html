@@ -3,23 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5e-Bot</title>
+    <title>5e-Bot | Discord D&D 5e Dice Roller and SRD Search</title>
     <meta
       name="description"
-      content="Roll Dice and Find Resources for Dungeons & Dragons 5e"
+      content="5e-Bot is a Discord bot for Dungeons & Dragons 5e with fast dice rolling, initiative tracking, and SRD lookup commands for spells, monsters, classes, items, and more."
     />
+    <meta
+      name="keywords"
+      content="5e bot, dnd discord bot, dungeons and dragons bot, 5e dice roller, dnd initiative tracker, 5e srd"
+    />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://5ebot.com/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="5e-Bot | Index" />
+    <meta property="og:title" content="5e-Bot | Discord D&D 5e Dice Roller and SRD Search" />
     <meta
       property="og:description"
-      content="Roll Dice and Find Resources for Dungeons & Dragons 5e"
+      content="Roll dice, track initiative, and search 5e SRD content directly in Discord."
     />
     <meta
       property="og:image"
       content="https://5ebot.com/assets/token_dragon_green_og.png"
     />
+    <meta property="og:image:alt" content="5e-Bot green dragon logo" />
     <meta property="og:url" content="https://5ebot.com/" />
     <meta property="og:site_name" content="5e-Bot" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="5e-Bot | Discord D&D 5e Dice Roller and SRD Search" />
+    <meta
+      name="twitter:description"
+      content="Roll dice, track initiative, and search 5e SRD content directly in Discord."
+    />
+    <meta
+      name="twitter:image"
+      content="https://5ebot.com/assets/token_dragon_green_og.png"
+    />
     <link
       rel="icon"
       type="image/x-icon"
@@ -35,27 +52,43 @@
 
     <link rel="stylesheet" href="./style.css" />
     <script src="./index.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "5e-Bot",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Discord",
+        "description": "Discord bot for Dungeons & Dragons 5e featuring dice rolling, initiative tracking, and SRD search.",
+        "url": "https://5ebot.com/",
+        "image": "https://5ebot.com/assets/token_dragon_green_og.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-44Y9FN44HM"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-44Y9FN44HM");
+    </script>
   </head>
-  <!-- Google tag (gtag.js) -->
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-44Y9FN44HM"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-
-    gtag("config", "G-44Y9FN44HM");
-  </script>
   <body>
     <div class="container">
       <header>
         <img
           src="./assets/token_dragon_green.webp"
-          alt=""
+          alt="5e-Bot dragon logo"
           width="100px"
           height="100px"
         />
