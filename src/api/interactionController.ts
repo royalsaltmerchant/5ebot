@@ -70,21 +70,23 @@ async function interactionsController(
       const interactionId =
         typeof req.body?.id === "string" ? req.body.id : typeof req.body?.id === "number" ? String(req.body.id) : null;
 
-      sendSlashCommandTelemetry({
-        commandName: data.name,
-        options: Array.isArray(data.options) ? data.options : [],
-        guildId,
-        userId,
-        requestId,
-        interactionId,
-      }).catch((err) => {
-        logError("command_telemetry_failed", err, {
-          command: data.name,
+      if (data.name !== "roll") {
+        sendSlashCommandTelemetry({
+          commandName: data.name,
+          options: Array.isArray(data.options) ? data.options : [],
           guildId,
+          userId,
           requestId,
           interactionId,
+        }).catch((err) => {
+          logError("command_telemetry_failed", err, {
+            command: data.name,
+            guildId,
+            requestId,
+            interactionId,
+          });
         });
-      });
+      }
 
       switch (data.name) {
         case "help":

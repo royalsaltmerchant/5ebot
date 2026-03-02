@@ -15,8 +15,9 @@ const info_js_1 = require("../lib/info.js");
 const initiative_js_1 = require("../lib/initiative.js");
 const query_js_1 = require("../lib/query.js");
 const logger_js_1 = require("../lib/logger.js");
+const commandTelemetry_js_1 = require("../lib/commandTelemetry.js");
 function interactionsController(req, res, _next) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { type, data } = req.body;
@@ -24,6 +25,32 @@ function interactionsController(req, res, _next) {
                 return res.send({ type: discord_interactions_1.InteractionResponseType.PONG });
             }
             if (type === discord_interactions_1.InteractionType.APPLICATION_COMMAND) {
+                const guildId = typeof ((_a = req.body) === null || _a === void 0 ? void 0 : _a.guild_id) === "string" ? req.body.guild_id : null;
+                const userId = typeof ((_d = (_c = (_b = req.body) === null || _b === void 0 ? void 0 : _b.member) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? void 0 : _d.id) === "string"
+                    ? req.body.member.user.id
+                    : typeof ((_f = (_e = req.body) === null || _e === void 0 ? void 0 : _e.user) === null || _f === void 0 ? void 0 : _f.id) === "string"
+                        ? req.body.user.id
+                        : null;
+                const requestIdRaw = req.requestId;
+                const requestId = typeof requestIdRaw === "string" ? requestIdRaw : null;
+                const interactionId = typeof ((_g = req.body) === null || _g === void 0 ? void 0 : _g.id) === "string" ? req.body.id : typeof ((_h = req.body) === null || _h === void 0 ? void 0 : _h.id) === "number" ? String(req.body.id) : null;
+                if (data.name !== "roll") {
+                    (0, commandTelemetry_js_1.sendSlashCommandTelemetry)({
+                        commandName: data.name,
+                        options: Array.isArray(data.options) ? data.options : [],
+                        guildId,
+                        userId,
+                        requestId,
+                        interactionId,
+                    }).catch((err) => {
+                        (0, logger_js_1.logError)("command_telemetry_failed", err, {
+                            command: data.name,
+                            guildId,
+                            requestId,
+                            interactionId,
+                        });
+                    });
+                }
                 switch (data.name) {
                     case "help":
                         return res.send({
@@ -92,7 +119,11 @@ function interactionsController(req, res, _next) {
                         const short = (briefOption === null || briefOption === void 0 ? void 0 : briefOption.value) === true;
                         const appId = process.env.APP_ID;
                         const token = req.body.token;
-                        (0, query_js_1.handleQueryResponse)(question, short, appId, token).catch((err) => {
+                        (0, query_js_1.handleQueryResponse)(question, short, appId, token, {
+                            guildId,
+                            userId,
+                            requestId,
+                        }).catch((err) => {
                             var _a;
                             (0, logger_js_1.logError)("query_background_failed", err, {
                                 command: "query",
@@ -154,9 +185,9 @@ function interactionsController(req, res, _next) {
         }
         catch (err) {
             (0, logger_js_1.logError)("interaction_controller_failed", err, {
-                interactionType: (_a = req.body) === null || _a === void 0 ? void 0 : _a.type,
-                command: (_c = (_b = req.body) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.name,
-                guildId: (_d = req.body) === null || _d === void 0 ? void 0 : _d.guild_id,
+                interactionType: (_j = req.body) === null || _j === void 0 ? void 0 : _j.type,
+                command: (_l = (_k = req.body) === null || _k === void 0 ? void 0 : _k.data) === null || _l === void 0 ? void 0 : _l.name,
+                guildId: (_m = req.body) === null || _m === void 0 ? void 0 : _m.guild_id,
                 requestId: req.requestId,
             });
             return res.send({
