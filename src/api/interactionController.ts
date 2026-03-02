@@ -125,9 +125,23 @@ async function interactionsController(
           const short: boolean = briefOption?.value === true;
           const appId = process.env.APP_ID as string;
           const token: string = req.body.token;
+          const guildId: string | null =
+            typeof req.body?.guild_id === "string" ? req.body.guild_id : null;
+          const userId: string | null =
+            typeof req.body?.member?.user?.id === "string"
+              ? req.body.member.user.id
+              : typeof req.body?.user?.id === "string"
+                ? req.body.user.id
+                : null;
+          const requestIdRaw = (req as Request & { requestId?: string }).requestId;
+          const requestId = typeof requestIdRaw === "string" ? requestIdRaw : null;
 
           // Fire in background; don't await so we respond within 3s
-          handleQueryResponse(question, short, appId, token).catch((err) => {
+          handleQueryResponse(question, short, appId, token, {
+            guildId,
+            userId,
+            requestId,
+          }).catch((err) => {
             logError("query_background_failed", err, {
               command: "query",
               guildId: req.body?.guild_id,

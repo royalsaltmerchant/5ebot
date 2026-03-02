@@ -6,6 +6,12 @@ const FARREACH_SEARCH_URL = 'https://farreachco.com/dnd/5e/srd/search';
 const MAX_DISCORD_LENGTH = 1900;
 const MORE_LINK = '\n\nRead more: https://farreachco.com/dnd/5e/srd/contents';
 
+export interface QuerySourceContext {
+  guildId?: string | null;
+  userId?: string | null;
+  requestId?: string | null;
+}
+
 function appendReadMoreLink(text: string): string {
   if (text.includes('farreachco.com/dnd/5e/srd/')) return text;
   return `${text}${MORE_LINK}`;
@@ -25,14 +31,30 @@ export async function handleQueryResponse(
   short: boolean,
   appId: string,
   interactionToken: string,
+  sourceContext?: QuerySourceContext,
 ): Promise<void> {
   const startedAt = Date.now();
   let answer: string;
 
   try {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'X-SRD-Source': 'discord_5ebot',
+    };
+
+    if (sourceContext?.guildId) {
+      headers['X-SRD-Guild-Id'] = sourceContext.guildId;
+    }
+    if (sourceContext?.userId) {
+      headers['X-SRD-User-Id'] = sourceContext.userId;
+    }
+    if (sourceContext?.requestId) {
+      headers['X-SRD-Request-Id'] = sourceContext.requestId;
+    }
+
     const res = await fetch(FARREACH_SEARCH_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ query: question, short }),
     });
 
