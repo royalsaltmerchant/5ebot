@@ -29,6 +29,7 @@ import { Request, Response, NextFunction } from "express";
 import { initiativeResponse } from "../lib/initiative.js";
 import { handleQueryResponse } from "../lib/query.js";
 import { logError } from "../lib/logger.js";
+import { sendSlashCommandTelemetry } from "../lib/commandTelemetry.js";
 
 export interface DataObject {
   id: string;
@@ -56,6 +57,35 @@ async function interactionsController(
     }
     // Handle slash command requests
     if (type === InteractionType.APPLICATION_COMMAND) {
+      const guildId: string | null =
+        typeof req.body?.guild_id === "string" ? req.body.guild_id : null;
+      const userId: string | null =
+        typeof req.body?.member?.user?.id === "string"
+          ? req.body.member.user.id
+          : typeof req.body?.user?.id === "string"
+            ? req.body.user.id
+            : null;
+      const requestIdRaw = (req as Request & { requestId?: string }).requestId;
+      const requestId = typeof requestIdRaw === "string" ? requestIdRaw : null;
+      const interactionId =
+        typeof req.body?.id === "string" ? req.body.id : typeof req.body?.id === "number" ? String(req.body.id) : null;
+
+      sendSlashCommandTelemetry({
+        commandName: data.name,
+        options: Array.isArray(data.options) ? data.options : [],
+        guildId,
+        userId,
+        requestId,
+        interactionId,
+      }).catch((err) => {
+        logError("command_telemetry_failed", err, {
+          command: data.name,
+          guildId,
+          requestId,
+          interactionId,
+        });
+      });
+
       switch (data.name) {
         case "help":
           return res.send({
@@ -125,16 +155,6 @@ async function interactionsController(
           const short: boolean = briefOption?.value === true;
           const appId = process.env.APP_ID as string;
           const token: string = req.body.token;
-          const guildId: string | null =
-            typeof req.body?.guild_id === "string" ? req.body.guild_id : null;
-          const userId: string | null =
-            typeof req.body?.member?.user?.id === "string"
-              ? req.body.member.user.id
-              : typeof req.body?.user?.id === "string"
-                ? req.body.user.id
-                : null;
-          const requestIdRaw = (req as Request & { requestId?: string }).requestId;
-          const requestId = typeof requestIdRaw === "string" ? requestIdRaw : null;
 
           // Fire in background; don't await so we respond within 3s
           handleQueryResponse(question, short, appId, token, {
