@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Initiative Tracker for DND 5e | 5e-Bot Guide</title>
+    <meta
+      name="description"
+      content="Learn how to track initiative in Discord for DND 5e with 5e-Bot using /in add, /in list, /in next, /in remove, and /in clear."
+    />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://5ebot.com/discord-initiative-tracker-for-dnd/" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Discord Initiative Tracker for DND 5e | 5e-Bot Guide"
+    />
+    <meta
+      property="og:description"
+      content="Use 5e-Bot to track initiative in Discord and keep DND 5e combat turns moving."
+    />
+    <meta
+      property="og:image"
+      content="https://5ebot.com/assets/token_dragon_green_og.png"
+    />
+    <meta property="og:image:alt" content="5e-Bot green dragon logo" />
+    <meta
+      property="og:url"
+      content="https://5ebot.com/discord-initiative-tracker-for-dnd/"
+    />
+    <meta property="og:site_name" content="5e-Bot" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Discord Initiative Tracker for DND 5e | 5e-Bot Guide"
+    />
+    <meta
+      name="twitter:description"
+      content="Use 5e-Bot to track initiative in Discord and keep DND 5e combat turns moving."
+    />
+    <meta
+      name="twitter:image"
+      content="https://5ebot.com/assets/token_dragon_green_og.png"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../assets/favicon.ico"
+      sizes="16x16"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="../assets/favicon.ico"
+      sizes="32x32"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": "Discord Initiative Tracker for DND 5e",
+            "description": "Step-by-step guide to tracking initiative in Discord with 5e-Bot.",
+            "author": {
+              "@type": "Organization",
+              "name": "5e-Bot"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "5e-Bot"
+            },
+            "mainEntityOfPage": "https://5ebot.com/discord-initiative-tracker-for-dnd/",
+            "dateModified": "2026-03-12"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://5ebot.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Discord Initiative Tracker for DND",
+                "item": "https://5ebot.com/discord-initiative-tracker-for-dnd/"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-44Y9FN44HM"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-44Y9FN44HM");
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a class="brand-link" href="../">
+          <img
+            src="../assets/token_dragon_green.webp"
+            alt="5e-Bot dragon logo"
+            width="100"
+            height="100"
+          />
+        </a>
+        <h2><a class="brand-link" href="../">5e-Bot</a></h2>
+      </header>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../">Home</a>
+        <a href="../#commands-overview">Commands</a>
+        <a href="https://discord.com/oauth2/authorize?client_id=1029113452763037767&scope=bot">Invite</a>
+        <a href="https://discord.gg/rUqQbvV9">Support</a>
+      </nav>
+      <main>
+        <div class="breadcrumb" aria-label="Breadcrumb">
+          <a href="../">Home</a>
+          <span> / Discord Initiative Tracker for DND</span>
+        </div>
+        <section class="hero-panel">
+          <p class="eyebrow">Guide</p>
+          <h1 class="hero-title">How to run a Discord initiative tracker for DND 5e</h1>
+          <p class="hero-copy">
+            Initiative tracking works best when it stays close to the rest of the
+            game. With 5e-Bot, the <code>/in</code> commands give you a lightweight
+            way to add combatants, view the current order, advance turns, and
+            clear the encounter when the fight ends.
+          </p>
+          <div class="cta-row">
+            <a
+              class="invite-btn"
+              href="https://discord.com/oauth2/authorize?client_id=1029113452763037767&scope=bot"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Invite 5e-Bot</a
+            >
+            <a class="secondary-link" href="../#command-inadd">View the initiative commands</a>
+          </div>
+        </section>
+        <section class="command-spotlight" aria-label="Initiative steps">
+          <article class="example-card">
+            <h3>Start combat</h3>
+            <p>Use <code>/in add</code> to enter combatants and their initiative values as the encounter begins.</p>
+          </article>
+          <article class="example-card">
+            <h3>Check the order</h3>
+            <p>Use <code>/in list</code> when the group needs to confirm who is up now and who is next.</p>
+          </article>
+          <article class="example-card">
+            <h3>Advance the turn</h3>
+            <p>Use <code>/in next</code> to move the encounter forward without stopping to manage a separate tracker.</p>
+          </article>
+        </section>
+        <article class="ad-section">
+          <a
+            href="https://farreachco.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ad-link"
+          >
+            <img
+              src="../assets/frc_logo.webp"
+              alt="Far Reach Co."
+              class="ad-logo"
+            />
+            <div class="ad-content">
+              <p>
+                Looking for online D&amp;D tools? Check out <strong>Far Reach Co.</strong> for
+                5e character sheets, virtual tabletop, and campaign management - all in your browser.
+              </p>
+            </div>
+          </a>
+        </article>
+        <br />
+        <section class="content-block">
+          <h2>Simple initiative workflow in Discord</h2>
+          <ol class="checklist">
+            <li>Add combatants with <code>/in add</code> as the encounter starts.</li>
+            <li>Use <code>/in list</code> to check the current order when players need clarity.</li>
+            <li>Move to the next turn with <code>/in next</code> after each creature acts.</li>
+            <li>Use <code>/in remove</code> or <code>/in clear</code> when the order needs cleanup.</li>
+          </ol>
+        </section>
+        <section class="content-block">
+          <h2>Why keep initiative inside Discord?</h2>
+          <p>
+            A shared tracker in the same channel reduces confusion. Players can
+            see who acts next, the DM can advance combat without leaving the chat,
+            and the encounter log stays in the same place as attack rolls, damage
+            rolls, and quick rules lookups.
+          </p>
+          <ul class="checklist">
+            <li>Useful for live voice games where the text channel holds the combat log</li>
+            <li>Works well for play-by-post servers that need a persistent turn order</li>
+            <li>Pairs naturally with <code>/roll</code> and 5e lookup commands</li>
+          </ul>
+        </section>
+        <section class="content-block">
+          <h2>Commands that matter during combat</h2>
+          <div class="inline-command-list">
+            <a href="../#command-inadd">/in add</a>
+            <a href="../#command-inlist">/in list</a>
+            <a href="../#command-innext">/in next</a>
+            <a href="../#command-inremove">/in remove</a>
+            <a href="../#command-inclear">/in clear</a>
+            <a href="../#command-roll">/roll</a>
+          </div>
+        </section>
+        <section class="content-block">
+          <h2>Related pages</h2>
+          <div class="card-grid">
+            <article class="info-card">
+              <h3><a href="../dnd-dice-bot-discord/">DND Dice Bot Discord</a></h3>
+              <p>See the dice and initiative landing page for session-focused Discord use cases.</p>
+            </article>
+            <article class="info-card">
+              <h3><a href="../how-to-roll-dice-in-discord-for-dnd/">How to roll dice in Discord for DND</a></h3>
+              <p>Pair the initiative workflow with practical examples for checks, attacks, and damage rolls.</p>
+            </article>
+            <article class="info-card">
+              <h3><a href="../dnd-discord-bot/">DND Discord Bot</a></h3>
+              <p>See the broader overview of 5e-Bot as a Discord bot for Dungeons &amp; Dragons.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <div class="footer-link-row">
+          <a href="../">Home</a>
+          <a href="../dnd-dice-bot-discord/">DND Dice Bot Discord</a>
+          <a href="../how-to-roll-dice-in-discord-for-dnd/">Dice Guide</a>
+        </div>
+        <br />
+        <div style="display: flex;">
+          <div class="support-link-container">
+            <img
+              src="../assets/clyde_discord.png"
+              alt=""
+              height="30"
+              width="30"
+            />
+            <a href="https://discord.gg/rUqQbvV9">Support Server</a>
+          </div>
+          <div class="support-link-container">
+            <img
+              src="../assets/github-mark.png"
+              alt=""
+              height="30"
+              width="30"
+            />
+            <a href="https://github.com/royalsaltmerchant/5ebot">Github Repo</a>
+          </div>
+        </div>
+        <br />
+        <div style="display: flex;">
+          <small><a href="../tos_privacy.html">Terms of Service and Privacy Policy</a></small>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

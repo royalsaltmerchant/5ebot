@@ -6,8 +6,28 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://5ebot.com/tos_privacy.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <loc>https://5ebot.com/dnd-discord-bot/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://5ebot.com/dnd-dice-bot-discord/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://5ebot.com/5e-bot/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://5ebot.com/how-to-roll-dice-in-discord-for-dnd/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://5ebot.com/discord-initiative-tracker-for-dnd/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

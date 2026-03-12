@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
+import { statSync } from 'fs';
 import { resolve } from 'path';
 // configure .env
 config({ path: resolve(__dirname, '../.env') });
@@ -10,10 +11,77 @@ import { log, logError, requestLogger } from './lib/logger.js';
 
 validateRequiredEnv();
 
+const SITEMAP_ENTRIES = [
+  {
+    loc: 'https://5ebot.com/',
+    changefreq: 'weekly',
+    priority: '1.0',
+    publicFile: 'index.html',
+  },
+  {
+    loc: 'https://5ebot.com/dnd-discord-bot/',
+    changefreq: 'weekly',
+    priority: '0.8',
+    publicFile: 'dnd-discord-bot/index.html',
+  },
+  {
+    loc: 'https://5ebot.com/dnd-dice-bot-discord/',
+    changefreq: 'weekly',
+    priority: '0.8',
+    publicFile: 'dnd-dice-bot-discord/index.html',
+  },
+  {
+    loc: 'https://5ebot.com/5e-bot/',
+    changefreq: 'weekly',
+    priority: '0.8',
+    publicFile: '5e-bot/index.html',
+  },
+  {
+    loc: 'https://5ebot.com/how-to-roll-dice-in-discord-for-dnd/',
+    changefreq: 'weekly',
+    priority: '0.7',
+    publicFile: 'how-to-roll-dice-in-discord-for-dnd/index.html',
+  },
+  {
+    loc: 'https://5ebot.com/discord-initiative-tracker-for-dnd/',
+    changefreq: 'weekly',
+    priority: '0.7',
+    publicFile: 'discord-initiative-tracker-for-dnd/index.html',
+  },
+] as const;
+
+function getPublicFileLastModified(publicFile: string): string {
+  const filePath = resolve(__dirname, '../public', publicFile);
+  return statSync(filePath).mtime.toISOString().split('T')[0];
+}
+
+function buildSitemapXml(): string {
+  const urls = SITEMAP_ENTRIES.map((entry) => {
+    const lastmod = getPublicFileLastModified(entry.publicFile);
+    return [
+      '  <url>',
+      `    <loc>${entry.loc}</loc>`,
+      `    <lastmod>${lastmod}</lastmod>`,
+      `    <changefreq>${entry.changefreq}</changefreq>`,
+      `    <priority>${entry.priority}</priority>`,
+      '  </url>',
+    ].join('\n');
+  }).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
+}
+
 // Create and configure express app
 const app = express();
 app.set('trust proxy', true);
 app.use(requestLogger);
+
+app.get('/sitemap.xml', (_req, res) => {
+  return res
+    .status(200)
+    .type('application/xml')
+    .send(buildSitemapXml());
+});
 
 // Static
 app.use(express.static("public"));

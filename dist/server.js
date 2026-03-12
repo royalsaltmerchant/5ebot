@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redisClient = void 0;
 const dotenv_1 = require("dotenv");
+const fs_1 = require("fs");
 const path_1 = require("path");
 (0, dotenv_1.config)({ path: (0, path_1.resolve)(__dirname, '../.env') });
 const express_1 = __importDefault(require("express"));
@@ -13,9 +14,71 @@ const redis_1 = require("redis");
 const env_js_1 = require("./lib/env.js");
 const logger_js_1 = require("./lib/logger.js");
 (0, env_js_1.validateRequiredEnv)();
+const SITEMAP_ENTRIES = [
+    {
+        loc: 'https://5ebot.com/',
+        changefreq: 'weekly',
+        priority: '1.0',
+        publicFile: 'index.html',
+    },
+    {
+        loc: 'https://5ebot.com/dnd-discord-bot/',
+        changefreq: 'weekly',
+        priority: '0.8',
+        publicFile: 'dnd-discord-bot/index.html',
+    },
+    {
+        loc: 'https://5ebot.com/dnd-dice-bot-discord/',
+        changefreq: 'weekly',
+        priority: '0.8',
+        publicFile: 'dnd-dice-bot-discord/index.html',
+    },
+    {
+        loc: 'https://5ebot.com/5e-bot/',
+        changefreq: 'weekly',
+        priority: '0.8',
+        publicFile: '5e-bot/index.html',
+    },
+    {
+        loc: 'https://5ebot.com/how-to-roll-dice-in-discord-for-dnd/',
+        changefreq: 'weekly',
+        priority: '0.7',
+        publicFile: 'how-to-roll-dice-in-discord-for-dnd/index.html',
+    },
+    {
+        loc: 'https://5ebot.com/discord-initiative-tracker-for-dnd/',
+        changefreq: 'weekly',
+        priority: '0.7',
+        publicFile: 'discord-initiative-tracker-for-dnd/index.html',
+    },
+];
+function getPublicFileLastModified(publicFile) {
+    const filePath = (0, path_1.resolve)(__dirname, '../public', publicFile);
+    return (0, fs_1.statSync)(filePath).mtime.toISOString().split('T')[0];
+}
+function buildSitemapXml() {
+    const urls = SITEMAP_ENTRIES.map((entry) => {
+        const lastmod = getPublicFileLastModified(entry.publicFile);
+        return [
+            '  <url>',
+            `    <loc>${entry.loc}</loc>`,
+            `    <lastmod>${lastmod}</lastmod>`,
+            `    <changefreq>${entry.changefreq}</changefreq>`,
+            `    <priority>${entry.priority}</priority>`,
+            '  </url>',
+        ].join('\n');
+    }).join('\n');
+    return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
+}
 const app = (0, express_1.default)();
 app.set('trust proxy', true);
 app.use(logger_js_1.requestLogger);
+app.get('/sitemap.xml', (_req, res) => {
+    return res
+        .status(200)
+        .type('application/xml')
+        .send(buildSitemapXml());
+});
 app.use(express_1.default.static("public"));
 app.get('/healthz', (_req, res) => {
     return res.status(200).json({

@@ -3,22 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5e-Bot | Discord D&D 5e Dice Roller and SRD Search</title>
+    <title>DND Discord Bot for 5e Dice, Initiative, and SRD Search | 5e-Bot</title>
     <meta
       name="description"
-      content="5e-Bot is a Discord bot for Dungeons & Dragons 5e with fast dice rolling, initiative tracking, and SRD lookup commands for spells, monsters, classes, items, and more."
-    />
-    <meta
-      name="keywords"
-      content="5e bot, dnd discord bot, dungeons and dragons bot, 5e dice roller, dnd initiative tracker, 5e srd"
+      content="5e-Bot is a DND Discord bot with 5e dice rolling, initiative tracking, and SRD lookup for spells, monsters, classes, items, and rules questions."
     />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://5ebot.com/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="5e-Bot | Discord D&D 5e Dice Roller and SRD Search" />
+    <meta property="og:title" content="DND Discord Bot for 5e Dice, Initiative, and SRD Search | 5e-Bot" />
     <meta
       property="og:description"
-      content="Roll dice, track initiative, and search 5e SRD content directly in Discord."
+      content="Use 5e-Bot to roll dice, track initiative, and search 5e SRD content directly in Discord."
     />
     <meta
       property="og:image"
@@ -28,10 +24,10 @@
     <meta property="og:url" content="https://5ebot.com/" />
     <meta property="og:site_name" content="5e-Bot" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="5e-Bot | Discord D&D 5e Dice Roller and SRD Search" />
+    <meta name="twitter:title" content="DND Discord Bot for 5e Dice, Initiative, and SRD Search | 5e-Bot" />
     <meta
       name="twitter:description"
-      content="Roll dice, track initiative, and search 5e SRD content directly in Discord."
+      content="Use 5e-Bot to roll dice, track initiative, and search 5e SRD content directly in Discord."
     />
     <meta
       name="twitter:image"
@@ -59,7 +55,7 @@
         "name": "5e-Bot",
         "applicationCategory": "GameApplication",
         "operatingSystem": "Discord",
-        "description": "Discord bot for Dungeons & Dragons 5e featuring dice rolling, initiative tracking, and SRD search.",
+        "description": "DND Discord bot for Dungeons & Dragons 5e featuring dice rolling, initiative tracking, and SRD search.",
         "url": "https://5ebot.com/",
         "image": "https://5ebot.com/assets/token_dragon_green_og.png",
         "offers": {
@@ -67,6 +63,38 @@
           "price": "0",
           "priceCurrency": "USD"
         }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is 5e-Bot?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "5e-Bot is a Discord bot for Dungeons & Dragons 5e that handles dice rolls, initiative tracking, and SRD lookup for spells, monsters, classes, items, and rules questions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use 5e-Bot as a DND dice bot in Discord?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. 5e-Bot supports standard dice notation like /roll with modifiers, multiple dice, and combat-friendly initiative commands."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does 5e-Bot support 5e rules lookup?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. 5e-Bot searches 5e SRD content for spells, monsters, classes, races, equipment, and more, and /query provides AI-assisted rules answers."
+            }
+          }
+        ]
       }
     </script>
     <!-- Google tag (gtag.js) -->
@@ -94,37 +122,106 @@
         />
         <h1>5e-Bot</h1>
       </header>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="./">Home</a>
+        <a href="#commands-overview">Commands</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://discord.gg/rUqQbvV9">Support</a>
+      </nav>
       <main>
-        <h3 class="tagline">
-          Roll Dice and Find Resources for Dungeons & Dragons 5e
-        </h3>
-        <br />
-        <article>
-          <p class="indented">
-            This bot is designed to search for resources within the
-            Dungeons&Dragons official 5th edition SRD. Such resources include:
-            spells, items, monsters and class-features. The bot also has a dice
-            rolling command which supports modifiers and an initiative tracker.
-            New: `/query` provides AI-assisted rules answers, and all 5e info
-            responses now include a direct Far Reach Co. SRD "Read more" link.
-            This is currently a free service and if you would be so kind as to
-            help maintain the existence of this useful bot you can donate at
-            this link:
-            <a href="https://buy.stripe.com/9AQ6q60gqelL3Xq8ww"
-              >SUPPORT 5E-BOT</a
-            >
+        <section class="hero-panel">
+          <p class="eyebrow">Discord Dungeons &amp; Dragons Bot</p>
+          <h2 class="hero-title">A fast DND Discord bot for dice, initiative, and 5e lookup</h2>
+          <p class="hero-copy">
+            5e-Bot helps your server roll dice, manage combat order, and search the
+            5e SRD without leaving Discord. If you are looking for a D&amp;D bot, a
+            5e bot, or a DND bot for Discord, this is the core feature set:
+            fast `/roll`, quick `/in` initiative commands, and lookup commands for
+            spells, monsters, classes, items, and more.
           </p>
-        </article>
-        <br />
-        <div class="invite-btn-container">
-          <div class="invite-btn" onclick="handleInvite()">
-            <h3>Invite</h3>
+          <div class="cta-row">
+            <a
+              class="invite-btn"
+              href="https://discord.com/oauth2/authorize?client_id=1029113452763037767&scope=bot"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Invite 5e-Bot</a
+            >
+            <a class="secondary-link" href="#commands-overview">Browse commands</a>
           </div>
-        </div>
+          <p class="hero-support">
+            5e-Bot is free to use. If it helps your table, you can
+            <a href="https://buy.stripe.com/9AQ6q60gqelL3Xq8ww">support the project</a>.
+          </p>
+        </section>
+        <section class="feature-grid" aria-label="Core features">
+          <article class="info-card">
+            <h3>Dice rolling</h3>
+            <p>Use `/roll` for checks, saves, damage, and custom dice notation directly in chat.</p>
+          </article>
+          <article class="info-card">
+            <h3>Initiative tracking</h3>
+            <p>Keep encounters moving with `/in add`, `/in next`, `/in list`, and cleanup commands.</p>
+          </article>
+          <article class="info-card">
+            <h3>5e SRD search</h3>
+            <p>Look up spells, monsters, classes, races, equipment, and AI-assisted answers with `/query`.</p>
+          </article>
+        </section>
+        <section class="content-block">
+          <h2>Why people search for a DND Discord bot like 5e-Bot</h2>
+          <p>
+            Most Discord Dungeons &amp; Dragons bots solve one of three jobs:
+            rolling dice, handling combat flow, or finding rules text quickly.
+            5e-Bot covers all three, so a DM can keep channels clean and players
+            can resolve questions without switching tabs.
+          </p>
+          <p>
+            The bot is built around practical table use. Dice syntax is fast,
+            initiative commands are lightweight, and the searchable 5e SRD index
+            reduces dead time during sessions. `/query` extends that with concise,
+            AI-assisted rules help when players need a quick answer.
+          </p>
+        </section>
+        <section class="content-block" id="seo-pages">
+          <h2>Explore 5e-Bot by use case</h2>
+          <div class="card-grid">
+            <article class="info-card">
+              <h3><a href="./dnd-discord-bot/">DND Discord Bot</a></h3>
+              <p>Overview page for broad "D&amp;D bot" and "DND bot for Discord" searches.</p>
+            </article>
+            <article class="info-card">
+              <h3><a href="./dnd-dice-bot-discord/">DND Dice Bot Discord</a></h3>
+              <p>Focused page for dice rolling, initiative flow, and table-ready examples.</p>
+            </article>
+            <article class="info-card">
+              <h3><a href="./5e-bot/">5e Bot</a></h3>
+              <p>Focused page for 5e SRD search, rules lookup, and Discord automation.</p>
+            </article>
+          </div>
+        </section>
+        <section class="content-block" id="guides">
+          <h2>Practical guides</h2>
+          <div class="card-grid">
+            <article class="info-card">
+              <h3><a href="./how-to-roll-dice-in-discord-for-dnd/">How to roll dice in Discord for DND</a></h3>
+              <p>Quick examples for checks, attacks, damage rolls, and using `/roll` during live sessions.</p>
+            </article>
+            <article class="info-card">
+              <h3><a href="./discord-initiative-tracker-for-dnd/">Discord initiative tracker for DND</a></h3>
+              <p>Use `/in add`, `/in next`, `/in list`, and cleanup commands to manage combat flow.</p>
+            </article>
+          </div>
+        </section>
         <br />
         <!-- Far Reach Co. Ad -->
         <article class="ad-section">
-          <a href="https://farreachco.com" target="_blank" class="ad-link">
+          <a
+            href="https://farreachco.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ad-link"
+          >
             <img
               src="./assets/frc_logo.webp"
               alt="Far Reach Co."
@@ -140,7 +237,7 @@
         </article>
         <br />
         <!-- Commands Overview -->
-        <article>
+        <article id="commands-overview">
           <h2><u>Commands Overview</u></h2>
           <div class="commands-nav">
             <div class="nav-category">
@@ -186,6 +283,24 @@
             </div>
           </div>
         </article>
+        <br />
+        <section class="content-block" id="faq">
+          <h2>FAQ</h2>
+          <div class="faq-list">
+            <article class="faq-item">
+              <h3>Is 5e-Bot a D&amp;D bot for Discord or only a dice roller?</h3>
+              <p>It handles both. Dice rolling and initiative are core commands, and the bot also searches 5e SRD content for rules references.</p>
+            </article>
+            <article class="faq-item">
+              <h3>What makes it useful for live sessions?</h3>
+              <p>It removes tab switching. Players can roll dice, DMs can track turn order, and the group can check spells, monsters, and class details in-channel.</p>
+            </article>
+            <article class="faq-item">
+              <h3>Can I use it as a 5e bot for rules questions?</h3>
+              <p>Yes. `/query` gives AI-assisted rules answers, and the search commands cover official 5e SRD content categories like spells, monsters, classes, and items.</p>
+            </article>
+          </div>
+        </section>
         <br />
         <article>
           <h2><u>Commands</u></h2>
@@ -693,6 +808,12 @@
         </article>
       </main>
       <footer>
+        <div class="footer-link-row">
+          <a href="./dnd-discord-bot/">DND Discord Bot</a>
+          <a href="./dnd-dice-bot-discord/">DND Dice Bot Discord</a>
+          <a href="./5e-bot/">5e Bot</a>
+        </div>
+        <br>
         <div style="display: flex;">
           <div class="support-link-container">
             <img
@@ -720,14 +841,4 @@
       </footer>
     </div>
   </body>
-  <script>
-    function handleInvite() {
-      window
-        .open(
-          "https://discord.com/oauth2/authorize?client_id=1029113452763037767&scope=bot",
-          "_blank"
-        )
-        .focus();
-    }
-  </script>
 </html>
