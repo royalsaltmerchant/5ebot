@@ -495,12 +495,12 @@ function getSlashCommandBody(slashCommandName) {
             case "equipment":
                 return {
                     name: "equipment",
-                    description: "Returns info about 5e equipment",
+                    description: "Returns info about 5e equipment and magic items",
                     type: 1,
                     options: [
                         {
                             name: "search",
-                            description: "Type a search term to get a list of matching equipment",
+                            description: "Type a search term to get matching equipment and magic items",
                             type: 3,
                             required: true,
                         },

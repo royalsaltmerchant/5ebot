@@ -427,37 +427,46 @@ function traitsResponse(data: DataObject, res: Response) {
 }
 
 function equipmentResponse(data: DataObject, res: Response) {
-  const filteredTraitsList = getDataByQuery(
-    equipmentOptions,
-    data.options[0].value
-  );
-  if (filteredTraitsList.length === 0) {
+  const query = data.options[0].value;
+  const mundaneEquipmentMatches = getDataByQuery(equipmentOptions, query).map((item) => ({
+    ...item,
+    value: `equipment:${item.value}`,
+    description: `Equipment - ${item.label}`,
+  }));
+  const magicItemMatches = getDataByQuery(magicItemOptions, query).map((item) => ({
+    ...item,
+    value: `magicitem:${item.value}`,
+    description: `Magic item - ${item.label}`,
+  }));
+  const combinedItemList = [...mundaneEquipmentMatches, ...magicItemMatches].slice(0, 25);
+
+  if (combinedItemList.length === 0) {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: "Can't find anything",
-      },
-    });
-  } else {
-    return res.send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: "Select an equipment from the list",
-        components: [
-          {
-            type: MessageComponentTypes.ACTION_ROW,
-            components: [
-              {
-                type: MessageComponentTypes.STRING_SELECT,
-                custom_id: "select_equipment",
-                options: filteredTraitsList,
-              },
-            ],
-          },
-        ],
+        content: `No SRD equipment or magic item found for "${query}". Try a shorter name or /query for broader rules help.`,
       },
     });
   }
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: "Select equipment or a magic item from the list",
+      components: [
+        {
+          type: MessageComponentTypes.ACTION_ROW,
+          components: [
+            {
+              type: MessageComponentTypes.STRING_SELECT,
+              custom_id: "select_equipment",
+              options: combinedItemList,
+            },
+          ],
+        },
+      ],
+    },
+  });
 }
 
 function magicItemsResponse(data: DataObject, res: Response) {
@@ -703,8 +712,17 @@ async function selectMagicItemResponse(data: DataObject, res: Response) {
 }
 
 async function selectEquipmentResponse(data: DataObject, res: Response) {
+  const selectedValue = String(data.values[0]);
+  if (selectedValue.startsWith("magicitem:")) {
+    return selectMagicItemResponse(
+      { ...data, values: [selectedValue.replace("magicitem:", "")] } as DataObject,
+      res,
+    );
+  }
+
+  const equipmentIndex = selectedValue.replace("equipment:", "");
   const equipmentData = equipment.filter(
-    (item) => item.index === data.values[0]
+    (item) => item.index === equipmentIndex
   )[0];
   if (!equipmentData) return notFoundResponse(res);
 

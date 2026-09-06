@@ -348,35 +348,36 @@ function traitsResponse(data, res) {
 }
 exports.traitsResponse = traitsResponse;
 function equipmentResponse(data, res) {
-    const filteredTraitsList = (0, search_js_1.getDataByQuery)(equipmentOptions_js_1.default, data.options[0].value);
-    if (filteredTraitsList.length === 0) {
+    const query = data.options[0].value;
+    const mundaneEquipmentMatches = (0, search_js_1.getDataByQuery)(equipmentOptions_js_1.default, query).map((item) => (Object.assign(Object.assign({}, item), { value: `equipment:${item.value}`, description: `Equipment - ${item.label}` })));
+    const magicItemMatches = (0, search_js_1.getDataByQuery)(magicItemOptions_js_1.default, query).map((item) => (Object.assign(Object.assign({}, item), { value: `magicitem:${item.value}`, description: `Magic item - ${item.label}` })));
+    const combinedItemList = [...mundaneEquipmentMatches, ...magicItemMatches].slice(0, 25);
+    if (combinedItemList.length === 0) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: "Can't find anything",
+                content: `No SRD equipment or magic item found for "${query}". Try a shorter name or /query for broader rules help.`,
             },
         });
     }
-    else {
-        return res.send({
-            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                content: "Select an equipment from the list",
-                components: [
-                    {
-                        type: discord_interactions_1.MessageComponentTypes.ACTION_ROW,
-                        components: [
-                            {
-                                type: discord_interactions_1.MessageComponentTypes.STRING_SELECT,
-                                custom_id: "select_equipment",
-                                options: filteredTraitsList,
-                            },
-                        ],
-                    },
-                ],
-            },
-        });
-    }
+    return res.send({
+        type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: "Select equipment or a magic item from the list",
+            components: [
+                {
+                    type: discord_interactions_1.MessageComponentTypes.ACTION_ROW,
+                    components: [
+                        {
+                            type: discord_interactions_1.MessageComponentTypes.STRING_SELECT,
+                            custom_id: "select_equipment",
+                            options: combinedItemList,
+                        },
+                    ],
+                },
+            ],
+        },
+    });
 }
 exports.equipmentResponse = equipmentResponse;
 function magicItemsResponse(data, res) {
@@ -584,7 +585,12 @@ function selectMagicItemResponse(data, res) {
 exports.selectMagicItemResponse = selectMagicItemResponse;
 function selectEquipmentResponse(data, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const equipmentData = equipment_js_1.default.filter((item) => item.index === data.values[0])[0];
+        const selectedValue = String(data.values[0]);
+        if (selectedValue.startsWith("magicitem:")) {
+            return selectMagicItemResponse(Object.assign(Object.assign({}, data), { values: [selectedValue.replace("magicitem:", "")] }), res);
+        }
+        const equipmentIndex = selectedValue.replace("equipment:", "");
+        const equipmentData = equipment_js_1.default.filter((item) => item.index === equipmentIndex)[0];
         if (!equipmentData)
             return notFoundResponse(res);
         let formattedData = `**${equipmentData.name}**`;
