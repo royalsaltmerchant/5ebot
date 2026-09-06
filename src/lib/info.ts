@@ -9,7 +9,7 @@ import traitOptions from "../data/traitOptions.js";
 import equipmentOptions from "../data/equipmentOptions.js";
 import magicItemOptions from "../data/magicItemOptions.js";
 import skills from "../data/skills.js";
-import { getDataByQuery } from "./search.js";
+import { getDataByQuery, isExactSearchMatch } from "./search.js";
 import { Response } from "express";
 import { DataObject } from "../api/interactionController.js";
 import {
@@ -50,6 +50,10 @@ function notFoundResponse(res: Response): Response {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: { content: "Could not find that entry." },
   });
+}
+
+function boolLabel(value: boolean | undefined): string {
+  return value ? "Yes" : "No";
 }
 
 function skillsResponse(data: DataObject, res: Response) {
@@ -275,34 +279,49 @@ function conditionsResponse(data: DataObject, res: Response) {
 }
 
 function spellsResponse(data: DataObject, res: Response) {
-  const filteredSpellList = getDataByQuery(spellOptions, data.options[0].value);
+  const query = data.options[0].value;
+  const filteredSpellList = getDataByQuery(spellOptions, query);
   if (filteredSpellList.length === 0) {
     return res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
-        content: "Can't find anything",
-      },
-    });
-  } else {
-    return res.send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: "Select a spell from the list",
-        components: [
-          {
-            type: MessageComponentTypes.ACTION_ROW,
-            components: [
-              {
-                type: MessageComponentTypes.STRING_SELECT,
-                custom_id: "select_spell",
-                options: filteredSpellList,
-              },
-            ],
-          },
-        ],
+        content: `No SRD spell found for "${query}". Try a shorter name, alternate spacing, or /query for broader rules help.`,
       },
     });
   }
+
+  const exactSpell = filteredSpellList.find((spell) =>
+    isExactSearchMatch(
+      {
+        name: spell.label,
+        index: spell.value,
+        url: spell.description,
+      },
+      query,
+    ),
+  );
+  if (exactSpell) {
+    return selectSpellResponse({ ...data, values: [exactSpell.value] } as DataObject, res);
+  }
+
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content: "Select a spell from the list",
+      components: [
+        {
+          type: MessageComponentTypes.ACTION_ROW,
+          components: [
+            {
+              type: MessageComponentTypes.STRING_SELECT,
+              custom_id: "select_spell",
+              options: filteredSpellList,
+            },
+          ],
+        },
+      ],
+    },
+  });
 }
 
 function proficienciesResponse(data: DataObject, res: Response) {
@@ -515,10 +534,10 @@ async function selectSpellResponse(data: DataObject, res: Response) {
   const spellData = spells.filter((spell) => spell.index === data.values[0])[0];
   if (!spellData) return notFoundResponse(res);
 
-  let formattedData = `**${spellData.name}** - `;
+  let formattedData = `**${spellData.name}**`;
   if (spellData.school && spellData.school.name)
-    formattedData += spellData.school.name;
-  if (spellData.level) formattedData += `\n**Level:** ${spellData.level}`;
+    formattedData += ` - ${spellData.school.name}`;
+  formattedData += `\n**Level:** ${spellData.level === 0 ? "Cantrip" : spellData.level}`;
   if (spellData.classes && spellData.classes.length !== 0)
     formattedData += `\n**Classes:** ${returnArrayDataAsString(
       spellData.classes,
@@ -527,9 +546,13 @@ async function selectSpellResponse(data: DataObject, res: Response) {
   if (spellData.casting_time)
     formattedData += `\n**Casting Time:** ${spellData.casting_time}`;
   if (spellData.range) formattedData += `\n**Range:** ${spellData.range}`;
+  if (spellData.components && spellData.components.length)
+    formattedData += `\n**Components:** ${returnArrayDataAsString(spellData.components, null)}`;
+  if (spellData.material) formattedData += ` (${spellData.material})`;
   if (spellData.duration)
     formattedData += `\n**Duration:** ${spellData.duration}`;
-  if (spellData.concentration) formattedData += "\n**Concentration:** true";
+  formattedData += `\n**Concentration:** ${boolLabel(spellData.concentration)}`;
+  formattedData += `\n**Ritual:** ${boolLabel(spellData.ritual)}`;
   if (
     spellData.damage &&
     spellData.damage.damage_type &&

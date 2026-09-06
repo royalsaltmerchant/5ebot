@@ -50,6 +50,9 @@ function notFoundResponse(res) {
         data: { content: "Could not find that entry." },
     });
 }
+function boolLabel(value) {
+    return value ? "Yes" : "No";
+}
 function skillsResponse(data, res) {
     const skillData = skills_js_1.default.filter((skill) => skill.index === data.options[0].value)[0];
     if (!skillData)
@@ -210,35 +213,42 @@ function conditionsResponse(data, res) {
 }
 exports.conditionsResponse = conditionsResponse;
 function spellsResponse(data, res) {
-    const filteredSpellList = (0, search_js_1.getDataByQuery)(spellOptions_js_1.default, data.options[0].value);
+    const query = data.options[0].value;
+    const filteredSpellList = (0, search_js_1.getDataByQuery)(spellOptions_js_1.default, query);
     if (filteredSpellList.length === 0) {
         return res.send({
             type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: "Can't find anything",
+                content: `No SRD spell found for "${query}". Try a shorter name, alternate spacing, or /query for broader rules help.`,
             },
         });
     }
-    else {
-        return res.send({
-            type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                content: "Select a spell from the list",
-                components: [
-                    {
-                        type: discord_interactions_1.MessageComponentTypes.ACTION_ROW,
-                        components: [
-                            {
-                                type: discord_interactions_1.MessageComponentTypes.STRING_SELECT,
-                                custom_id: "select_spell",
-                                options: filteredSpellList,
-                            },
-                        ],
-                    },
-                ],
-            },
-        });
+    const exactSpell = filteredSpellList.find((spell) => (0, search_js_1.isExactSearchMatch)({
+        name: spell.label,
+        index: spell.value,
+        url: spell.description,
+    }, query));
+    if (exactSpell) {
+        return selectSpellResponse(Object.assign(Object.assign({}, data), { values: [exactSpell.value] }), res);
     }
+    return res.send({
+        type: discord_interactions_1.InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+            content: "Select a spell from the list",
+            components: [
+                {
+                    type: discord_interactions_1.MessageComponentTypes.ACTION_ROW,
+                    components: [
+                        {
+                            type: discord_interactions_1.MessageComponentTypes.STRING_SELECT,
+                            custom_id: "select_spell",
+                            options: filteredSpellList,
+                        },
+                    ],
+                },
+            ],
+        },
+    });
 }
 exports.spellsResponse = spellsResponse;
 function proficienciesResponse(data, res) {
@@ -438,21 +448,24 @@ function selectSpellResponse(data, res) {
         const spellData = spells_js_1.default.filter((spell) => spell.index === data.values[0])[0];
         if (!spellData)
             return notFoundResponse(res);
-        let formattedData = `**${spellData.name}** - `;
+        let formattedData = `**${spellData.name}**`;
         if (spellData.school && spellData.school.name)
-            formattedData += spellData.school.name;
-        if (spellData.level)
-            formattedData += `\n**Level:** ${spellData.level}`;
+            formattedData += ` - ${spellData.school.name}`;
+        formattedData += `\n**Level:** ${spellData.level === 0 ? "Cantrip" : spellData.level}`;
         if (spellData.classes && spellData.classes.length !== 0)
             formattedData += `\n**Classes:** ${(0, dataUtils_js_1.returnArrayDataAsString)(spellData.classes, "name")}`;
         if (spellData.casting_time)
             formattedData += `\n**Casting Time:** ${spellData.casting_time}`;
         if (spellData.range)
             formattedData += `\n**Range:** ${spellData.range}`;
+        if (spellData.components && spellData.components.length)
+            formattedData += `\n**Components:** ${(0, dataUtils_js_1.returnArrayDataAsString)(spellData.components, null)}`;
+        if (spellData.material)
+            formattedData += ` (${spellData.material})`;
         if (spellData.duration)
             formattedData += `\n**Duration:** ${spellData.duration}`;
-        if (spellData.concentration)
-            formattedData += "\n**Concentration:** true";
+        formattedData += `\n**Concentration:** ${boolLabel(spellData.concentration)}`;
+        formattedData += `\n**Ritual:** ${boolLabel(spellData.ritual)}`;
         if (spellData.damage &&
             spellData.damage.damage_type &&
             spellData.damage.damage_type.name)
