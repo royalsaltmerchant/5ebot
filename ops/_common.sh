@@ -4,7 +4,7 @@ set -euo pipefail
 SERVER="${BOT_SERVER:-root@68.183.140.238}"
 REMOTE_DIR="${BOT_REMOTE_DIR:-/root/5ebot}"
 SSH_KEY="${BOT_SSH_KEY:-}"
-REMOTE_NPM_BIN="${BOT_REMOTE_NPM_BIN:-/usr/bin/npm}"
+REMOTE_NPM_BIN="${BOT_REMOTE_NPM_BIN:-/opt/node-v22.23.4/bin/npm}"
 PM2_BIN="${BOT_REMOTE_PM2_BIN:-./node_modules/.bin/pm2}"
 PM2_PROCESS_NAME="${BOT_PM2_PROCESS_NAME:-start_prod}"
 SYSTEMD_SERVICE_NAME="${BOT_SYSTEMD_SERVICE_NAME:-5ebot.service}"

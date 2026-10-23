@@ -9,7 +9,7 @@ User=root
 WorkingDirectory=/root/5ebot
 Environment=NODE_ENV=production
 EnvironmentFile=/root/5ebot/.env
-ExecStart=/usr/bin/node /root/5ebot/dist/server.js
+ExecStart=/opt/node-v22.23.4/bin/node /root/5ebot/dist/server.js
 Restart=always
 RestartSec=5
 StandardOutput=journal

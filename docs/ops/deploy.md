@@ -28,7 +28,7 @@ Service control examples:
 - `BOT_SERVER` (default: `root@68.183.140.238`)
 - `BOT_REMOTE_DIR` (default: `/root/5ebot`)
 - `BOT_SSH_KEY`
-- `BOT_REMOTE_NPM_BIN` (default: `/usr/bin/npm`)
+- `BOT_REMOTE_NPM_BIN` (default: `/opt/node-v22.23.4/bin/npm`)
 - `BOT_SERVICE_MANAGER` (default: `systemd`, options: `systemd|pm2`)
 - `BOT_SYSTEMD_SERVICE_NAME` (default: `5ebot.service`)
 - `BOT_PM2_PROCESS_NAME` (default: `start_prod`)
