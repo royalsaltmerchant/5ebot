@@ -1,6 +1,9 @@
 {
   "name": "dnd5e-discord-bot",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=22.23.4 <23"
+  },
   "description": "",
   "main": "server.js",
   "scripts": {

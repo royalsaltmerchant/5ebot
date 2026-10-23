@@ -53,7 +53,7 @@ if [[ "$SAVE_LOCAL_ARCHIVE" == "1" ]]; then
 fi
 
 echo "Validating remote prerequisites on $SERVER ..."
-run_remote "set -euo pipefail; command -v rsync >/dev/null; test -x '$REMOTE_NPM_BIN'; mkdir -p '$REMOTE_DIR' '$REMOTE_DIR/releases'; df -h '$REMOTE_DIR' | sed -n '1,2p'"
+run_remote "set -euo pipefail; command -v rsync >/dev/null; test -x '$REMOTE_NPM_BIN'; export PATH=\"\$(dirname '$REMOTE_NPM_BIN'):\$PATH\"; '$REMOTE_NPM_BIN' --version >/dev/null; mkdir -p '$REMOTE_DIR' '$REMOTE_DIR/releases'; df -h '$REMOTE_DIR' | sed -n '1,2p'"
 
 RSYNC_DELETE_ENABLED=1
 if ! run_remote "[ -f '$REMOTE_DIR/.artifact_deploy_initialized' ]"; then
@@ -84,6 +84,7 @@ fi
 set -euo pipefail
 
 cd "$REMOTE_DIR"
+export PATH="$(dirname "$REMOTE_NPM_BIN"):$PATH"
 echo "$RELEASE_ID" > RELEASE_ID
 echo "$ARCHIVE_NAME" > CURRENT_RELEASE_ARCHIVE
 touch .artifact_deploy_initialized
